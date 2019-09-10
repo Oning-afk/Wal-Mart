@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walmart.mapper.StoreMapper" >
+  <resultMap id="BaseResultMap" type="com.walmart.pojo.Store" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="createdDate" property="createddate" jdbcType="TIMESTAMP" />
+    <result column="lastModifiedDate" property="lastmodifieddate" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="bailPaid" property="bailpaid" jdbcType="DECIMAL" />
+    <result column="discountPromotionEndDate" property="discountpromotionenddate" jdbcType="TIMESTAMP" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="endDate" property="enddate" jdbcType="TIMESTAMP" />
+    <result column="fullReductionPromotionEndDate" property="fullreductionpromotionenddate" jdbcType="TIMESTAMP" />
+    <result column="isEnabled" property="isenabled" jdbcType="BIT" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="zipCode" property="zipcode" jdbcType="VARCHAR" />
+    <result column="business_id" property="businessId" jdbcType="BIGINT" />
+    <result column="storeCategory_id" property="storecategoryId" jdbcType="BIGINT" />
+    <result column="storeRank_id" property="storerankId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.walmart.pojo.Store" extends="BaseResultMap" >
+    <result column="introduction" property="introduction" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, createdDate, lastModifiedDate, version, address, bailPaid, discountPromotionEndDate, 
+    email, endDate, fullReductionPromotionEndDate, isEnabled, keyword, logo, mobile, 
+    name, phone, status, type, zipCode, business_id, storeCategory_id, storeRank_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    introduction
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.walmart.pojo.StoreExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from store
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.walmart.pojo.StoreExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from store
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from store
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from store
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.walmart.pojo.StoreExample" >
+    delete from store
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.walmart.pojo.Store" >
+    insert into store (id, createdDate, lastModifiedDate, 
+      version, address, bailPaid, 
+      discountPromotionEndDate, email, endDate, 
+      fullReductionPromotionEndDate, isEnabled, 
+      keyword, logo, mobile, 
+      name, phone, status, 
+      type, zipCode, business_id, 
+      storeCategory_id, storeRank_id, introduction
+      )
+    values (#{id,jdbcType=BIGINT}, #{createddate,jdbcType=TIMESTAMP}, #{lastmodifieddate,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{bailpaid,jdbcType=DECIMAL}, 
+      #{discountpromotionenddate,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, #{enddate,jdbcType=TIMESTAMP}, 
+      #{fullreductionpromotionenddate,jdbcType=TIMESTAMP}, #{isenabled,jdbcType=BIT}, 
+      #{keyword,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{zipcode,jdbcType=VARCHAR}, #{businessId,jdbcType=BIGINT}, 
+      #{storecategoryId,jdbcType=BIGINT}, #{storerankId,jdbcType=BIGINT}, #{introduction,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.walmart.pojo.Store" >
+    insert into store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createddate != null" >
+        createdDate,
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="bailpaid != null" >
+        bailPaid,
+      </if>
+      <if test="discountpromotionenddate != null" >
+        discountPromotionEndDate,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="enddate != null" >
+        endDate,
+      </if>
+      <if test="fullreductionpromotionenddate != null" >
+        fullReductionPromotionEndDate,
+      </if>
+      <if test="isenabled != null" >
+        isEnabled,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="logo != null" >
+        logo,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="zipcode != null" >
+        zipCode,
+      </if>
+      <if test="businessId != null" >
+        business_id,
+      </if>
+      <if test="storecategoryId != null" >
+        storeCategory_id,
+      </if>
+      <if test="storerankId != null" >
+        storeRank_id,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createddate != null" >
+        #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="bailpaid != null" >
+        #{bailpaid,jdbcType=DECIMAL},
+      </if>
+      <if test="discountpromotionenddate != null" >
+        #{discountpromotionenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullreductionpromotionenddate != null" >
+        #{fullreductionpromotionenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isenabled != null" >
+        #{isenabled,jdbcType=BIT},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="zipcode != null" >
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        #{businessId,jdbcType=BIGINT},
+      </if>
+      <if test="storecategoryId != null" >
+        #{storecategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="storerankId != null" >
+        #{storerankId,jdbcType=BIGINT},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.walmart.pojo.StoreExample" resultType="java.lang.Integer" >
+    select count(*) from store
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update store
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createddate != null" >
+        createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifieddate != null" >
+        lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=BIGINT},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bailpaid != null" >
+        bailPaid = #{record.bailpaid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.discountpromotionenddate != null" >
+        discountPromotionEndDate = #{record.discountpromotionenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enddate != null" >
+        endDate = #{record.enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fullreductionpromotionenddate != null" >
+        fullReductionPromotionEndDate = #{record.fullreductionpromotionenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isenabled != null" >
+        isEnabled = #{record.isenabled,jdbcType=BIT},
+      </if>
+      <if test="record.keyword != null" >
+        keyword = #{record.keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logo != null" >
+        logo = #{record.logo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.zipcode != null" >
+        zipCode = #{record.zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessId != null" >
+        business_id = #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storecategoryId != null" >
+        storeCategory_id = #{record.storecategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storerankId != null" >
+        storeRank_id = #{record.storerankId,jdbcType=BIGINT},
+      </if>
+      <if test="record.introduction != null" >
+        introduction = #{record.introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update store
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      bailPaid = #{record.bailpaid,jdbcType=DECIMAL},
+      discountPromotionEndDate = #{record.discountpromotionenddate,jdbcType=TIMESTAMP},
+      email = #{record.email,jdbcType=VARCHAR},
+      endDate = #{record.enddate,jdbcType=TIMESTAMP},
+      fullReductionPromotionEndDate = #{record.fullreductionpromotionenddate,jdbcType=TIMESTAMP},
+      isEnabled = #{record.isenabled,jdbcType=BIT},
+      keyword = #{record.keyword,jdbcType=VARCHAR},
+      logo = #{record.logo,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      zipCode = #{record.zipcode,jdbcType=VARCHAR},
+      business_id = #{record.businessId,jdbcType=BIGINT},
+      storeCategory_id = #{record.storecategoryId,jdbcType=BIGINT},
+      storeRank_id = #{record.storerankId,jdbcType=BIGINT},
+      introduction = #{record.introduction,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update store
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      bailPaid = #{record.bailpaid,jdbcType=DECIMAL},
+      discountPromotionEndDate = #{record.discountpromotionenddate,jdbcType=TIMESTAMP},
+      email = #{record.email,jdbcType=VARCHAR},
+      endDate = #{record.enddate,jdbcType=TIMESTAMP},
+      fullReductionPromotionEndDate = #{record.fullreductionpromotionenddate,jdbcType=TIMESTAMP},
+      isEnabled = #{record.isenabled,jdbcType=BIT},
+      keyword = #{record.keyword,jdbcType=VARCHAR},
+      logo = #{record.logo,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      zipCode = #{record.zipcode,jdbcType=VARCHAR},
+      business_id = #{record.businessId,jdbcType=BIGINT},
+      storeCategory_id = #{record.storecategoryId,jdbcType=BIGINT},
+      storeRank_id = #{record.storerankId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.walmart.pojo.Store" >
+    update store
+    <set >
+      <if test="createddate != null" >
+        createdDate = #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="bailpaid != null" >
+        bailPaid = #{bailpaid,jdbcType=DECIMAL},
+      </if>
+      <if test="discountpromotionenddate != null" >
+        discountPromotionEndDate = #{discountpromotionenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="enddate != null" >
+        endDate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullreductionpromotionenddate != null" >
+        fullReductionPromotionEndDate = #{fullreductionpromotionenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isenabled != null" >
+        isEnabled = #{isenabled,jdbcType=BIT},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="zipcode != null" >
+        zipCode = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        business_id = #{businessId,jdbcType=BIGINT},
+      </if>
+      <if test="storecategoryId != null" >
+        storeCategory_id = #{storecategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="storerankId != null" >
+        storeRank_id = #{storerankId,jdbcType=BIGINT},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.walmart.pojo.Store" >
+    update store
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      bailPaid = #{bailpaid,jdbcType=DECIMAL},
+      discountPromotionEndDate = #{discountpromotionenddate,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      endDate = #{enddate,jdbcType=TIMESTAMP},
+      fullReductionPromotionEndDate = #{fullreductionpromotionenddate,jdbcType=TIMESTAMP},
+      isEnabled = #{isenabled,jdbcType=BIT},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      zipCode = #{zipcode,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=BIGINT},
+      storeCategory_id = #{storecategoryId,jdbcType=BIGINT},
+      storeRank_id = #{storerankId,jdbcType=BIGINT},
+      introduction = #{introduction,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.walmart.pojo.Store" >
+    update store
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      bailPaid = #{bailpaid,jdbcType=DECIMAL},
+      discountPromotionEndDate = #{discountpromotionenddate,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      endDate = #{enddate,jdbcType=TIMESTAMP},
+      fullReductionPromotionEndDate = #{fullreductionpromotionenddate,jdbcType=TIMESTAMP},
+      isEnabled = #{isenabled,jdbcType=BIT},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      zipCode = #{zipcode,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=BIGINT},
+      storeCategory_id = #{storecategoryId,jdbcType=BIGINT},
+      storeRank_id = #{storerankId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

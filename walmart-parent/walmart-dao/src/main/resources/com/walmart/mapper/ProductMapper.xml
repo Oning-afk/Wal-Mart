@@ -1,0 +1,1262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walmart.mapper.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.walmart.pojo.Product" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="createdDate" property="createddate" jdbcType="TIMESTAMP" />
+    <result column="lastModifiedDate" property="lastmodifieddate" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="attributeValue0" property="attributevalue0" jdbcType="VARCHAR" />
+    <result column="attributeValue1" property="attributevalue1" jdbcType="VARCHAR" />
+    <result column="attributeValue10" property="attributevalue10" jdbcType="VARCHAR" />
+    <result column="attributeValue11" property="attributevalue11" jdbcType="VARCHAR" />
+    <result column="attributeValue12" property="attributevalue12" jdbcType="VARCHAR" />
+    <result column="attributeValue13" property="attributevalue13" jdbcType="VARCHAR" />
+    <result column="attributeValue14" property="attributevalue14" jdbcType="VARCHAR" />
+    <result column="attributeValue15" property="attributevalue15" jdbcType="VARCHAR" />
+    <result column="attributeValue16" property="attributevalue16" jdbcType="VARCHAR" />
+    <result column="attributeValue17" property="attributevalue17" jdbcType="VARCHAR" />
+    <result column="attributeValue18" property="attributevalue18" jdbcType="VARCHAR" />
+    <result column="attributeValue19" property="attributevalue19" jdbcType="VARCHAR" />
+    <result column="attributeValue2" property="attributevalue2" jdbcType="VARCHAR" />
+    <result column="attributeValue3" property="attributevalue3" jdbcType="VARCHAR" />
+    <result column="attributeValue4" property="attributevalue4" jdbcType="VARCHAR" />
+    <result column="attributeValue5" property="attributevalue5" jdbcType="VARCHAR" />
+    <result column="attributeValue6" property="attributevalue6" jdbcType="VARCHAR" />
+    <result column="attributeValue7" property="attributevalue7" jdbcType="VARCHAR" />
+    <result column="attributeValue8" property="attributevalue8" jdbcType="VARCHAR" />
+    <result column="attributeValue9" property="attributevalue9" jdbcType="VARCHAR" />
+    <result column="caption" property="caption" jdbcType="VARCHAR" />
+    <result column="cost" property="cost" jdbcType="DECIMAL" />
+    <result column="hits" property="hits" jdbcType="BIGINT" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="isActive" property="isactive" jdbcType="BIT" />
+    <result column="isDelivery" property="isdelivery" jdbcType="BIT" />
+    <result column="isList" property="islist" jdbcType="BIT" />
+    <result column="isMarketable" property="ismarketable" jdbcType="BIT" />
+    <result column="isTop" property="istop" jdbcType="BIT" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="marketPrice" property="marketprice" jdbcType="DECIMAL" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="monthHits" property="monthhits" jdbcType="BIGINT" />
+    <result column="monthHitsDate" property="monthhitsdate" jdbcType="TIMESTAMP" />
+    <result column="monthSales" property="monthsales" jdbcType="BIGINT" />
+    <result column="monthSalesDate" property="monthsalesdate" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="sales" property="sales" jdbcType="BIGINT" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="scoreCount" property="scorecount" jdbcType="BIGINT" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="totalScore" property="totalscore" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="weekHits" property="weekhits" jdbcType="BIGINT" />
+    <result column="weekHitsDate" property="weekhitsdate" jdbcType="TIMESTAMP" />
+    <result column="weekSales" property="weeksales" jdbcType="BIGINT" />
+    <result column="weekSalesDate" property="weeksalesdate" jdbcType="TIMESTAMP" />
+    <result column="weight" property="weight" jdbcType="INTEGER" />
+    <result column="brand_id" property="brandId" jdbcType="BIGINT" />
+    <result column="productCategory_id" property="productcategoryId" jdbcType="BIGINT" />
+    <result column="store_id" property="storeId" jdbcType="BIGINT" />
+    <result column="storeProductCategory_id" property="storeproductcategoryId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.walmart.pojo.ProductWithBLOBs" extends="BaseResultMap" >
+    <result column="introduction" property="introduction" jdbcType="LONGVARCHAR" />
+    <result column="parameterValues" property="parametervalues" jdbcType="LONGVARCHAR" />
+    <result column="productImages" property="productimages" jdbcType="LONGVARCHAR" />
+    <result column="specificationItems" property="specificationitems" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, createdDate, lastModifiedDate, version, attributeValue0, attributeValue1, attributeValue10, 
+    attributeValue11, attributeValue12, attributeValue13, attributeValue14, attributeValue15, 
+    attributeValue16, attributeValue17, attributeValue18, attributeValue19, attributeValue2, 
+    attributeValue3, attributeValue4, attributeValue5, attributeValue6, attributeValue7, 
+    attributeValue8, attributeValue9, caption, cost, hits, image, isActive, isDelivery, 
+    isList, isMarketable, isTop, keyword, marketPrice, memo, monthHits, monthHitsDate, 
+    monthSales, monthSalesDate, name, price, sales, score, scoreCount, sn, totalScore, 
+    type, unit, weekHits, weekHitsDate, weekSales, weekSalesDate, weight, brand_id, productCategory_id, 
+    store_id, storeProductCategory_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    introduction, parameterValues, productImages, specificationItems
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.walmart.pojo.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.walmart.pojo.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.walmart.pojo.ProductExample" >
+    delete from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.walmart.pojo.ProductWithBLOBs" >
+    insert into product (id, createdDate, lastModifiedDate, 
+      version, attributeValue0, attributeValue1, 
+      attributeValue10, attributeValue11, attributeValue12, 
+      attributeValue13, attributeValue14, attributeValue15, 
+      attributeValue16, attributeValue17, attributeValue18, 
+      attributeValue19, attributeValue2, attributeValue3, 
+      attributeValue4, attributeValue5, attributeValue6, 
+      attributeValue7, attributeValue8, attributeValue9, 
+      caption, cost, hits, 
+      image, isActive, isDelivery, 
+      isList, isMarketable, isTop, keyword, 
+      marketPrice, memo, monthHits, 
+      monthHitsDate, monthSales, monthSalesDate, 
+      name, price, sales, 
+      score, scoreCount, sn, 
+      totalScore, type, unit, 
+      weekHits, weekHitsDate, weekSales, 
+      weekSalesDate, weight, brand_id, 
+      productCategory_id, store_id, storeProductCategory_id, 
+      introduction, parameterValues, 
+      productImages, specificationItems
+      )
+    values (#{id,jdbcType=BIGINT}, #{createddate,jdbcType=TIMESTAMP}, #{lastmodifieddate,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=BIGINT}, #{attributevalue0,jdbcType=VARCHAR}, #{attributevalue1,jdbcType=VARCHAR}, 
+      #{attributevalue10,jdbcType=VARCHAR}, #{attributevalue11,jdbcType=VARCHAR}, #{attributevalue12,jdbcType=VARCHAR}, 
+      #{attributevalue13,jdbcType=VARCHAR}, #{attributevalue14,jdbcType=VARCHAR}, #{attributevalue15,jdbcType=VARCHAR}, 
+      #{attributevalue16,jdbcType=VARCHAR}, #{attributevalue17,jdbcType=VARCHAR}, #{attributevalue18,jdbcType=VARCHAR}, 
+      #{attributevalue19,jdbcType=VARCHAR}, #{attributevalue2,jdbcType=VARCHAR}, #{attributevalue3,jdbcType=VARCHAR}, 
+      #{attributevalue4,jdbcType=VARCHAR}, #{attributevalue5,jdbcType=VARCHAR}, #{attributevalue6,jdbcType=VARCHAR}, 
+      #{attributevalue7,jdbcType=VARCHAR}, #{attributevalue8,jdbcType=VARCHAR}, #{attributevalue9,jdbcType=VARCHAR}, 
+      #{caption,jdbcType=VARCHAR}, #{cost,jdbcType=DECIMAL}, #{hits,jdbcType=BIGINT}, 
+      #{image,jdbcType=VARCHAR}, #{isactive,jdbcType=BIT}, #{isdelivery,jdbcType=BIT}, 
+      #{islist,jdbcType=BIT}, #{ismarketable,jdbcType=BIT}, #{istop,jdbcType=BIT}, #{keyword,jdbcType=VARCHAR}, 
+      #{marketprice,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, #{monthhits,jdbcType=BIGINT}, 
+      #{monthhitsdate,jdbcType=TIMESTAMP}, #{monthsales,jdbcType=BIGINT}, #{monthsalesdate,jdbcType=TIMESTAMP}, 
+      #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{sales,jdbcType=BIGINT}, 
+      #{score,jdbcType=REAL}, #{scorecount,jdbcType=BIGINT}, #{sn,jdbcType=VARCHAR}, 
+      #{totalscore,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
+      #{weekhits,jdbcType=BIGINT}, #{weekhitsdate,jdbcType=TIMESTAMP}, #{weeksales,jdbcType=BIGINT}, 
+      #{weeksalesdate,jdbcType=TIMESTAMP}, #{weight,jdbcType=INTEGER}, #{brandId,jdbcType=BIGINT}, 
+      #{productcategoryId,jdbcType=BIGINT}, #{storeId,jdbcType=BIGINT}, #{storeproductcategoryId,jdbcType=BIGINT}, 
+      #{introduction,jdbcType=LONGVARCHAR}, #{parametervalues,jdbcType=LONGVARCHAR}, 
+      #{productimages,jdbcType=LONGVARCHAR}, #{specificationitems,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.walmart.pojo.ProductWithBLOBs" >
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createddate != null" >
+        createdDate,
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="attributevalue0 != null" >
+        attributeValue0,
+      </if>
+      <if test="attributevalue1 != null" >
+        attributeValue1,
+      </if>
+      <if test="attributevalue10 != null" >
+        attributeValue10,
+      </if>
+      <if test="attributevalue11 != null" >
+        attributeValue11,
+      </if>
+      <if test="attributevalue12 != null" >
+        attributeValue12,
+      </if>
+      <if test="attributevalue13 != null" >
+        attributeValue13,
+      </if>
+      <if test="attributevalue14 != null" >
+        attributeValue14,
+      </if>
+      <if test="attributevalue15 != null" >
+        attributeValue15,
+      </if>
+      <if test="attributevalue16 != null" >
+        attributeValue16,
+      </if>
+      <if test="attributevalue17 != null" >
+        attributeValue17,
+      </if>
+      <if test="attributevalue18 != null" >
+        attributeValue18,
+      </if>
+      <if test="attributevalue19 != null" >
+        attributeValue19,
+      </if>
+      <if test="attributevalue2 != null" >
+        attributeValue2,
+      </if>
+      <if test="attributevalue3 != null" >
+        attributeValue3,
+      </if>
+      <if test="attributevalue4 != null" >
+        attributeValue4,
+      </if>
+      <if test="attributevalue5 != null" >
+        attributeValue5,
+      </if>
+      <if test="attributevalue6 != null" >
+        attributeValue6,
+      </if>
+      <if test="attributevalue7 != null" >
+        attributeValue7,
+      </if>
+      <if test="attributevalue8 != null" >
+        attributeValue8,
+      </if>
+      <if test="attributevalue9 != null" >
+        attributeValue9,
+      </if>
+      <if test="caption != null" >
+        caption,
+      </if>
+      <if test="cost != null" >
+        cost,
+      </if>
+      <if test="hits != null" >
+        hits,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="isactive != null" >
+        isActive,
+      </if>
+      <if test="isdelivery != null" >
+        isDelivery,
+      </if>
+      <if test="islist != null" >
+        isList,
+      </if>
+      <if test="ismarketable != null" >
+        isMarketable,
+      </if>
+      <if test="istop != null" >
+        isTop,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="marketprice != null" >
+        marketPrice,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="monthhits != null" >
+        monthHits,
+      </if>
+      <if test="monthhitsdate != null" >
+        monthHitsDate,
+      </if>
+      <if test="monthsales != null" >
+        monthSales,
+      </if>
+      <if test="monthsalesdate != null" >
+        monthSalesDate,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="scorecount != null" >
+        scoreCount,
+      </if>
+      <if test="sn != null" >
+        sn,
+      </if>
+      <if test="totalscore != null" >
+        totalScore,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="weekhits != null" >
+        weekHits,
+      </if>
+      <if test="weekhitsdate != null" >
+        weekHitsDate,
+      </if>
+      <if test="weeksales != null" >
+        weekSales,
+      </if>
+      <if test="weeksalesdate != null" >
+        weekSalesDate,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="brandId != null" >
+        brand_id,
+      </if>
+      <if test="productcategoryId != null" >
+        productCategory_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="storeproductcategoryId != null" >
+        storeProductCategory_id,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="parametervalues != null" >
+        parameterValues,
+      </if>
+      <if test="productimages != null" >
+        productImages,
+      </if>
+      <if test="specificationitems != null" >
+        specificationItems,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createddate != null" >
+        #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="attributevalue0 != null" >
+        #{attributevalue0,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue1 != null" >
+        #{attributevalue1,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue10 != null" >
+        #{attributevalue10,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue11 != null" >
+        #{attributevalue11,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue12 != null" >
+        #{attributevalue12,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue13 != null" >
+        #{attributevalue13,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue14 != null" >
+        #{attributevalue14,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue15 != null" >
+        #{attributevalue15,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue16 != null" >
+        #{attributevalue16,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue17 != null" >
+        #{attributevalue17,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue18 != null" >
+        #{attributevalue18,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue19 != null" >
+        #{attributevalue19,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue2 != null" >
+        #{attributevalue2,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue3 != null" >
+        #{attributevalue3,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue4 != null" >
+        #{attributevalue4,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue5 != null" >
+        #{attributevalue5,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue6 != null" >
+        #{attributevalue6,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue7 != null" >
+        #{attributevalue7,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue8 != null" >
+        #{attributevalue8,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue9 != null" >
+        #{attributevalue9,jdbcType=VARCHAR},
+      </if>
+      <if test="caption != null" >
+        #{caption,jdbcType=VARCHAR},
+      </if>
+      <if test="cost != null" >
+        #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="hits != null" >
+        #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="isactive != null" >
+        #{isactive,jdbcType=BIT},
+      </if>
+      <if test="isdelivery != null" >
+        #{isdelivery,jdbcType=BIT},
+      </if>
+      <if test="islist != null" >
+        #{islist,jdbcType=BIT},
+      </if>
+      <if test="ismarketable != null" >
+        #{ismarketable,jdbcType=BIT},
+      </if>
+      <if test="istop != null" >
+        #{istop,jdbcType=BIT},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="marketprice != null" >
+        #{marketprice,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="monthhits != null" >
+        #{monthhits,jdbcType=BIGINT},
+      </if>
+      <if test="monthhitsdate != null" >
+        #{monthhitsdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="monthsales != null" >
+        #{monthsales,jdbcType=BIGINT},
+      </if>
+      <if test="monthsalesdate != null" >
+        #{monthsalesdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=BIGINT},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=REAL},
+      </if>
+      <if test="scorecount != null" >
+        #{scorecount,jdbcType=BIGINT},
+      </if>
+      <if test="sn != null" >
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="totalscore != null" >
+        #{totalscore,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="weekhits != null" >
+        #{weekhits,jdbcType=BIGINT},
+      </if>
+      <if test="weekhitsdate != null" >
+        #{weekhitsdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="weeksales != null" >
+        #{weeksales,jdbcType=BIGINT},
+      </if>
+      <if test="weeksalesdate != null" >
+        #{weeksalesdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="productcategoryId != null" >
+        #{productcategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="storeproductcategoryId != null" >
+        #{storeproductcategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="parametervalues != null" >
+        #{parametervalues,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="productimages != null" >
+        #{productimages,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="specificationitems != null" >
+        #{specificationitems,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.walmart.pojo.ProductExample" resultType="java.lang.Integer" >
+    select count(*) from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createddate != null" >
+        createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifieddate != null" >
+        lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=BIGINT},
+      </if>
+      <if test="record.attributevalue0 != null" >
+        attributeValue0 = #{record.attributevalue0,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue1 != null" >
+        attributeValue1 = #{record.attributevalue1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue10 != null" >
+        attributeValue10 = #{record.attributevalue10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue11 != null" >
+        attributeValue11 = #{record.attributevalue11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue12 != null" >
+        attributeValue12 = #{record.attributevalue12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue13 != null" >
+        attributeValue13 = #{record.attributevalue13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue14 != null" >
+        attributeValue14 = #{record.attributevalue14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue15 != null" >
+        attributeValue15 = #{record.attributevalue15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue16 != null" >
+        attributeValue16 = #{record.attributevalue16,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue17 != null" >
+        attributeValue17 = #{record.attributevalue17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue18 != null" >
+        attributeValue18 = #{record.attributevalue18,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue19 != null" >
+        attributeValue19 = #{record.attributevalue19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue2 != null" >
+        attributeValue2 = #{record.attributevalue2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue3 != null" >
+        attributeValue3 = #{record.attributevalue3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue4 != null" >
+        attributeValue4 = #{record.attributevalue4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue5 != null" >
+        attributeValue5 = #{record.attributevalue5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue6 != null" >
+        attributeValue6 = #{record.attributevalue6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue7 != null" >
+        attributeValue7 = #{record.attributevalue7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue8 != null" >
+        attributeValue8 = #{record.attributevalue8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue9 != null" >
+        attributeValue9 = #{record.attributevalue9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caption != null" >
+        caption = #{record.caption,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cost != null" >
+        cost = #{record.cost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.hits != null" >
+        hits = #{record.hits,jdbcType=BIGINT},
+      </if>
+      <if test="record.image != null" >
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isactive != null" >
+        isActive = #{record.isactive,jdbcType=BIT},
+      </if>
+      <if test="record.isdelivery != null" >
+        isDelivery = #{record.isdelivery,jdbcType=BIT},
+      </if>
+      <if test="record.islist != null" >
+        isList = #{record.islist,jdbcType=BIT},
+      </if>
+      <if test="record.ismarketable != null" >
+        isMarketable = #{record.ismarketable,jdbcType=BIT},
+      </if>
+      <if test="record.istop != null" >
+        isTop = #{record.istop,jdbcType=BIT},
+      </if>
+      <if test="record.keyword != null" >
+        keyword = #{record.keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marketprice != null" >
+        marketPrice = #{record.marketprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monthhits != null" >
+        monthHits = #{record.monthhits,jdbcType=BIGINT},
+      </if>
+      <if test="record.monthhitsdate != null" >
+        monthHitsDate = #{record.monthhitsdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.monthsales != null" >
+        monthSales = #{record.monthsales,jdbcType=BIGINT},
+      </if>
+      <if test="record.monthsalesdate != null" >
+        monthSalesDate = #{record.monthsalesdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sales != null" >
+        sales = #{record.sales,jdbcType=BIGINT},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=REAL},
+      </if>
+      <if test="record.scorecount != null" >
+        scoreCount = #{record.scorecount,jdbcType=BIGINT},
+      </if>
+      <if test="record.sn != null" >
+        sn = #{record.sn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalscore != null" >
+        totalScore = #{record.totalscore,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weekhits != null" >
+        weekHits = #{record.weekhits,jdbcType=BIGINT},
+      </if>
+      <if test="record.weekhitsdate != null" >
+        weekHitsDate = #{record.weekhitsdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.weeksales != null" >
+        weekSales = #{record.weeksales,jdbcType=BIGINT},
+      </if>
+      <if test="record.weeksalesdate != null" >
+        weekSalesDate = #{record.weeksalesdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight,jdbcType=INTEGER},
+      </if>
+      <if test="record.brandId != null" >
+        brand_id = #{record.brandId,jdbcType=BIGINT},
+      </if>
+      <if test="record.productcategoryId != null" >
+        productCategory_id = #{record.productcategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null" >
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeproductcategoryId != null" >
+        storeProductCategory_id = #{record.storeproductcategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.introduction != null" >
+        introduction = #{record.introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.parametervalues != null" >
+        parameterValues = #{record.parametervalues,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.productimages != null" >
+        productImages = #{record.productimages,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.specificationitems != null" >
+        specificationItems = #{record.specificationitems,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update product
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      attributeValue0 = #{record.attributevalue0,jdbcType=VARCHAR},
+      attributeValue1 = #{record.attributevalue1,jdbcType=VARCHAR},
+      attributeValue10 = #{record.attributevalue10,jdbcType=VARCHAR},
+      attributeValue11 = #{record.attributevalue11,jdbcType=VARCHAR},
+      attributeValue12 = #{record.attributevalue12,jdbcType=VARCHAR},
+      attributeValue13 = #{record.attributevalue13,jdbcType=VARCHAR},
+      attributeValue14 = #{record.attributevalue14,jdbcType=VARCHAR},
+      attributeValue15 = #{record.attributevalue15,jdbcType=VARCHAR},
+      attributeValue16 = #{record.attributevalue16,jdbcType=VARCHAR},
+      attributeValue17 = #{record.attributevalue17,jdbcType=VARCHAR},
+      attributeValue18 = #{record.attributevalue18,jdbcType=VARCHAR},
+      attributeValue19 = #{record.attributevalue19,jdbcType=VARCHAR},
+      attributeValue2 = #{record.attributevalue2,jdbcType=VARCHAR},
+      attributeValue3 = #{record.attributevalue3,jdbcType=VARCHAR},
+      attributeValue4 = #{record.attributevalue4,jdbcType=VARCHAR},
+      attributeValue5 = #{record.attributevalue5,jdbcType=VARCHAR},
+      attributeValue6 = #{record.attributevalue6,jdbcType=VARCHAR},
+      attributeValue7 = #{record.attributevalue7,jdbcType=VARCHAR},
+      attributeValue8 = #{record.attributevalue8,jdbcType=VARCHAR},
+      attributeValue9 = #{record.attributevalue9,jdbcType=VARCHAR},
+      caption = #{record.caption,jdbcType=VARCHAR},
+      cost = #{record.cost,jdbcType=DECIMAL},
+      hits = #{record.hits,jdbcType=BIGINT},
+      image = #{record.image,jdbcType=VARCHAR},
+      isActive = #{record.isactive,jdbcType=BIT},
+      isDelivery = #{record.isdelivery,jdbcType=BIT},
+      isList = #{record.islist,jdbcType=BIT},
+      isMarketable = #{record.ismarketable,jdbcType=BIT},
+      isTop = #{record.istop,jdbcType=BIT},
+      keyword = #{record.keyword,jdbcType=VARCHAR},
+      marketPrice = #{record.marketprice,jdbcType=DECIMAL},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      monthHits = #{record.monthhits,jdbcType=BIGINT},
+      monthHitsDate = #{record.monthhitsdate,jdbcType=TIMESTAMP},
+      monthSales = #{record.monthsales,jdbcType=BIGINT},
+      monthSalesDate = #{record.monthsalesdate,jdbcType=TIMESTAMP},
+      name = #{record.name,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      sales = #{record.sales,jdbcType=BIGINT},
+      score = #{record.score,jdbcType=REAL},
+      scoreCount = #{record.scorecount,jdbcType=BIGINT},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      totalScore = #{record.totalscore,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      weekHits = #{record.weekhits,jdbcType=BIGINT},
+      weekHitsDate = #{record.weekhitsdate,jdbcType=TIMESTAMP},
+      weekSales = #{record.weeksales,jdbcType=BIGINT},
+      weekSalesDate = #{record.weeksalesdate,jdbcType=TIMESTAMP},
+      weight = #{record.weight,jdbcType=INTEGER},
+      brand_id = #{record.brandId,jdbcType=BIGINT},
+      productCategory_id = #{record.productcategoryId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      storeProductCategory_id = #{record.storeproductcategoryId,jdbcType=BIGINT},
+      introduction = #{record.introduction,jdbcType=LONGVARCHAR},
+      parameterValues = #{record.parametervalues,jdbcType=LONGVARCHAR},
+      productImages = #{record.productimages,jdbcType=LONGVARCHAR},
+      specificationItems = #{record.specificationitems,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update product
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      attributeValue0 = #{record.attributevalue0,jdbcType=VARCHAR},
+      attributeValue1 = #{record.attributevalue1,jdbcType=VARCHAR},
+      attributeValue10 = #{record.attributevalue10,jdbcType=VARCHAR},
+      attributeValue11 = #{record.attributevalue11,jdbcType=VARCHAR},
+      attributeValue12 = #{record.attributevalue12,jdbcType=VARCHAR},
+      attributeValue13 = #{record.attributevalue13,jdbcType=VARCHAR},
+      attributeValue14 = #{record.attributevalue14,jdbcType=VARCHAR},
+      attributeValue15 = #{record.attributevalue15,jdbcType=VARCHAR},
+      attributeValue16 = #{record.attributevalue16,jdbcType=VARCHAR},
+      attributeValue17 = #{record.attributevalue17,jdbcType=VARCHAR},
+      attributeValue18 = #{record.attributevalue18,jdbcType=VARCHAR},
+      attributeValue19 = #{record.attributevalue19,jdbcType=VARCHAR},
+      attributeValue2 = #{record.attributevalue2,jdbcType=VARCHAR},
+      attributeValue3 = #{record.attributevalue3,jdbcType=VARCHAR},
+      attributeValue4 = #{record.attributevalue4,jdbcType=VARCHAR},
+      attributeValue5 = #{record.attributevalue5,jdbcType=VARCHAR},
+      attributeValue6 = #{record.attributevalue6,jdbcType=VARCHAR},
+      attributeValue7 = #{record.attributevalue7,jdbcType=VARCHAR},
+      attributeValue8 = #{record.attributevalue8,jdbcType=VARCHAR},
+      attributeValue9 = #{record.attributevalue9,jdbcType=VARCHAR},
+      caption = #{record.caption,jdbcType=VARCHAR},
+      cost = #{record.cost,jdbcType=DECIMAL},
+      hits = #{record.hits,jdbcType=BIGINT},
+      image = #{record.image,jdbcType=VARCHAR},
+      isActive = #{record.isactive,jdbcType=BIT},
+      isDelivery = #{record.isdelivery,jdbcType=BIT},
+      isList = #{record.islist,jdbcType=BIT},
+      isMarketable = #{record.ismarketable,jdbcType=BIT},
+      isTop = #{record.istop,jdbcType=BIT},
+      keyword = #{record.keyword,jdbcType=VARCHAR},
+      marketPrice = #{record.marketprice,jdbcType=DECIMAL},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      monthHits = #{record.monthhits,jdbcType=BIGINT},
+      monthHitsDate = #{record.monthhitsdate,jdbcType=TIMESTAMP},
+      monthSales = #{record.monthsales,jdbcType=BIGINT},
+      monthSalesDate = #{record.monthsalesdate,jdbcType=TIMESTAMP},
+      name = #{record.name,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      sales = #{record.sales,jdbcType=BIGINT},
+      score = #{record.score,jdbcType=REAL},
+      scoreCount = #{record.scorecount,jdbcType=BIGINT},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      totalScore = #{record.totalscore,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      weekHits = #{record.weekhits,jdbcType=BIGINT},
+      weekHitsDate = #{record.weekhitsdate,jdbcType=TIMESTAMP},
+      weekSales = #{record.weeksales,jdbcType=BIGINT},
+      weekSalesDate = #{record.weeksalesdate,jdbcType=TIMESTAMP},
+      weight = #{record.weight,jdbcType=INTEGER},
+      brand_id = #{record.brandId,jdbcType=BIGINT},
+      productCategory_id = #{record.productcategoryId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      storeProductCategory_id = #{record.storeproductcategoryId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.walmart.pojo.ProductWithBLOBs" >
+    update product
+    <set >
+      <if test="createddate != null" >
+        createdDate = #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="attributevalue0 != null" >
+        attributeValue0 = #{attributevalue0,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue1 != null" >
+        attributeValue1 = #{attributevalue1,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue10 != null" >
+        attributeValue10 = #{attributevalue10,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue11 != null" >
+        attributeValue11 = #{attributevalue11,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue12 != null" >
+        attributeValue12 = #{attributevalue12,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue13 != null" >
+        attributeValue13 = #{attributevalue13,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue14 != null" >
+        attributeValue14 = #{attributevalue14,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue15 != null" >
+        attributeValue15 = #{attributevalue15,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue16 != null" >
+        attributeValue16 = #{attributevalue16,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue17 != null" >
+        attributeValue17 = #{attributevalue17,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue18 != null" >
+        attributeValue18 = #{attributevalue18,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue19 != null" >
+        attributeValue19 = #{attributevalue19,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue2 != null" >
+        attributeValue2 = #{attributevalue2,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue3 != null" >
+        attributeValue3 = #{attributevalue3,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue4 != null" >
+        attributeValue4 = #{attributevalue4,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue5 != null" >
+        attributeValue5 = #{attributevalue5,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue6 != null" >
+        attributeValue6 = #{attributevalue6,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue7 != null" >
+        attributeValue7 = #{attributevalue7,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue8 != null" >
+        attributeValue8 = #{attributevalue8,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue9 != null" >
+        attributeValue9 = #{attributevalue9,jdbcType=VARCHAR},
+      </if>
+      <if test="caption != null" >
+        caption = #{caption,jdbcType=VARCHAR},
+      </if>
+      <if test="cost != null" >
+        cost = #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="hits != null" >
+        hits = #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="isactive != null" >
+        isActive = #{isactive,jdbcType=BIT},
+      </if>
+      <if test="isdelivery != null" >
+        isDelivery = #{isdelivery,jdbcType=BIT},
+      </if>
+      <if test="islist != null" >
+        isList = #{islist,jdbcType=BIT},
+      </if>
+      <if test="ismarketable != null" >
+        isMarketable = #{ismarketable,jdbcType=BIT},
+      </if>
+      <if test="istop != null" >
+        isTop = #{istop,jdbcType=BIT},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="marketprice != null" >
+        marketPrice = #{marketprice,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="monthhits != null" >
+        monthHits = #{monthhits,jdbcType=BIGINT},
+      </if>
+      <if test="monthhitsdate != null" >
+        monthHitsDate = #{monthhitsdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="monthsales != null" >
+        monthSales = #{monthsales,jdbcType=BIGINT},
+      </if>
+      <if test="monthsalesdate != null" >
+        monthSalesDate = #{monthsalesdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=BIGINT},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=REAL},
+      </if>
+      <if test="scorecount != null" >
+        scoreCount = #{scorecount,jdbcType=BIGINT},
+      </if>
+      <if test="sn != null" >
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="totalscore != null" >
+        totalScore = #{totalscore,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="weekhits != null" >
+        weekHits = #{weekhits,jdbcType=BIGINT},
+      </if>
+      <if test="weekhitsdate != null" >
+        weekHitsDate = #{weekhitsdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="weeksales != null" >
+        weekSales = #{weeksales,jdbcType=BIGINT},
+      </if>
+      <if test="weeksalesdate != null" >
+        weekSalesDate = #{weeksalesdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null" >
+        brand_id = #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="productcategoryId != null" >
+        productCategory_id = #{productcategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="storeproductcategoryId != null" >
+        storeProductCategory_id = #{storeproductcategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="parametervalues != null" >
+        parameterValues = #{parametervalues,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="productimages != null" >
+        productImages = #{productimages,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="specificationitems != null" >
+        specificationItems = #{specificationitems,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.walmart.pojo.ProductWithBLOBs" >
+    update product
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      attributeValue0 = #{attributevalue0,jdbcType=VARCHAR},
+      attributeValue1 = #{attributevalue1,jdbcType=VARCHAR},
+      attributeValue10 = #{attributevalue10,jdbcType=VARCHAR},
+      attributeValue11 = #{attributevalue11,jdbcType=VARCHAR},
+      attributeValue12 = #{attributevalue12,jdbcType=VARCHAR},
+      attributeValue13 = #{attributevalue13,jdbcType=VARCHAR},
+      attributeValue14 = #{attributevalue14,jdbcType=VARCHAR},
+      attributeValue15 = #{attributevalue15,jdbcType=VARCHAR},
+      attributeValue16 = #{attributevalue16,jdbcType=VARCHAR},
+      attributeValue17 = #{attributevalue17,jdbcType=VARCHAR},
+      attributeValue18 = #{attributevalue18,jdbcType=VARCHAR},
+      attributeValue19 = #{attributevalue19,jdbcType=VARCHAR},
+      attributeValue2 = #{attributevalue2,jdbcType=VARCHAR},
+      attributeValue3 = #{attributevalue3,jdbcType=VARCHAR},
+      attributeValue4 = #{attributevalue4,jdbcType=VARCHAR},
+      attributeValue5 = #{attributevalue5,jdbcType=VARCHAR},
+      attributeValue6 = #{attributevalue6,jdbcType=VARCHAR},
+      attributeValue7 = #{attributevalue7,jdbcType=VARCHAR},
+      attributeValue8 = #{attributevalue8,jdbcType=VARCHAR},
+      attributeValue9 = #{attributevalue9,jdbcType=VARCHAR},
+      caption = #{caption,jdbcType=VARCHAR},
+      cost = #{cost,jdbcType=DECIMAL},
+      hits = #{hits,jdbcType=BIGINT},
+      image = #{image,jdbcType=VARCHAR},
+      isActive = #{isactive,jdbcType=BIT},
+      isDelivery = #{isdelivery,jdbcType=BIT},
+      isList = #{islist,jdbcType=BIT},
+      isMarketable = #{ismarketable,jdbcType=BIT},
+      isTop = #{istop,jdbcType=BIT},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      marketPrice = #{marketprice,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      monthHits = #{monthhits,jdbcType=BIGINT},
+      monthHitsDate = #{monthhitsdate,jdbcType=TIMESTAMP},
+      monthSales = #{monthsales,jdbcType=BIGINT},
+      monthSalesDate = #{monthsalesdate,jdbcType=TIMESTAMP},
+      name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      sales = #{sales,jdbcType=BIGINT},
+      score = #{score,jdbcType=REAL},
+      scoreCount = #{scorecount,jdbcType=BIGINT},
+      sn = #{sn,jdbcType=VARCHAR},
+      totalScore = #{totalscore,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      weekHits = #{weekhits,jdbcType=BIGINT},
+      weekHitsDate = #{weekhitsdate,jdbcType=TIMESTAMP},
+      weekSales = #{weeksales,jdbcType=BIGINT},
+      weekSalesDate = #{weeksalesdate,jdbcType=TIMESTAMP},
+      weight = #{weight,jdbcType=INTEGER},
+      brand_id = #{brandId,jdbcType=BIGINT},
+      productCategory_id = #{productcategoryId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      storeProductCategory_id = #{storeproductcategoryId,jdbcType=BIGINT},
+      introduction = #{introduction,jdbcType=LONGVARCHAR},
+      parameterValues = #{parametervalues,jdbcType=LONGVARCHAR},
+      productImages = #{productimages,jdbcType=LONGVARCHAR},
+      specificationItems = #{specificationitems,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.walmart.pojo.Product" >
+    update product
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      attributeValue0 = #{attributevalue0,jdbcType=VARCHAR},
+      attributeValue1 = #{attributevalue1,jdbcType=VARCHAR},
+      attributeValue10 = #{attributevalue10,jdbcType=VARCHAR},
+      attributeValue11 = #{attributevalue11,jdbcType=VARCHAR},
+      attributeValue12 = #{attributevalue12,jdbcType=VARCHAR},
+      attributeValue13 = #{attributevalue13,jdbcType=VARCHAR},
+      attributeValue14 = #{attributevalue14,jdbcType=VARCHAR},
+      attributeValue15 = #{attributevalue15,jdbcType=VARCHAR},
+      attributeValue16 = #{attributevalue16,jdbcType=VARCHAR},
+      attributeValue17 = #{attributevalue17,jdbcType=VARCHAR},
+      attributeValue18 = #{attributevalue18,jdbcType=VARCHAR},
+      attributeValue19 = #{attributevalue19,jdbcType=VARCHAR},
+      attributeValue2 = #{attributevalue2,jdbcType=VARCHAR},
+      attributeValue3 = #{attributevalue3,jdbcType=VARCHAR},
+      attributeValue4 = #{attributevalue4,jdbcType=VARCHAR},
+      attributeValue5 = #{attributevalue5,jdbcType=VARCHAR},
+      attributeValue6 = #{attributevalue6,jdbcType=VARCHAR},
+      attributeValue7 = #{attributevalue7,jdbcType=VARCHAR},
+      attributeValue8 = #{attributevalue8,jdbcType=VARCHAR},
+      attributeValue9 = #{attributevalue9,jdbcType=VARCHAR},
+      caption = #{caption,jdbcType=VARCHAR},
+      cost = #{cost,jdbcType=DECIMAL},
+      hits = #{hits,jdbcType=BIGINT},
+      image = #{image,jdbcType=VARCHAR},
+      isActive = #{isactive,jdbcType=BIT},
+      isDelivery = #{isdelivery,jdbcType=BIT},
+      isList = #{islist,jdbcType=BIT},
+      isMarketable = #{ismarketable,jdbcType=BIT},
+      isTop = #{istop,jdbcType=BIT},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      marketPrice = #{marketprice,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      monthHits = #{monthhits,jdbcType=BIGINT},
+      monthHitsDate = #{monthhitsdate,jdbcType=TIMESTAMP},
+      monthSales = #{monthsales,jdbcType=BIGINT},
+      monthSalesDate = #{monthsalesdate,jdbcType=TIMESTAMP},
+      name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      sales = #{sales,jdbcType=BIGINT},
+      score = #{score,jdbcType=REAL},
+      scoreCount = #{scorecount,jdbcType=BIGINT},
+      sn = #{sn,jdbcType=VARCHAR},
+      totalScore = #{totalscore,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      weekHits = #{weekhits,jdbcType=BIGINT},
+      weekHitsDate = #{weekhitsdate,jdbcType=TIMESTAMP},
+      weekSales = #{weeksales,jdbcType=BIGINT},
+      weekSalesDate = #{weeksalesdate,jdbcType=TIMESTAMP},
+      weight = #{weight,jdbcType=INTEGER},
+      brand_id = #{brandId,jdbcType=BIGINT},
+      productCategory_id = #{productcategoryId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      storeProductCategory_id = #{storeproductcategoryId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

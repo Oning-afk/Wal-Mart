@@ -1,0 +1,982 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walmart.mapper.OrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.walmart.pojo.Orders" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="createdDate" property="createddate" jdbcType="TIMESTAMP" />
+    <result column="lastModifiedDate" property="lastmodifieddate" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="amountPaid" property="amountpaid" jdbcType="DECIMAL" />
+    <result column="areaName" property="areaname" jdbcType="VARCHAR" />
+    <result column="completeDate" property="completedate" jdbcType="TIMESTAMP" />
+    <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+    <result column="couponDiscount" property="coupondiscount" jdbcType="DECIMAL" />
+    <result column="exchangePoint" property="exchangepoint" jdbcType="BIGINT" />
+    <result column="expire" property="expire" jdbcType="TIMESTAMP" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="freight" property="freight" jdbcType="DECIMAL" />
+    <result column="invoiceContent" property="invoicecontent" jdbcType="VARCHAR" />
+    <result column="invoiceTitle" property="invoicetitle" jdbcType="VARCHAR" />
+    <result column="isAllocatedStock" property="isallocatedstock" jdbcType="BIT" />
+    <result column="isExchangePoint" property="isexchangepoint" jdbcType="BIT" />
+    <result column="isUseCouponCode" property="isusecouponcode" jdbcType="BIT" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="offsetAmount" property="offsetamount" jdbcType="DECIMAL" />
+    <result column="paymentMethodName" property="paymentmethodname" jdbcType="VARCHAR" />
+    <result column="paymentMethodType" property="paymentmethodtype" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="promotionDiscount" property="promotiondiscount" jdbcType="DECIMAL" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="refundAmount" property="refundamount" jdbcType="DECIMAL" />
+    <result column="returnedQuantity" property="returnedquantity" jdbcType="INTEGER" />
+    <result column="rewardPoint" property="rewardpoint" jdbcType="BIGINT" />
+    <result column="shippedQuantity" property="shippedquantity" jdbcType="INTEGER" />
+    <result column="shippingMethodName" property="shippingmethodname" jdbcType="VARCHAR" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="weight" property="weight" jdbcType="INTEGER" />
+    <result column="zipCode" property="zipcode" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="BIGINT" />
+    <result column="couponCode_id" property="couponcodeId" jdbcType="BIGINT" />
+    <result column="member_id" property="memberId" jdbcType="BIGINT" />
+    <result column="paymentMethod_id" property="paymentmethodId" jdbcType="BIGINT" />
+    <result column="shippingMethod_id" property="shippingmethodId" jdbcType="BIGINT" />
+    <result column="store_id" property="storeId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.walmart.pojo.Orders" extends="BaseResultMap" >
+    <result column="promotionNames" property="promotionnames" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, createdDate, lastModifiedDate, version, address, amount, amountPaid, areaName, 
+    completeDate, consignee, couponDiscount, exchangePoint, expire, fee, freight, invoiceContent, 
+    invoiceTitle, isAllocatedStock, isExchangePoint, isUseCouponCode, memo, offsetAmount, 
+    paymentMethodName, paymentMethodType, phone, price, promotionDiscount, quantity, 
+    refundAmount, returnedQuantity, rewardPoint, shippedQuantity, shippingMethodName, 
+    sn, status, tax, type, weight, zipCode, area_id, couponCode_id, member_id, paymentMethod_id, 
+    shippingMethod_id, store_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    promotionNames
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.walmart.pojo.OrdersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.walmart.pojo.OrdersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from orders
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from orders
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.walmart.pojo.OrdersExample" >
+    delete from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.walmart.pojo.Orders" >
+    insert into orders (id, createdDate, lastModifiedDate, 
+      version, address, amount, 
+      amountPaid, areaName, completeDate, 
+      consignee, couponDiscount, exchangePoint, 
+      expire, fee, freight, 
+      invoiceContent, invoiceTitle, isAllocatedStock, 
+      isExchangePoint, isUseCouponCode, memo, 
+      offsetAmount, paymentMethodName, paymentMethodType, 
+      phone, price, promotionDiscount, 
+      quantity, refundAmount, returnedQuantity, 
+      rewardPoint, shippedQuantity, shippingMethodName, 
+      sn, status, tax, type, 
+      weight, zipCode, area_id, 
+      couponCode_id, member_id, paymentMethod_id, 
+      shippingMethod_id, store_id, promotionNames
+      )
+    values (#{id,jdbcType=BIGINT}, #{createddate,jdbcType=TIMESTAMP}, #{lastmodifieddate,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{amountpaid,jdbcType=DECIMAL}, #{areaname,jdbcType=VARCHAR}, #{completedate,jdbcType=TIMESTAMP}, 
+      #{consignee,jdbcType=VARCHAR}, #{coupondiscount,jdbcType=DECIMAL}, #{exchangepoint,jdbcType=BIGINT}, 
+      #{expire,jdbcType=TIMESTAMP}, #{fee,jdbcType=DECIMAL}, #{freight,jdbcType=DECIMAL}, 
+      #{invoicecontent,jdbcType=VARCHAR}, #{invoicetitle,jdbcType=VARCHAR}, #{isallocatedstock,jdbcType=BIT}, 
+      #{isexchangepoint,jdbcType=BIT}, #{isusecouponcode,jdbcType=BIT}, #{memo,jdbcType=VARCHAR}, 
+      #{offsetamount,jdbcType=DECIMAL}, #{paymentmethodname,jdbcType=VARCHAR}, #{paymentmethodtype,jdbcType=INTEGER}, 
+      #{phone,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{promotiondiscount,jdbcType=DECIMAL}, 
+      #{quantity,jdbcType=INTEGER}, #{refundamount,jdbcType=DECIMAL}, #{returnedquantity,jdbcType=INTEGER}, 
+      #{rewardpoint,jdbcType=BIGINT}, #{shippedquantity,jdbcType=INTEGER}, #{shippingmethodname,jdbcType=VARCHAR}, 
+      #{sn,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{tax,jdbcType=DECIMAL}, #{type,jdbcType=INTEGER}, 
+      #{weight,jdbcType=INTEGER}, #{zipcode,jdbcType=VARCHAR}, #{areaId,jdbcType=BIGINT}, 
+      #{couponcodeId,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{paymentmethodId,jdbcType=BIGINT}, 
+      #{shippingmethodId,jdbcType=BIGINT}, #{storeId,jdbcType=BIGINT}, #{promotionnames,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.walmart.pojo.Orders" >
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createddate != null" >
+        createdDate,
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="amountpaid != null" >
+        amountPaid,
+      </if>
+      <if test="areaname != null" >
+        areaName,
+      </if>
+      <if test="completedate != null" >
+        completeDate,
+      </if>
+      <if test="consignee != null" >
+        consignee,
+      </if>
+      <if test="coupondiscount != null" >
+        couponDiscount,
+      </if>
+      <if test="exchangepoint != null" >
+        exchangePoint,
+      </if>
+      <if test="expire != null" >
+        expire,
+      </if>
+      <if test="fee != null" >
+        fee,
+      </if>
+      <if test="freight != null" >
+        freight,
+      </if>
+      <if test="invoicecontent != null" >
+        invoiceContent,
+      </if>
+      <if test="invoicetitle != null" >
+        invoiceTitle,
+      </if>
+      <if test="isallocatedstock != null" >
+        isAllocatedStock,
+      </if>
+      <if test="isexchangepoint != null" >
+        isExchangePoint,
+      </if>
+      <if test="isusecouponcode != null" >
+        isUseCouponCode,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="offsetamount != null" >
+        offsetAmount,
+      </if>
+      <if test="paymentmethodname != null" >
+        paymentMethodName,
+      </if>
+      <if test="paymentmethodtype != null" >
+        paymentMethodType,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="promotiondiscount != null" >
+        promotionDiscount,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="refundamount != null" >
+        refundAmount,
+      </if>
+      <if test="returnedquantity != null" >
+        returnedQuantity,
+      </if>
+      <if test="rewardpoint != null" >
+        rewardPoint,
+      </if>
+      <if test="shippedquantity != null" >
+        shippedQuantity,
+      </if>
+      <if test="shippingmethodname != null" >
+        shippingMethodName,
+      </if>
+      <if test="sn != null" >
+        sn,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="zipcode != null" >
+        zipCode,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="couponcodeId != null" >
+        couponCode_id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="paymentmethodId != null" >
+        paymentMethod_id,
+      </if>
+      <if test="shippingmethodId != null" >
+        shippingMethod_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="promotionnames != null" >
+        promotionNames,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createddate != null" >
+        #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="amountpaid != null" >
+        #{amountpaid,jdbcType=DECIMAL},
+      </if>
+      <if test="areaname != null" >
+        #{areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="completedate != null" >
+        #{completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consignee != null" >
+        #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="coupondiscount != null" >
+        #{coupondiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="exchangepoint != null" >
+        #{exchangepoint,jdbcType=BIGINT},
+      </if>
+      <if test="expire != null" >
+        #{expire,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="freight != null" >
+        #{freight,jdbcType=DECIMAL},
+      </if>
+      <if test="invoicecontent != null" >
+        #{invoicecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicetitle != null" >
+        #{invoicetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="isallocatedstock != null" >
+        #{isallocatedstock,jdbcType=BIT},
+      </if>
+      <if test="isexchangepoint != null" >
+        #{isexchangepoint,jdbcType=BIT},
+      </if>
+      <if test="isusecouponcode != null" >
+        #{isusecouponcode,jdbcType=BIT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="offsetamount != null" >
+        #{offsetamount,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentmethodname != null" >
+        #{paymentmethodname,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentmethodtype != null" >
+        #{paymentmethodtype,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="promotiondiscount != null" >
+        #{promotiondiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="refundamount != null" >
+        #{refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="returnedquantity != null" >
+        #{returnedquantity,jdbcType=INTEGER},
+      </if>
+      <if test="rewardpoint != null" >
+        #{rewardpoint,jdbcType=BIGINT},
+      </if>
+      <if test="shippedquantity != null" >
+        #{shippedquantity,jdbcType=INTEGER},
+      </if>
+      <if test="shippingmethodname != null" >
+        #{shippingmethodname,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null" >
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="tax != null" >
+        #{tax,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="zipcode != null" >
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="couponcodeId != null" >
+        #{couponcodeId,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="paymentmethodId != null" >
+        #{paymentmethodId,jdbcType=BIGINT},
+      </if>
+      <if test="shippingmethodId != null" >
+        #{shippingmethodId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="promotionnames != null" >
+        #{promotionnames,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.walmart.pojo.OrdersExample" resultType="java.lang.Integer" >
+    select count(*) from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orders
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createddate != null" >
+        createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifieddate != null" >
+        lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=BIGINT},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.amountpaid != null" >
+        amountPaid = #{record.amountpaid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.areaname != null" >
+        areaName = #{record.areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.completedate != null" >
+        completeDate = #{record.completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.consignee != null" >
+        consignee = #{record.consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coupondiscount != null" >
+        couponDiscount = #{record.coupondiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.exchangepoint != null" >
+        exchangePoint = #{record.exchangepoint,jdbcType=BIGINT},
+      </if>
+      <if test="record.expire != null" >
+        expire = #{record.expire,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fee != null" >
+        fee = #{record.fee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.freight != null" >
+        freight = #{record.freight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.invoicecontent != null" >
+        invoiceContent = #{record.invoicecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoicetitle != null" >
+        invoiceTitle = #{record.invoicetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isallocatedstock != null" >
+        isAllocatedStock = #{record.isallocatedstock,jdbcType=BIT},
+      </if>
+      <if test="record.isexchangepoint != null" >
+        isExchangePoint = #{record.isexchangepoint,jdbcType=BIT},
+      </if>
+      <if test="record.isusecouponcode != null" >
+        isUseCouponCode = #{record.isusecouponcode,jdbcType=BIT},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.offsetamount != null" >
+        offsetAmount = #{record.offsetamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentmethodname != null" >
+        paymentMethodName = #{record.paymentmethodname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentmethodtype != null" >
+        paymentMethodType = #{record.paymentmethodtype,jdbcType=INTEGER},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.promotiondiscount != null" >
+        promotionDiscount = #{record.promotiondiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.refundamount != null" >
+        refundAmount = #{record.refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.returnedquantity != null" >
+        returnedQuantity = #{record.returnedquantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.rewardpoint != null" >
+        rewardPoint = #{record.rewardpoint,jdbcType=BIGINT},
+      </if>
+      <if test="record.shippedquantity != null" >
+        shippedQuantity = #{record.shippedquantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.shippingmethodname != null" >
+        shippingMethodName = #{record.shippingmethodname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sn != null" >
+        sn = #{record.sn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.tax != null" >
+        tax = #{record.tax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight,jdbcType=INTEGER},
+      </if>
+      <if test="record.zipcode != null" >
+        zipCode = #{record.zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null" >
+        area_id = #{record.areaId,jdbcType=BIGINT},
+      </if>
+      <if test="record.couponcodeId != null" >
+        couponCode_id = #{record.couponcodeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentmethodId != null" >
+        paymentMethod_id = #{record.paymentmethodId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shippingmethodId != null" >
+        shippingMethod_id = #{record.shippingmethodId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null" >
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.promotionnames != null" >
+        promotionNames = #{record.promotionnames,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update orders
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      amountPaid = #{record.amountpaid,jdbcType=DECIMAL},
+      areaName = #{record.areaname,jdbcType=VARCHAR},
+      completeDate = #{record.completedate,jdbcType=TIMESTAMP},
+      consignee = #{record.consignee,jdbcType=VARCHAR},
+      couponDiscount = #{record.coupondiscount,jdbcType=DECIMAL},
+      exchangePoint = #{record.exchangepoint,jdbcType=BIGINT},
+      expire = #{record.expire,jdbcType=TIMESTAMP},
+      fee = #{record.fee,jdbcType=DECIMAL},
+      freight = #{record.freight,jdbcType=DECIMAL},
+      invoiceContent = #{record.invoicecontent,jdbcType=VARCHAR},
+      invoiceTitle = #{record.invoicetitle,jdbcType=VARCHAR},
+      isAllocatedStock = #{record.isallocatedstock,jdbcType=BIT},
+      isExchangePoint = #{record.isexchangepoint,jdbcType=BIT},
+      isUseCouponCode = #{record.isusecouponcode,jdbcType=BIT},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      offsetAmount = #{record.offsetamount,jdbcType=DECIMAL},
+      paymentMethodName = #{record.paymentmethodname,jdbcType=VARCHAR},
+      paymentMethodType = #{record.paymentmethodtype,jdbcType=INTEGER},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      promotionDiscount = #{record.promotiondiscount,jdbcType=DECIMAL},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      refundAmount = #{record.refundamount,jdbcType=DECIMAL},
+      returnedQuantity = #{record.returnedquantity,jdbcType=INTEGER},
+      rewardPoint = #{record.rewardpoint,jdbcType=BIGINT},
+      shippedQuantity = #{record.shippedquantity,jdbcType=INTEGER},
+      shippingMethodName = #{record.shippingmethodname,jdbcType=VARCHAR},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      tax = #{record.tax,jdbcType=DECIMAL},
+      type = #{record.type,jdbcType=INTEGER},
+      weight = #{record.weight,jdbcType=INTEGER},
+      zipCode = #{record.zipcode,jdbcType=VARCHAR},
+      area_id = #{record.areaId,jdbcType=BIGINT},
+      couponCode_id = #{record.couponcodeId,jdbcType=BIGINT},
+      member_id = #{record.memberId,jdbcType=BIGINT},
+      paymentMethod_id = #{record.paymentmethodId,jdbcType=BIGINT},
+      shippingMethod_id = #{record.shippingmethodId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      promotionNames = #{record.promotionnames,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orders
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      amountPaid = #{record.amountpaid,jdbcType=DECIMAL},
+      areaName = #{record.areaname,jdbcType=VARCHAR},
+      completeDate = #{record.completedate,jdbcType=TIMESTAMP},
+      consignee = #{record.consignee,jdbcType=VARCHAR},
+      couponDiscount = #{record.coupondiscount,jdbcType=DECIMAL},
+      exchangePoint = #{record.exchangepoint,jdbcType=BIGINT},
+      expire = #{record.expire,jdbcType=TIMESTAMP},
+      fee = #{record.fee,jdbcType=DECIMAL},
+      freight = #{record.freight,jdbcType=DECIMAL},
+      invoiceContent = #{record.invoicecontent,jdbcType=VARCHAR},
+      invoiceTitle = #{record.invoicetitle,jdbcType=VARCHAR},
+      isAllocatedStock = #{record.isallocatedstock,jdbcType=BIT},
+      isExchangePoint = #{record.isexchangepoint,jdbcType=BIT},
+      isUseCouponCode = #{record.isusecouponcode,jdbcType=BIT},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      offsetAmount = #{record.offsetamount,jdbcType=DECIMAL},
+      paymentMethodName = #{record.paymentmethodname,jdbcType=VARCHAR},
+      paymentMethodType = #{record.paymentmethodtype,jdbcType=INTEGER},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      promotionDiscount = #{record.promotiondiscount,jdbcType=DECIMAL},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      refundAmount = #{record.refundamount,jdbcType=DECIMAL},
+      returnedQuantity = #{record.returnedquantity,jdbcType=INTEGER},
+      rewardPoint = #{record.rewardpoint,jdbcType=BIGINT},
+      shippedQuantity = #{record.shippedquantity,jdbcType=INTEGER},
+      shippingMethodName = #{record.shippingmethodname,jdbcType=VARCHAR},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      tax = #{record.tax,jdbcType=DECIMAL},
+      type = #{record.type,jdbcType=INTEGER},
+      weight = #{record.weight,jdbcType=INTEGER},
+      zipCode = #{record.zipcode,jdbcType=VARCHAR},
+      area_id = #{record.areaId,jdbcType=BIGINT},
+      couponCode_id = #{record.couponcodeId,jdbcType=BIGINT},
+      member_id = #{record.memberId,jdbcType=BIGINT},
+      paymentMethod_id = #{record.paymentmethodId,jdbcType=BIGINT},
+      shippingMethod_id = #{record.shippingmethodId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.walmart.pojo.Orders" >
+    update orders
+    <set >
+      <if test="createddate != null" >
+        createdDate = #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="amountpaid != null" >
+        amountPaid = #{amountpaid,jdbcType=DECIMAL},
+      </if>
+      <if test="areaname != null" >
+        areaName = #{areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="completedate != null" >
+        completeDate = #{completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consignee != null" >
+        consignee = #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="coupondiscount != null" >
+        couponDiscount = #{coupondiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="exchangepoint != null" >
+        exchangePoint = #{exchangepoint,jdbcType=BIGINT},
+      </if>
+      <if test="expire != null" >
+        expire = #{expire,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="freight != null" >
+        freight = #{freight,jdbcType=DECIMAL},
+      </if>
+      <if test="invoicecontent != null" >
+        invoiceContent = #{invoicecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicetitle != null" >
+        invoiceTitle = #{invoicetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="isallocatedstock != null" >
+        isAllocatedStock = #{isallocatedstock,jdbcType=BIT},
+      </if>
+      <if test="isexchangepoint != null" >
+        isExchangePoint = #{isexchangepoint,jdbcType=BIT},
+      </if>
+      <if test="isusecouponcode != null" >
+        isUseCouponCode = #{isusecouponcode,jdbcType=BIT},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="offsetamount != null" >
+        offsetAmount = #{offsetamount,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentmethodname != null" >
+        paymentMethodName = #{paymentmethodname,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentmethodtype != null" >
+        paymentMethodType = #{paymentmethodtype,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="promotiondiscount != null" >
+        promotionDiscount = #{promotiondiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="refundamount != null" >
+        refundAmount = #{refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="returnedquantity != null" >
+        returnedQuantity = #{returnedquantity,jdbcType=INTEGER},
+      </if>
+      <if test="rewardpoint != null" >
+        rewardPoint = #{rewardpoint,jdbcType=BIGINT},
+      </if>
+      <if test="shippedquantity != null" >
+        shippedQuantity = #{shippedquantity,jdbcType=INTEGER},
+      </if>
+      <if test="shippingmethodname != null" >
+        shippingMethodName = #{shippingmethodname,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null" >
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="tax != null" >
+        tax = #{tax,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="zipcode != null" >
+        zipCode = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="couponcodeId != null" >
+        couponCode_id = #{couponcodeId,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="paymentmethodId != null" >
+        paymentMethod_id = #{paymentmethodId,jdbcType=BIGINT},
+      </if>
+      <if test="shippingmethodId != null" >
+        shippingMethod_id = #{shippingmethodId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="promotionnames != null" >
+        promotionNames = #{promotionnames,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.walmart.pojo.Orders" >
+    update orders
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      amountPaid = #{amountpaid,jdbcType=DECIMAL},
+      areaName = #{areaname,jdbcType=VARCHAR},
+      completeDate = #{completedate,jdbcType=TIMESTAMP},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      couponDiscount = #{coupondiscount,jdbcType=DECIMAL},
+      exchangePoint = #{exchangepoint,jdbcType=BIGINT},
+      expire = #{expire,jdbcType=TIMESTAMP},
+      fee = #{fee,jdbcType=DECIMAL},
+      freight = #{freight,jdbcType=DECIMAL},
+      invoiceContent = #{invoicecontent,jdbcType=VARCHAR},
+      invoiceTitle = #{invoicetitle,jdbcType=VARCHAR},
+      isAllocatedStock = #{isallocatedstock,jdbcType=BIT},
+      isExchangePoint = #{isexchangepoint,jdbcType=BIT},
+      isUseCouponCode = #{isusecouponcode,jdbcType=BIT},
+      memo = #{memo,jdbcType=VARCHAR},
+      offsetAmount = #{offsetamount,jdbcType=DECIMAL},
+      paymentMethodName = #{paymentmethodname,jdbcType=VARCHAR},
+      paymentMethodType = #{paymentmethodtype,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      promotionDiscount = #{promotiondiscount,jdbcType=DECIMAL},
+      quantity = #{quantity,jdbcType=INTEGER},
+      refundAmount = #{refundamount,jdbcType=DECIMAL},
+      returnedQuantity = #{returnedquantity,jdbcType=INTEGER},
+      rewardPoint = #{rewardpoint,jdbcType=BIGINT},
+      shippedQuantity = #{shippedquantity,jdbcType=INTEGER},
+      shippingMethodName = #{shippingmethodname,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      tax = #{tax,jdbcType=DECIMAL},
+      type = #{type,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      zipCode = #{zipcode,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=BIGINT},
+      couponCode_id = #{couponcodeId,jdbcType=BIGINT},
+      member_id = #{memberId,jdbcType=BIGINT},
+      paymentMethod_id = #{paymentmethodId,jdbcType=BIGINT},
+      shippingMethod_id = #{shippingmethodId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      promotionNames = #{promotionnames,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.walmart.pojo.Orders" >
+    update orders
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      amountPaid = #{amountpaid,jdbcType=DECIMAL},
+      areaName = #{areaname,jdbcType=VARCHAR},
+      completeDate = #{completedate,jdbcType=TIMESTAMP},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      couponDiscount = #{coupondiscount,jdbcType=DECIMAL},
+      exchangePoint = #{exchangepoint,jdbcType=BIGINT},
+      expire = #{expire,jdbcType=TIMESTAMP},
+      fee = #{fee,jdbcType=DECIMAL},
+      freight = #{freight,jdbcType=DECIMAL},
+      invoiceContent = #{invoicecontent,jdbcType=VARCHAR},
+      invoiceTitle = #{invoicetitle,jdbcType=VARCHAR},
+      isAllocatedStock = #{isallocatedstock,jdbcType=BIT},
+      isExchangePoint = #{isexchangepoint,jdbcType=BIT},
+      isUseCouponCode = #{isusecouponcode,jdbcType=BIT},
+      memo = #{memo,jdbcType=VARCHAR},
+      offsetAmount = #{offsetamount,jdbcType=DECIMAL},
+      paymentMethodName = #{paymentmethodname,jdbcType=VARCHAR},
+      paymentMethodType = #{paymentmethodtype,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      promotionDiscount = #{promotiondiscount,jdbcType=DECIMAL},
+      quantity = #{quantity,jdbcType=INTEGER},
+      refundAmount = #{refundamount,jdbcType=DECIMAL},
+      returnedQuantity = #{returnedquantity,jdbcType=INTEGER},
+      rewardPoint = #{rewardpoint,jdbcType=BIGINT},
+      shippedQuantity = #{shippedquantity,jdbcType=INTEGER},
+      shippingMethodName = #{shippingmethodname,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      tax = #{tax,jdbcType=DECIMAL},
+      type = #{type,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      zipCode = #{zipcode,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=BIGINT},
+      couponCode_id = #{couponcodeId,jdbcType=BIGINT},
+      member_id = #{memberId,jdbcType=BIGINT},
+      paymentMethod_id = #{paymentmethodId,jdbcType=BIGINT},
+      shippingMethod_id = #{shippingmethodId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

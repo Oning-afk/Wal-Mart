@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walmart.mapper.BusinessMapper" >
+  <resultMap id="BaseResultMap" type="com.walmart.pojo.Business" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="attributeValue0" property="attributevalue0" jdbcType="VARCHAR" />
+    <result column="attributeValue1" property="attributevalue1" jdbcType="VARCHAR" />
+    <result column="attributeValue10" property="attributevalue10" jdbcType="VARCHAR" />
+    <result column="attributeValue11" property="attributevalue11" jdbcType="VARCHAR" />
+    <result column="attributeValue12" property="attributevalue12" jdbcType="VARCHAR" />
+    <result column="attributeValue13" property="attributevalue13" jdbcType="VARCHAR" />
+    <result column="attributeValue14" property="attributevalue14" jdbcType="VARCHAR" />
+    <result column="attributeValue15" property="attributevalue15" jdbcType="VARCHAR" />
+    <result column="attributeValue16" property="attributevalue16" jdbcType="VARCHAR" />
+    <result column="attributeValue17" property="attributevalue17" jdbcType="VARCHAR" />
+    <result column="attributeValue18" property="attributevalue18" jdbcType="VARCHAR" />
+    <result column="attributeValue19" property="attributevalue19" jdbcType="VARCHAR" />
+    <result column="attributeValue2" property="attributevalue2" jdbcType="VARCHAR" />
+    <result column="attributeValue3" property="attributevalue3" jdbcType="VARCHAR" />
+    <result column="attributeValue4" property="attributevalue4" jdbcType="VARCHAR" />
+    <result column="attributeValue5" property="attributevalue5" jdbcType="VARCHAR" />
+    <result column="attributeValue6" property="attributevalue6" jdbcType="VARCHAR" />
+    <result column="attributeValue7" property="attributevalue7" jdbcType="VARCHAR" />
+    <result column="attributeValue8" property="attributevalue8" jdbcType="VARCHAR" />
+    <result column="attributeValue9" property="attributevalue9" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="bankAccount" property="bankaccount" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankname" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="encodedPassword" property="encodedpassword" jdbcType="VARCHAR" />
+    <result column="frozenFund" property="frozenfund" jdbcType="DECIMAL" />
+    <result column="idCard" property="idcard" jdbcType="VARCHAR" />
+    <result column="idCardImage" property="idcardimage" jdbcType="VARCHAR" />
+    <result column="identificationNumber" property="identificationnumber" jdbcType="VARCHAR" />
+    <result column="legalPerson" property="legalperson" jdbcType="VARCHAR" />
+    <result column="licenseImage" property="licenseimage" jdbcType="VARCHAR" />
+    <result column="licenseNumber" property="licensenumber" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="organizationCode" property="organizationcode" jdbcType="VARCHAR" />
+    <result column="organizationImage" property="organizationimage" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="safeKeyExpire" property="safekeyexpire" jdbcType="TIMESTAMP" />
+    <result column="safeKeyValue" property="safekeyvalue" jdbcType="VARCHAR" />
+    <result column="taxImage" property="taximage" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, attributeValue0, attributeValue1, attributeValue10, attributeValue11, attributeValue12, 
+    attributeValue13, attributeValue14, attributeValue15, attributeValue16, attributeValue17, 
+    attributeValue18, attributeValue19, attributeValue2, attributeValue3, attributeValue4, 
+    attributeValue5, attributeValue6, attributeValue7, attributeValue8, attributeValue9, 
+    balance, bankAccount, bankName, email, encodedPassword, frozenFund, idCard, idCardImage, 
+    identificationNumber, legalPerson, licenseImage, licenseNumber, mobile, name, organizationCode, 
+    organizationImage, phone, safeKeyExpire, safeKeyValue, taxImage, username
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.walmart.pojo.BusinessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from business
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from business
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from business
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.walmart.pojo.BusinessExample" >
+    delete from business
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.walmart.pojo.Business" >
+    insert into business (id, attributeValue0, attributeValue1, 
+      attributeValue10, attributeValue11, attributeValue12, 
+      attributeValue13, attributeValue14, attributeValue15, 
+      attributeValue16, attributeValue17, attributeValue18, 
+      attributeValue19, attributeValue2, attributeValue3, 
+      attributeValue4, attributeValue5, attributeValue6, 
+      attributeValue7, attributeValue8, attributeValue9, 
+      balance, bankAccount, bankName, 
+      email, encodedPassword, frozenFund, 
+      idCard, idCardImage, identificationNumber, 
+      legalPerson, licenseImage, licenseNumber, 
+      mobile, name, organizationCode, 
+      organizationImage, phone, safeKeyExpire, 
+      safeKeyValue, taxImage, username
+      )
+    values (#{id,jdbcType=BIGINT}, #{attributevalue0,jdbcType=VARCHAR}, #{attributevalue1,jdbcType=VARCHAR}, 
+      #{attributevalue10,jdbcType=VARCHAR}, #{attributevalue11,jdbcType=VARCHAR}, #{attributevalue12,jdbcType=VARCHAR}, 
+      #{attributevalue13,jdbcType=VARCHAR}, #{attributevalue14,jdbcType=VARCHAR}, #{attributevalue15,jdbcType=VARCHAR}, 
+      #{attributevalue16,jdbcType=VARCHAR}, #{attributevalue17,jdbcType=VARCHAR}, #{attributevalue18,jdbcType=VARCHAR}, 
+      #{attributevalue19,jdbcType=VARCHAR}, #{attributevalue2,jdbcType=VARCHAR}, #{attributevalue3,jdbcType=VARCHAR}, 
+      #{attributevalue4,jdbcType=VARCHAR}, #{attributevalue5,jdbcType=VARCHAR}, #{attributevalue6,jdbcType=VARCHAR}, 
+      #{attributevalue7,jdbcType=VARCHAR}, #{attributevalue8,jdbcType=VARCHAR}, #{attributevalue9,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=DECIMAL}, #{bankaccount,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{encodedpassword,jdbcType=VARCHAR}, #{frozenfund,jdbcType=DECIMAL}, 
+      #{idcard,jdbcType=VARCHAR}, #{idcardimage,jdbcType=VARCHAR}, #{identificationnumber,jdbcType=VARCHAR}, 
+      #{legalperson,jdbcType=VARCHAR}, #{licenseimage,jdbcType=VARCHAR}, #{licensenumber,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{organizationcode,jdbcType=VARCHAR}, 
+      #{organizationimage,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{safekeyexpire,jdbcType=TIMESTAMP}, 
+      #{safekeyvalue,jdbcType=VARCHAR}, #{taximage,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.walmart.pojo.Business" >
+    insert into business
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="attributevalue0 != null" >
+        attributeValue0,
+      </if>
+      <if test="attributevalue1 != null" >
+        attributeValue1,
+      </if>
+      <if test="attributevalue10 != null" >
+        attributeValue10,
+      </if>
+      <if test="attributevalue11 != null" >
+        attributeValue11,
+      </if>
+      <if test="attributevalue12 != null" >
+        attributeValue12,
+      </if>
+      <if test="attributevalue13 != null" >
+        attributeValue13,
+      </if>
+      <if test="attributevalue14 != null" >
+        attributeValue14,
+      </if>
+      <if test="attributevalue15 != null" >
+        attributeValue15,
+      </if>
+      <if test="attributevalue16 != null" >
+        attributeValue16,
+      </if>
+      <if test="attributevalue17 != null" >
+        attributeValue17,
+      </if>
+      <if test="attributevalue18 != null" >
+        attributeValue18,
+      </if>
+      <if test="attributevalue19 != null" >
+        attributeValue19,
+      </if>
+      <if test="attributevalue2 != null" >
+        attributeValue2,
+      </if>
+      <if test="attributevalue3 != null" >
+        attributeValue3,
+      </if>
+      <if test="attributevalue4 != null" >
+        attributeValue4,
+      </if>
+      <if test="attributevalue5 != null" >
+        attributeValue5,
+      </if>
+      <if test="attributevalue6 != null" >
+        attributeValue6,
+      </if>
+      <if test="attributevalue7 != null" >
+        attributeValue7,
+      </if>
+      <if test="attributevalue8 != null" >
+        attributeValue8,
+      </if>
+      <if test="attributevalue9 != null" >
+        attributeValue9,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="bankaccount != null" >
+        bankAccount,
+      </if>
+      <if test="bankname != null" >
+        bankName,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="encodedpassword != null" >
+        encodedPassword,
+      </if>
+      <if test="frozenfund != null" >
+        frozenFund,
+      </if>
+      <if test="idcard != null" >
+        idCard,
+      </if>
+      <if test="idcardimage != null" >
+        idCardImage,
+      </if>
+      <if test="identificationnumber != null" >
+        identificationNumber,
+      </if>
+      <if test="legalperson != null" >
+        legalPerson,
+      </if>
+      <if test="licenseimage != null" >
+        licenseImage,
+      </if>
+      <if test="licensenumber != null" >
+        licenseNumber,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="organizationcode != null" >
+        organizationCode,
+      </if>
+      <if test="organizationimage != null" >
+        organizationImage,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="safekeyexpire != null" >
+        safeKeyExpire,
+      </if>
+      <if test="safekeyvalue != null" >
+        safeKeyValue,
+      </if>
+      <if test="taximage != null" >
+        taxImage,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="attributevalue0 != null" >
+        #{attributevalue0,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue1 != null" >
+        #{attributevalue1,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue10 != null" >
+        #{attributevalue10,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue11 != null" >
+        #{attributevalue11,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue12 != null" >
+        #{attributevalue12,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue13 != null" >
+        #{attributevalue13,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue14 != null" >
+        #{attributevalue14,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue15 != null" >
+        #{attributevalue15,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue16 != null" >
+        #{attributevalue16,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue17 != null" >
+        #{attributevalue17,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue18 != null" >
+        #{attributevalue18,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue19 != null" >
+        #{attributevalue19,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue2 != null" >
+        #{attributevalue2,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue3 != null" >
+        #{attributevalue3,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue4 != null" >
+        #{attributevalue4,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue5 != null" >
+        #{attributevalue5,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue6 != null" >
+        #{attributevalue6,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue7 != null" >
+        #{attributevalue7,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue8 != null" >
+        #{attributevalue8,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue9 != null" >
+        #{attributevalue9,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="bankaccount != null" >
+        #{bankaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+        #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="encodedpassword != null" >
+        #{encodedpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="frozenfund != null" >
+        #{frozenfund,jdbcType=DECIMAL},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardimage != null" >
+        #{idcardimage,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationnumber != null" >
+        #{identificationnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="legalperson != null" >
+        #{legalperson,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseimage != null" >
+        #{licenseimage,jdbcType=VARCHAR},
+      </if>
+      <if test="licensenumber != null" >
+        #{licensenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationcode != null" >
+        #{organizationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationimage != null" >
+        #{organizationimage,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="safekeyexpire != null" >
+        #{safekeyexpire,jdbcType=TIMESTAMP},
+      </if>
+      <if test="safekeyvalue != null" >
+        #{safekeyvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="taximage != null" >
+        #{taximage,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.walmart.pojo.BusinessExample" resultType="java.lang.Integer" >
+    select count(*) from business
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update business
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.attributevalue0 != null" >
+        attributeValue0 = #{record.attributevalue0,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue1 != null" >
+        attributeValue1 = #{record.attributevalue1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue10 != null" >
+        attributeValue10 = #{record.attributevalue10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue11 != null" >
+        attributeValue11 = #{record.attributevalue11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue12 != null" >
+        attributeValue12 = #{record.attributevalue12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue13 != null" >
+        attributeValue13 = #{record.attributevalue13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue14 != null" >
+        attributeValue14 = #{record.attributevalue14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue15 != null" >
+        attributeValue15 = #{record.attributevalue15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue16 != null" >
+        attributeValue16 = #{record.attributevalue16,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue17 != null" >
+        attributeValue17 = #{record.attributevalue17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue18 != null" >
+        attributeValue18 = #{record.attributevalue18,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue19 != null" >
+        attributeValue19 = #{record.attributevalue19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue2 != null" >
+        attributeValue2 = #{record.attributevalue2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue3 != null" >
+        attributeValue3 = #{record.attributevalue3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue4 != null" >
+        attributeValue4 = #{record.attributevalue4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue5 != null" >
+        attributeValue5 = #{record.attributevalue5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue6 != null" >
+        attributeValue6 = #{record.attributevalue6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue7 != null" >
+        attributeValue7 = #{record.attributevalue7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue8 != null" >
+        attributeValue8 = #{record.attributevalue8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributevalue9 != null" >
+        attributeValue9 = #{record.attributevalue9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bankaccount != null" >
+        bankAccount = #{record.bankaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankname != null" >
+        bankName = #{record.bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.encodedpassword != null" >
+        encodedPassword = #{record.encodedpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frozenfund != null" >
+        frozenFund = #{record.frozenfund,jdbcType=DECIMAL},
+      </if>
+      <if test="record.idcard != null" >
+        idCard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardimage != null" >
+        idCardImage = #{record.idcardimage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identificationnumber != null" >
+        identificationNumber = #{record.identificationnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalperson != null" >
+        legalPerson = #{record.legalperson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseimage != null" >
+        licenseImage = #{record.licenseimage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licensenumber != null" >
+        licenseNumber = #{record.licensenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.organizationcode != null" >
+        organizationCode = #{record.organizationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.organizationimage != null" >
+        organizationImage = #{record.organizationimage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.safekeyexpire != null" >
+        safeKeyExpire = #{record.safekeyexpire,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.safekeyvalue != null" >
+        safeKeyValue = #{record.safekeyvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taximage != null" >
+        taxImage = #{record.taximage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update business
+    set id = #{record.id,jdbcType=BIGINT},
+      attributeValue0 = #{record.attributevalue0,jdbcType=VARCHAR},
+      attributeValue1 = #{record.attributevalue1,jdbcType=VARCHAR},
+      attributeValue10 = #{record.attributevalue10,jdbcType=VARCHAR},
+      attributeValue11 = #{record.attributevalue11,jdbcType=VARCHAR},
+      attributeValue12 = #{record.attributevalue12,jdbcType=VARCHAR},
+      attributeValue13 = #{record.attributevalue13,jdbcType=VARCHAR},
+      attributeValue14 = #{record.attributevalue14,jdbcType=VARCHAR},
+      attributeValue15 = #{record.attributevalue15,jdbcType=VARCHAR},
+      attributeValue16 = #{record.attributevalue16,jdbcType=VARCHAR},
+      attributeValue17 = #{record.attributevalue17,jdbcType=VARCHAR},
+      attributeValue18 = #{record.attributevalue18,jdbcType=VARCHAR},
+      attributeValue19 = #{record.attributevalue19,jdbcType=VARCHAR},
+      attributeValue2 = #{record.attributevalue2,jdbcType=VARCHAR},
+      attributeValue3 = #{record.attributevalue3,jdbcType=VARCHAR},
+      attributeValue4 = #{record.attributevalue4,jdbcType=VARCHAR},
+      attributeValue5 = #{record.attributevalue5,jdbcType=VARCHAR},
+      attributeValue6 = #{record.attributevalue6,jdbcType=VARCHAR},
+      attributeValue7 = #{record.attributevalue7,jdbcType=VARCHAR},
+      attributeValue8 = #{record.attributevalue8,jdbcType=VARCHAR},
+      attributeValue9 = #{record.attributevalue9,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=DECIMAL},
+      bankAccount = #{record.bankaccount,jdbcType=VARCHAR},
+      bankName = #{record.bankname,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      encodedPassword = #{record.encodedpassword,jdbcType=VARCHAR},
+      frozenFund = #{record.frozenfund,jdbcType=DECIMAL},
+      idCard = #{record.idcard,jdbcType=VARCHAR},
+      idCardImage = #{record.idcardimage,jdbcType=VARCHAR},
+      identificationNumber = #{record.identificationnumber,jdbcType=VARCHAR},
+      legalPerson = #{record.legalperson,jdbcType=VARCHAR},
+      licenseImage = #{record.licenseimage,jdbcType=VARCHAR},
+      licenseNumber = #{record.licensenumber,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      organizationCode = #{record.organizationcode,jdbcType=VARCHAR},
+      organizationImage = #{record.organizationimage,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      safeKeyExpire = #{record.safekeyexpire,jdbcType=TIMESTAMP},
+      safeKeyValue = #{record.safekeyvalue,jdbcType=VARCHAR},
+      taxImage = #{record.taximage,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.walmart.pojo.Business" >
+    update business
+    <set >
+      <if test="attributevalue0 != null" >
+        attributeValue0 = #{attributevalue0,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue1 != null" >
+        attributeValue1 = #{attributevalue1,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue10 != null" >
+        attributeValue10 = #{attributevalue10,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue11 != null" >
+        attributeValue11 = #{attributevalue11,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue12 != null" >
+        attributeValue12 = #{attributevalue12,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue13 != null" >
+        attributeValue13 = #{attributevalue13,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue14 != null" >
+        attributeValue14 = #{attributevalue14,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue15 != null" >
+        attributeValue15 = #{attributevalue15,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue16 != null" >
+        attributeValue16 = #{attributevalue16,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue17 != null" >
+        attributeValue17 = #{attributevalue17,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue18 != null" >
+        attributeValue18 = #{attributevalue18,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue19 != null" >
+        attributeValue19 = #{attributevalue19,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue2 != null" >
+        attributeValue2 = #{attributevalue2,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue3 != null" >
+        attributeValue3 = #{attributevalue3,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue4 != null" >
+        attributeValue4 = #{attributevalue4,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue5 != null" >
+        attributeValue5 = #{attributevalue5,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue6 != null" >
+        attributeValue6 = #{attributevalue6,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue7 != null" >
+        attributeValue7 = #{attributevalue7,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue8 != null" >
+        attributeValue8 = #{attributevalue8,jdbcType=VARCHAR},
+      </if>
+      <if test="attributevalue9 != null" >
+        attributeValue9 = #{attributevalue9,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="bankaccount != null" >
+        bankAccount = #{bankaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+        bankName = #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="encodedpassword != null" >
+        encodedPassword = #{encodedpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="frozenfund != null" >
+        frozenFund = #{frozenfund,jdbcType=DECIMAL},
+      </if>
+      <if test="idcard != null" >
+        idCard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardimage != null" >
+        idCardImage = #{idcardimage,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationnumber != null" >
+        identificationNumber = #{identificationnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="legalperson != null" >
+        legalPerson = #{legalperson,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseimage != null" >
+        licenseImage = #{licenseimage,jdbcType=VARCHAR},
+      </if>
+      <if test="licensenumber != null" >
+        licenseNumber = #{licensenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationcode != null" >
+        organizationCode = #{organizationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationimage != null" >
+        organizationImage = #{organizationimage,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="safekeyexpire != null" >
+        safeKeyExpire = #{safekeyexpire,jdbcType=TIMESTAMP},
+      </if>
+      <if test="safekeyvalue != null" >
+        safeKeyValue = #{safekeyvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="taximage != null" >
+        taxImage = #{taximage,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.walmart.pojo.Business" >
+    update business
+    set attributeValue0 = #{attributevalue0,jdbcType=VARCHAR},
+      attributeValue1 = #{attributevalue1,jdbcType=VARCHAR},
+      attributeValue10 = #{attributevalue10,jdbcType=VARCHAR},
+      attributeValue11 = #{attributevalue11,jdbcType=VARCHAR},
+      attributeValue12 = #{attributevalue12,jdbcType=VARCHAR},
+      attributeValue13 = #{attributevalue13,jdbcType=VARCHAR},
+      attributeValue14 = #{attributevalue14,jdbcType=VARCHAR},
+      attributeValue15 = #{attributevalue15,jdbcType=VARCHAR},
+      attributeValue16 = #{attributevalue16,jdbcType=VARCHAR},
+      attributeValue17 = #{attributevalue17,jdbcType=VARCHAR},
+      attributeValue18 = #{attributevalue18,jdbcType=VARCHAR},
+      attributeValue19 = #{attributevalue19,jdbcType=VARCHAR},
+      attributeValue2 = #{attributevalue2,jdbcType=VARCHAR},
+      attributeValue3 = #{attributevalue3,jdbcType=VARCHAR},
+      attributeValue4 = #{attributevalue4,jdbcType=VARCHAR},
+      attributeValue5 = #{attributevalue5,jdbcType=VARCHAR},
+      attributeValue6 = #{attributevalue6,jdbcType=VARCHAR},
+      attributeValue7 = #{attributevalue7,jdbcType=VARCHAR},
+      attributeValue8 = #{attributevalue8,jdbcType=VARCHAR},
+      attributeValue9 = #{attributevalue9,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=DECIMAL},
+      bankAccount = #{bankaccount,jdbcType=VARCHAR},
+      bankName = #{bankname,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      encodedPassword = #{encodedpassword,jdbcType=VARCHAR},
+      frozenFund = #{frozenfund,jdbcType=DECIMAL},
+      idCard = #{idcard,jdbcType=VARCHAR},
+      idCardImage = #{idcardimage,jdbcType=VARCHAR},
+      identificationNumber = #{identificationnumber,jdbcType=VARCHAR},
+      legalPerson = #{legalperson,jdbcType=VARCHAR},
+      licenseImage = #{licenseimage,jdbcType=VARCHAR},
+      licenseNumber = #{licensenumber,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      organizationCode = #{organizationcode,jdbcType=VARCHAR},
+      organizationImage = #{organizationimage,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      safeKeyExpire = #{safekeyexpire,jdbcType=TIMESTAMP},
+      safeKeyValue = #{safekeyvalue,jdbcType=VARCHAR},
+      taxImage = #{taximage,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
