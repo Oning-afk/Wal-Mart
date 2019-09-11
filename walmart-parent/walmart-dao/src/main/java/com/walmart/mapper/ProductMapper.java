@@ -17,7 +17,7 @@ public interface ProductMapper {
 
     int insertSelective(ProductWithBLOBs record);
 
-    List<ProductWithBLOBs> selectByExampleWithBLOBs(ProductExample example);
+    List<ProductWithBLOBs> selectByExampleWithBLOBs(Long example);
 
     List<Product> selectByExample(ProductExample example);
 

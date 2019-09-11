@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>商品列表 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/business/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/business/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/business/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/pager.js"></script>
+
+    <style type="text/css">
+        .glyphicon-remove {
+            color: #ff4d5c;
+        }
+        .glyphicon-ok {
+            color: #5be980;
+        }
+        .glyphicon-refresh {
+            color: #5be980;
+        }
+    </style>
+</head>
+<body>
+    <div class="breadcrumb">
+        <a href="../../admin/common/index">首页</a>
+    </div>
+    <div class="box-body">
+        <div class="table-box" id="content_grid">
+            <div class="pull-left">
+                <div class="form-group form-inline">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
+                        <button onclick="delProduct()" type="button" class="btn btn-default" title="删除"><span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                </div>
+            </div>
+            <table id="productList" class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                <tr>
+                    <th class="check">
+                        <label for="selectAll"></label><input type="checkbox" id="selectAll" />
+                    </th>
+                    <th class="sorting_asc">编号</th>
+                    <th class="sorting">名称</th>
+                    <th class="sorting">商品分类</th>
+                    <th class="sorting">销售价</th>
+                    <th class="sorting">是否上架</th>
+                    <th class="sorting">是否有效</th>
+                    <th class="sorting">店铺</th>
+                    <th class="sorting">创建日期</th>
+                    <th class="text-center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="entity in productList">
+                    <td>
+                        <label>
+                            <input type="checkbox" value="entity.product.id">
+                        </label>
+                    </td>
+                    <td>{{entity.product.sn}}</td>
+                    <td>{{entity.product.name}}</td>
+                    <td>{{entity.productCategoryBean.name}}</td>
+                    <td>{{entity.product.price}}</td>
+                    <td>
+                        <span v-if="entity.product.ismarketable" class="glyphicon glyphicon-ok"></span>
+                        <span v-else class="glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td>
+                        <span v-if="entity.product.isactive" class="glyphicon glyphicon-ok"></span>
+                        <span v-else class="glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td>{{entity.store.name}}</td>
+                    <td>{{entity.product.createddate}}</td>
+                    <td >
+                        <a @click="updateContent(entity.product.id)">查看</a>
+                        <a v-if="entity.product.ismarketable" @click="updateToDown(entity.product.id)">下架</a>
+                        <a v-else @click="updateToUp(entity.product.id)">上架</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="app">
+                <div class="container">
+                    <pagination :total="total" :current.sync="current" @pagechange="pagechange"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    <template id="template_paginations">
+        <nav>
+            <ul class="pagination">
+                <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(1)"> 首页 </a></li>
+                <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(current - 1)"> 上一页 </a></li>
+                <li >
+                    <select id="tests" @change="setDisplay()" class="btn btn-default dropdown-toggle">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </li>
+                <li v-for="p in grouplist" :class="{'active': current == p.val}"><a href="javascript:searchByPage();" @click="setCurrent(p.val)"> {{ p.text }} </a></li>
+                <li :class="{'disabled': current == page}"><a href="javascript:searchByPage();" @click="setCurrent(current + 1)"> 下一页</a></li>
+                <li :class="{'disabled': current == page}"><a href="javascript:searchByPage();" @click="setCurrent(page)"> 尾页 </a></li>
+            </ul>
+            <ul class="pagination pull-right">
+                <li><span> 共 {{total}}  条数据 </span></li>
+                <li><span> 每页显示 {{display}}  条数据 </span></li>
+                <li><span> 共 {{page}} 页 </span></li>
+                <li><span > 当前第 {{current}} 页 </span></li>
+                <li><span id="current"  name="current" style="display: none">{{current}}</span></li>
+                <li><span id="display"  name="display" style="display: none">{{display}}</span></li>
+            </ul>
+        </nav>
+    </template>
+</body>
+<script>
+    var productListVue;
+
+    $(function(){
+        searchProduct();
+
+    })
+    function searchProduct() {
+        $.ajax({
+            type: "post",
+            url: "../../product/findAll.do",
+            data:"",
+            dataType: "json",
+            success: function (result) {
+                productListVue = new Vue({
+                    el: '#productList',
+                    data: {
+                        productList: result.rows
+                    }
+                })
+                new Vue({
+                    el: '#app',
+                    data: {
+                        total: result.total,     // 记录总条数
+                        display: 5,   // 每页显示条数
+                        current: 1     // 当前第n页 ， 也可以 watch current 的变化
+                    },
+                    methods: {
+                        pagechange: function (p) {
+                            this.current = p;// 页码改变event ， p 为新的 current
+                        }
+                    }
+                });
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+
+    function searchByPage(page,rows) {
+        if(page == null){
+            page = document.getElementById("current").innerHTML;
+        }
+        if(rows == null){
+            rows = document.getElementById("display").innerHTML;
+        }
+        $.ajax({
+            type: "post",
+            url: "../../product/findAll.do",
+            data:{
+                "page":page,
+                "rows":rows
+            },
+            dataType: "json",
+            success: function (result) {
+                productListVue.productList = result.rows;
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+
+    //上架
+    function updateToUp(id){
+        $.ajax({
+            type: "post",
+            url: "../../product/updateToUp.do",
+            data:{
+                id:id
+            },
+            dataType: "json",
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+
+    //下架
+    function updateToDown(id){
+        $.ajax({
+            type: "post",
+            url: "../../product/updateToDown.do",
+            data:{
+                id:id
+            },
+            dataType: "json",
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+</script>
+</html>

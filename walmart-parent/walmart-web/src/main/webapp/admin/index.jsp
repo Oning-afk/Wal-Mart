@@ -114,7 +114,7 @@
                     <a href="business/list" target="iframe">商家管理</a>
                 </dd>
                 <dd>
-                    <a href="store/list" target="iframe">店铺管理</a>
+                    <a href="store/list.html" target="iframe">店铺管理</a>
                 </dd>
                 <dd>
                     <a href="store_category/list" target="iframe">店铺分类</a>
@@ -138,10 +138,10 @@
             <dl id="product">
                 <dt>商品管理</dt>
                 <dd>
-                    <a href="product/list" target="iframe">商品管理</a>
+                    <a href="product/list.html" target="iframe">商品管理</a>
                 </dd>
                 <dd>
-                    <a href="stock/log" target="iframe">库存管理</a>
+                    <a href="stock/log.html" target="iframe">库存管理</a>
                 </dd>
                 <dd>
                     <a href="product_category/list" target="iframe">商品分类</a>
