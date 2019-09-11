@@ -7,20 +7,171 @@
     <title>库存记录 - Powered By SHOP++</title>
     <meta name="author" content="SHOP++ Team" />
     <meta name="copyright" content="SHOP++" />
-    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
-    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
-    <script type="text/javascript" src="../../resources/admin/js/list.js"></script>
-    <script type="text/javascript">
-        $().ready(function() {
-
-
-        });
-    </script>
+    <link href="../../resources/business/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/business/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/business/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/pager.js"></script>
 </head>
 <body>
-<div class="breadcrumb">
-    <a href="../../admin/common/index">首页</a>
-</div>
+    <div class="breadcrumb">
+        <a href="../../admin/common/index">首页</a>
+    </div>
+    <div class="box-body">
+        <div class="table-box" id="content_grid">
+            <div class="pull-left">
+                <div class="form-group form-inline">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                </div>
+            </div>
+            <table id="stockList" class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                <tr>
+                    <th class="check">
+                        <label for="selectAll"></label><input type="checkbox" id="selectAll" />
+                    </th>
+                    <th class="sorting_asc">编号</th>
+                    <th class="sorting">商品</th>
+                    <th class="sorting">类型</th>
+                    <th class="sorting">入库数量</th>
+                    <th class="sorting">出库数量</th>
+                    <th class="sorting">当前库存</th>
+                    <th class="sorting">备注</th>
+                    <th class="sorting">创建日期</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="entity in stockList">
+                    <td>
+                        <label>
+                            <input type="checkbox" value="entity.product.id">
+                        </label>
+                    </td>
+                    <td>{{entity.sku.sn}}</td>
+                    <td>
+                        {{entity.productWithBLOBs.name}}
+                        <span v-if="entity.sku.specificationvalues != null">
+                            <span style="color: #7a869d">[</span>
+                            <span style="color: #7a869d">{{entity.sku.specificationvalues}}</span>
+                            <span style="color: #7a869d">]</span>
+                        </span>
+                        <span v-else>
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="entity.stocklog.type == 1">入库</span>
+                        <span v-else>出库</span>
+                    </td>
+                    <td>{{entity.stocklog.inquantity}}</td>
+                    <td>{{entity.stocklog.outquantity}}</td>
+                    <td>{{entity.stocklog.stock}}</td>
+                    <td>{{entity.stocklog.memo}}</td>
+                    <td>{{entity.stocklog.createddate}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="app">
+                <div class="container">
+                    <pagination :total="total" :current.sync="current" @pagechange="pagechange"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    <template id="template_paginations">
+        <nav>
+            <ul class="pagination">
+                <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(1)"> 首页 </a></li>
+                <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(current - 1)"> 上一页 </a></li>
+                <li >
+                    <select id="tests" @change="setDisplay()" class="btn btn-default dropdown-toggle">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </li>
+                <li v-for="p in grouplist" :class="{'active': current == p.val}"><a href="javascript:searchByPage();" @click="setCurrent(p.val)"> {{ p.text }} </a></li>
+                <li :class="{'disabled': current == page}"><a href="javascript:searchByPage();" @click="setCurrent(current + 1)"> 下一页</a></li>
+                <li :class="{'disabled': current == page}"><a href="javascript:searchByPage();" @click="setCurrent(page)"> 尾页 </a></li>
+            </ul>
+            <ul class="pagination pull-right">
+                <li><span> 共 {{total}}  条数据 </span></li>
+                <li><span> 每页显示 {{display}}  条数据 </span></li>
+                <li><span> 共 {{page}} 页 </span></li>
+                <li><span > 当前第 {{current}} 页 </span></li>
+                <li><span id="current"  name="current" style="display: none">{{current}}</span></li>
+                <li><span id="display"  name="display" style="display: none">{{display}}</span></li>
+            </ul>
+        </nav>
+    </template>
 </body>
+<script>
+    var stockListVue;
+
+    $(function(){
+        searchProduct();
+
+    })
+    function searchProduct() {
+        $.ajax({
+            type: "post",
+            url: "../../stock/findStockAll.do",
+            data:"",
+            dataType: "json",
+            success: function (result) {
+                stockListVue = new Vue({
+                    el: '#stockList',
+                    data: {
+                        stockList: result.rows
+                    }
+                })
+                new Vue({
+                    el: '#app',
+                    data: {
+                        total: result.total,     // 记录总条数
+                        display: 5,   // 每页显示条数
+                        current: 1     // 当前第n页 ， 也可以 watch current 的变化
+                    },
+                    methods: {
+                        pagechange: function (p) {
+                            this.current = p;// 页码改变event ， p 为新的 current
+                        }
+                    }
+                });
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+
+    function searchByPage(page,rows) {
+        if(page == null){
+            page = document.getElementById("current").innerHTML;
+        }
+        if(rows == null){
+            rows = document.getElementById("display").innerHTML;
+        }
+        $.ajax({
+            type: "post",
+            url: "../../stock/findStockAll.do",
+            data:{
+                "page":page,
+                "rows":rows
+            },
+            dataType: "json",
+            success: function (result) {
+                stockListVue.stockList = result.rows;
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+</script>
 </html>
