@@ -23,6 +23,12 @@ public class StockController {
     private StockService stockService;
 
 
+    /**
+     * 商品-库存管理-查询分页
+     * @param page
+     * @param rows
+     * @return
+     */
     @RequestMapping("findStockAll")
     @ResponseBody
     public PageResult findStockAll(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows){
