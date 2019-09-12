@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="walmart-service" />
+        <module name="walmart-dao" />
+        <module name="walmart-pojo" />
+        <module name="walmart-interface" />
+        <module name="walmart-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="walmart-dao" target="1.8" />
+      <module name="walmart-interface" target="1.8" />
+      <module name="walmart-parent" target="1.8" />
+      <module name="walmart-pojo" target="1.8" />
+      <module name="walmart-service" target="1.8" />
+      <module name="walmart-web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

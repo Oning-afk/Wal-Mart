@@ -24,7 +24,7 @@ html {
 	-ms-text-size-adjust: 100%;
 	_filter: expression(document.execCommand("BackgroundImageCache", false, true));
 	background-color: #ffffff;
-	_background-image: url(about: blank);
+	_background-image: url(about:blank);
 	_background-attachment: fixed;
 }
 

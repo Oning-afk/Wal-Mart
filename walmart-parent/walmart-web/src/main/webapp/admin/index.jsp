@@ -123,7 +123,7 @@
                     <a href="store_rank/list" target="iframe">店铺等级</a>
                 </dd>
                 <dd>
-                    <a href="business_attribute/list" target="iframe">商家注册项</a>
+                    <a href="business_attribute/list.html" target="iframe">商家注册项</a>
                 </dd>
                 <dd>
                     <a href="cash/list" target="iframe">提现管理</a>
