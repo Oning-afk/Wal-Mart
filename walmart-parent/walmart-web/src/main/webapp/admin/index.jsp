@@ -117,10 +117,10 @@
                     <a href="store/list.html" target="iframe">店铺管理</a>
                 </dd>
                 <dd>
-                    <a href="store_category/list" target="iframe">店铺分类</a>
+                    <a href="classify.html" target="iframe">店铺分类</a>
                 </dd>
                 <dd>
-                    <a href="store_rank/list" target="iframe">店铺等级</a>
+                    <a href="grade.html" target="iframe">店铺等级</a>
                 </dd>
                 <dd>
                     <a href="business_attribute/list.html" target="iframe">商家注册项</a>
