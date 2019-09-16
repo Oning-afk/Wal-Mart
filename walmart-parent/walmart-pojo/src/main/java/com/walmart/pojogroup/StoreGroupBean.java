@@ -6,6 +6,8 @@ import com.walmart.pojo.Storecategory;
 import com.walmart.pojo.Storerank;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @program: Wal-Mart
  * @description:
@@ -13,7 +15,7 @@ import lombok.Data;
  * @create: 2019-09-10 20:38
  **/
 @Data
-public class StoreGroupBean {
+public class StoreGroupBean implements Serializable {
 
     private Store store;
 

@@ -14,10 +14,12 @@ import java.util.List;
 public class ClassifyController {
     @Reference
     private ClassifyService classifyService;
+
     @RequestMapping("findclassify")
     public List<Storecategory> findclassify(){
         return classifyService.findclassify();
     }
+
     @RequestMapping("saveclassify")
     public void saveclassify(Storecategory storecategory){
         storecategory.setCreateddate(new Date());

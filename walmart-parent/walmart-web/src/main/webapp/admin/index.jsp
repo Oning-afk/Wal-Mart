@@ -114,7 +114,7 @@
                     <a href="business/list" target="iframe">商家管理</a>
                 </dd>
                 <dd>
-                    <a href="store/list.html" target="iframe">店铺管理</a>
+                    <a href="store/list.jsp" target="iframe">店铺管理</a>
                 </dd>
                 <dd>
                     <a href="classify/classify.html" target="iframe">店铺分类</a>
