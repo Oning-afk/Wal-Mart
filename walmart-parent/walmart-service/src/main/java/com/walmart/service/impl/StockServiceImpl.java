@@ -68,4 +68,35 @@ public class StockServiceImpl implements StockService {
         }
         return new PageResult(count,productWithBLOBsList);
     }
+
+    @Override
+    public List<StocklogSkuGroupBean> findStockAll() {
+        List<Stocklog> stocklogs = stocklogMapper.selectByExample(null);
+        int count = stocklogMapper.countByExample(null);
+        List<StocklogSkuGroupBean> productWithBLOBsList = new ArrayList<>();
+        for (Stocklog stocklog : stocklogs) {
+            StocklogSkuGroupBean stocklogSkuGroupBean = new StocklogSkuGroupBean();
+            stocklogSkuGroupBean.setStocklog(stocklog);
+            Sku sku = skuMapper.selectByPrimaryKey(stocklog.getSkuId());
+
+            if(sku.getSpecificationvalues()!=null){
+                String string = sku.getSpecificationvalues();
+                String name = "";
+                List<Map> parse = (List) JSONUtils.parse(string);
+                for (Map o : parse) {
+                    if(name.equals("")){
+                        name = o.get("value").toString();
+                    }else{
+                        name += ","+ o.get("value").toString();
+                    }
+                    sku.setSpecificationvalues(name);
+                }
+            }
+            stocklogSkuGroupBean.setSku(sku);
+            ProductWithBLOBs productWithBLOBs = productMapper.selectByPrimaryKey(sku.getProductId());
+            stocklogSkuGroupBean.setProductWithBLOBs(productWithBLOBs);
+            productWithBLOBsList.add(stocklogSkuGroupBean);
+        }
+        return productWithBLOBsList;
+    }
 }
