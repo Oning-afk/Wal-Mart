@@ -34,7 +34,7 @@
                 <div class="form-group form-inline">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
-                        <button onclick="delProduct()" type="button" class="btn btn-default" title="删除"><span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
+                        <button onclick="deleteProduct()" type="button" class="btn btn-default" title="删除"><span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
                     </div>
                 </div>
             </div>
@@ -220,6 +220,24 @@
                 alert("系统错误，请联系管理员！");
             }
         })
+    }
+
+    function deleteProduct() {
+        var arr = $("[name = 'boxId']:checked")
+        if (arr.length > 0) {
+            var ids = "";
+            for (var i = 0; arr.length  > i; i++) {
+                ids += ids == "" ? arr[i].value : "," + arr[i].value;
+            }
+            alert(ids);
+            $.post("../../product/deleteProduct.do",{ids:ids},function (data) {
+                if(data.success==true){
+                    $("#listTable").reload();
+                }
+            })
+        }else {
+            alert("请选择要删除的数据")
+        }
     }
 </script>
 </html>

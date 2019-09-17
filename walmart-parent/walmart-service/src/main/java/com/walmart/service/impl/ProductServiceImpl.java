@@ -70,4 +70,12 @@ public class ProductServiceImpl implements ProductService {
         productWithBLOBs.setIsmarketable(false);
         return productMapper.updateByPrimaryKeyWithBLOBs(productWithBLOBs) >0;
     }
+
+    @Override
+    public boolean deleteProduct(Long[] ids) {
+        for (Long id : ids) {
+            productMapper.deleteByPrimaryKey(id);
+        }
+        return true;
+    }
 }

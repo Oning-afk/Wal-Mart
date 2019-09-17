@@ -54,4 +54,10 @@ public class ProductController {
     public boolean updateToDown(Long id){
         return productService.updateToDown(id);
     }
+
+    @RequestMapping("deleteProduct")
+    @ResponseBody
+    public boolean deleteProduct(Long[] ids){
+        return productService.deleteProduct(ids);
+    }
 }
