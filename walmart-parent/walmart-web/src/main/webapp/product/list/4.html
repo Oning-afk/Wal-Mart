@@ -1,0 +1,1059 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>服装鞋靴 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <meta name="keywords" content="服装鞋靴" />
+    <meta name="description" content="服装鞋靴" />
+    <link href="../../resources/shop/css/animate.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/shop/css/product.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/shop/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/shop/js/jquery.lazyload.js"></script>
+    <script type="text/javascript" src="../../resources/shop/js/common.js"></script>
+    <script type="text/javascript">
+        $().ready(function() {
+
+            var $headerCart = $("#headerCart");
+            var $compareBar = $("#compareBar");
+            var $compareForm = $("#compareBar form");
+            var $compareSubmit = $("#compareBar a.submit");
+            var $clearCompare = $("#compareBar a.clear");
+            var $productForm = $("#productForm");
+            var $brandId = $("#brandId");
+            var $promotionId = $("#promotionId");
+            var $orderType = $("#orderType");
+            var $pageNumber = $("#pageNumber");
+            var $pageSize = $("#pageSize");
+            var $filter = $("#filter dl");
+            var $hiddenFilter = $("#filter dl:hidden");
+            var $moreOption = $("#filter dd.moreOption");
+            var $brand = $("#filter a.brand");
+            var $attribute = $("#filter a.attribute");
+            var $moreFilter = $("#moreFilter a");
+            var $gridType = $("#gridType");
+            var $listType = $("#listType");
+            var $size = $("#layout a.size");
+            var $previousPage = $("#previousPage");
+            var $nextPage = $("#nextPage");
+            var $sort = $("#sort a, #sort li");
+            var $orderMenu = $("#orderMenu");
+            var $startPrice = $("#startPrice");
+            var $endPrice = $("#endPrice");
+            var $result = $("#result");
+            var $productImage = $("#result img");
+            var $addCart = $("#result a.addCart");
+            var $exchange = $("#result a.exchange");
+            var $addProductFavorite = $("#result a.addProductFavorite");
+            var $addCompare = $("#result a.addCompare");
+
+            $filter.each(function() {
+                var $this = $(this);
+                var scrollHeight = this.scrollHeight > 0 ? this.scrollHeight: $.swap(this, {display: "block", position: "absolute", visibility: "hidden"}, function() {
+                    return this.scrollHeight;
+                });
+                if (scrollHeight > 30) {
+                    if ($this.find("a.current").size() > 0) {
+                        $this.height("auto");
+                    } else {
+                        $this.find("dd.moreOption").show();
+                    }
+                }
+            });
+
+            $moreOption.click(function() {
+                var $this = $(this);
+                if ($this.hasClass("close")) {
+                    $this.removeClass("close");
+                    $this.attr("title", "更多");
+                    $this.parent().height(30);
+                } else {
+                    $this.addClass("close");
+                    $this.attr("title", "收起");
+                    $this.parent().height("auto");
+                }
+            });
+
+            $moreFilter.click(function() {
+                var $this = $(this);
+                if ($this.hasClass("close")) {
+                    $this.removeClass("close");
+                    $this.text("更多选项");
+                    $hiddenFilter.hide();
+                } else {
+                    $this.addClass("close");
+                    $this.text("收起选项");
+                    $hiddenFilter.show();
+                }
+                return false;
+            });
+
+            $brand.click(function() {
+                var $this = $(this);
+                if ($this.hasClass("current")) {
+                    $brandId.val("");
+                } else {
+                    $brandId.val($this.attr("brandId"));
+                }
+                $pageNumber.val(1);
+                $productForm.submit();
+                return false;
+            });
+
+            $attribute.click(function() {
+                var $this = $(this);
+                if ($this.hasClass("current")) {
+                    $this.closest("dl").find("input").prop("disabled", true);
+                } else {
+                    $this.closest("dl").find("input").prop("disabled", false).val($this.text());
+                }
+                $pageNumber.val(1);
+                $productForm.submit();
+                return false;
+            });
+
+            var layoutType = getCookie("layoutType");
+            if (layoutType == "listType") {
+                $listType.addClass("currentList");
+                $result.removeClass("grid").addClass("list");
+            } else {
+                $gridType.addClass("currentGrid");
+                $result.removeClass("list").addClass("grid");
+            }
+
+            $gridType.click(function() {
+                var $this = $(this);
+                if (!$this.hasClass("currentGrid")) {
+                    $this.addClass("currentGrid");
+                    $listType.removeClass("currentList");
+                    $result.removeClass("list").addClass("grid");
+                    addCookie("layoutType", "gridType");
+                }
+                return false;
+            });
+
+            $listType.click(function() {
+                var $this = $(this);
+                if (!$this.hasClass("currentList")) {
+                    $this.addClass("currentList");
+                    $gridType.removeClass("currentGrid");
+                    $result.removeClass("grid").addClass("list");
+                    addCookie("layoutType", "listType");
+                }
+                return false;
+            });
+
+            $size.click(function() {
+                var $this = $(this);
+                $pageNumber.val(1);
+                $pageSize.val($this.attr("pageSize"));
+                $productForm.submit();
+                return false;
+            });
+
+            $previousPage.click(function() {
+                $pageNumber.val(0);
+                $productForm.submit();
+                return false;
+            });
+
+            $nextPage.click(function() {
+                $pageNumber.val(2);
+                $productForm.submit();
+                return false;
+            });
+
+            $orderMenu.hover(
+                function() {
+                    $(this).children("ul").show();
+                }, function() {
+                    $(this).children("ul").hide();
+                }
+            );
+
+            $sort.click(function() {
+                var $this = $(this);
+                if ($this.hasClass("current")) {
+                    $orderType.val("");
+                } else {
+                    $orderType.val($this.attr("orderType"));
+                }
+                $pageNumber.val(1);
+                $productForm.submit();
+                return false;
+            });
+
+            $startPrice.add($endPrice).focus(function() {
+                $(this).siblings("button").show();
+            });
+
+            $startPrice.add($endPrice).keypress(function(event) {
+                return (event.which >= 48 && event.which <= 57) || (event.which == 46 && $(this).val().indexOf(".") < 0) || event.which == 8 || event.which == 13;
+            });
+
+            $productForm.submit(function() {
+                if ($brandId.val() == "") {
+                    $brandId.prop("disabled", true);
+                }
+                if ($promotionId.val() == "") {
+                    $promotionId.prop("disabled", true);
+                }
+                if ($orderType.val() == "" || $orderType.val() == "topDesc") {
+                    $orderType.prop("disabled", true);
+                }
+                if ($pageNumber.val() == "" || $pageNumber.val() == "1") {
+                    $pageNumber.prop("disabled", true);
+                }
+                if ($pageSize.val() == "" || $pageSize.val() == "20") {
+                    $pageSize.prop("disabled", true);
+                }
+                if ($startPrice.val() == "" || !/^\d+(\.\d+)?$/.test($startPrice.val())) {
+                    $startPrice.prop("disabled", true);
+                }
+                if ($endPrice.val() == "" || !/^\d+(\.\d+)?$/.test($endPrice.val())) {
+                    $endPrice.prop("disabled", true);
+                }
+                if ($productForm.serializeArray().length < 1) {
+                    location.href = location.pathname;
+                    return false;
+                }
+            });
+
+            $productImage.lazyload({
+                threshold: 100,
+                effect: "fadeIn"
+            });
+
+            // 加入购物车
+            $addCart.click(function() {
+                var $this = $(this);
+                var skuId = $this.attr("skuId");
+                $.ajax({
+                    url: "/shopxxb2b2c/cart/add",
+                    type: "POST",
+                    data: {skuId: skuId, quantity: 1},
+                    dataType: "json",
+                    success: function() {
+                        if ($headerCart.size() > 0 && window.XMLHttpRequest) {
+                            var $image = $this.closest("li").find("img");
+                            var cartOffset = $headerCart.offset();
+                            var imageOffset = $image.offset();
+                            $image.clone().css({
+                                width: 170,
+                                height: 170,
+                                position: "absolute",
+                                "z-index": 20,
+                                top: imageOffset.top,
+                                left: imageOffset.left,
+                                opacity: 0.8,
+                                border: "1px solid #dddddd",
+                                "background-color": "#eeeeee"
+                            }).appendTo("body").animate({
+                                width: 30,
+                                height: 30,
+                                top: cartOffset.top,
+                                left: cartOffset.left,
+                                opacity: 0.2
+                            }, 1000, function() {
+                                $(this).remove();
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+
+            // 积分兑换
+            $exchange.click(function() {
+                var skuId = $(this).attr("skuId");
+                $.ajax({
+                    url: "/shopxxb2b2c/order/check_exchange",
+                    type: "GET",
+                    data: {skuId: skuId, quantity: 1},
+                    dataType: "json",
+                    cache: false,
+                    success: function() {
+                        location.href = "/shopxxb2b2c/order/checkout?type=exchange&skuId=" + skuId + "&quantity=1";
+                    }
+                });
+                return false;
+            });
+
+            // 添加SKU收藏
+            $addProductFavorite.click(function() {
+                var productId = $(this).attr("productId");
+                $.ajax({
+                    url: "/shopxxb2b2c/member/product_favorite/add",
+                    type: "POST",
+                    data: {productId: productId},
+                    dataType: "json",
+                });
+                return false;
+            });
+
+            // 对比栏
+            var compareProduct = getCookie("compareProduct");
+            var compareProductIds = compareProduct != null ? compareProduct.split(","): [];
+            if (compareProductIds.length > 0) {
+                $.ajax({
+                    url: "/shopxxb2b2c/product/compare_bar",
+                    type: "GET",
+                    data: {productIds: compareProductIds},
+                    dataType: "json",
+                    cache: true,
+                    success: function(data) {
+                        $.each(data, function (i, item) {
+                            var thumbnail = item.thumbnail != null ? item.thumbnail: "/shopxxb2b2c/upload/image/default_thumbnail.jpg";
+                            $compareBar.find("dt").after(
+                                '<dd> <input type="hidden" name="productIds" value="' + item.id + '" \/> <a href="/shopxxb2b2c' + escapeHtml(item.path) + '" target="_blank"> <img src="' + escapeHtml(thumbnail) + '" \/> <span title="' + escapeHtml(item.name) + '">' + escapeHtml(abbreviate(item.name, 50)) + '<\/span> <\/a> <strong>' + currency(item.price, true) + '<del>' + currency(item.marketPrice, true) + '<\/del><\/strong> <a href="javascript:;" class="remove" productId="' + item.id + '">[删除]<\/a> <\/dd>'					);
+                        });
+                        $compareBar.fadeIn();
+                    }
+                });
+
+                $.each(compareProductIds, function(i, productId) {
+                    $addCompare.filter("[productId='" + productId + "']").addClass("selected");
+                });
+            }
+
+            // 移除对比
+            $compareBar.on("click", "a.remove", function() {
+                var $this = $(this);
+                var productId = $this.attr("productId");
+                $this.closest("dd").remove();
+                for (var i = 0; i < compareProductIds.length; i ++) {
+                    if (compareProductIds[i] == productId) {
+                        compareProductIds.splice(i, 1);
+                        break;
+                    }
+                }
+                $addCompare.filter("[productId='" + productId + "']").removeClass("selected");
+                if (compareProductIds.length == 0) {
+                    $compareBar.fadeOut();
+                    removeCookie("compareProduct");
+                } else {
+                    addCookie("compareProduct", compareProductIds.join(","));
+                }
+                return false;
+            });
+
+            $compareSubmit.click(function() {
+                if (compareProductIds.length < 2) {
+                    $.alert("至少需要两个对比商品");
+                    return false;
+                }
+
+                $compareForm.submit();
+                return false;
+            });
+
+            // 清除对比
+            $clearCompare.click(function() {
+                $addCompare.removeClass("selected");
+                $compareBar.fadeOut().find("dd:not(.action)").remove();
+                compareProductIds = [];
+                removeCookie("compareProduct");
+                return false;
+            });
+
+            // 添加对比
+            $addCompare.click(function() {
+                var $this = $(this);
+                var productId = $this.attr("productId");
+                if ($.inArray(productId, compareProductIds) >= 0) {
+                    return false;
+                }
+                if (compareProductIds.length >= 4) {
+                    $.alert("最多只允许添加4个对比商品");
+                    return false;
+                }
+                $.ajax({
+                    url: "/shopxxb2b2c/product/add_compare",
+                    type: "GET",
+                    data: {productId: productId},
+                    dataType: "json",
+                    cache: false,
+                    success: function(data) {
+                        $this.addClass("selected");
+                        var thumbnail = data.thumbnail != null ? data.thumbnail: "/shopxxb2b2c/upload/image/default_thumbnail.jpg";
+                        $compareBar.show().find("dd.action").before(
+                            '<dd> <input type="hidden" name="productIds" value="' + data.id + '" \/> <a href="/shopxxb2b2c' + escapeHtml(data.path) + '" target="_blank"> <img src="' + escapeHtml(thumbnail) + '" \/> <span title="' + escapeHtml(data.name) + '">' + escapeHtml(abbreviate(data.name, 50)) + '<\/span> <\/a> <strong>' + currency(data.price, true) + '<del>' + currency(data.marketPrice, true) + '<\/del><\/strong> <a href="javascript:;" class="remove" productId="' + data.id + '">[删除]<\/a> <\/dd>'				);
+                        compareProductIds.unshift(productId);
+                        addCookie("compareProduct", compareProductIds.join(","));
+                    }
+                });
+                return false;
+            });
+
+            $.pageSkip = function(pageNumber) {
+                $pageNumber.val(pageNumber);
+                $productForm.submit();
+                return false;
+            }
+
+        });
+    </script>
+</head>
+<body>
+<script type="text/javascript">
+    $().ready(function() {
+
+        var $window = $(window);
+        var $headerName = $("#headerName");
+        var $headerLogin = $("#headerLogin");
+        var $headerRegister = $("#headerRegister");
+        var $headerLogout = $("#headerLogout");
+        var $productSearchForm = $("#productSearchForm");
+        var $productSearchKeyword = $("#productSearchForm [name='keyword']");
+        var $headerCart = $("#headerCart");
+        var $headerCartQuantity = $("#headerCart a.cartButton em");
+        var $headerCartDetail = $("#headerCart div.detail");
+        var $headerCartItems = $("#headerCart div.items");
+        var $headerCartSummary = $("#headerCart div.summary");
+        var $broadsideNav = $("#broadsideNav");
+        var currentMemberUsername = getCookie("currentMemberUsername");
+        var defaultProductSearchKeyword = "搜索 商品/店铺";
+
+        if ($.trim(currentMemberUsername) != "") {
+            $headerName.text(currentMemberUsername).show();
+            $headerLogout.show();
+        } else {
+            $headerLogin.show();
+            $headerRegister.show();
+        }
+
+        $productSearchKeyword.focus(function() {
+            if ($.trim($productSearchKeyword.val()) == defaultProductSearchKeyword) {
+                $productSearchKeyword.val("");
+            }
+        });
+
+        $productSearchKeyword.blur(function() {
+            if ($.trim($productSearchKeyword.val()) == "") {
+                $productSearchKeyword.val(defaultProductSearchKeyword);
+            }
+        });
+
+        $productSearchForm.submit(function() {
+            if ($.trim($productSearchKeyword.val()) == "" || $productSearchKeyword.val() == defaultProductSearchKeyword) {
+                return false;
+            }
+        });
+
+        // 购物车信息
+        $window.on("cartInfoLoad", function(event, cartInfo) {
+            var skuQuantity = cartInfo != null && cartInfo.skuQuantity != null ? cartInfo.skuQuantity : 0;
+            var effectivePrice = cartInfo != null && cartInfo.effectivePrice != null ? cartInfo.effectivePrice : 0;
+            if ($headerCartQuantity.text() != skuQuantity && "opacity" in document.documentElement.style) {
+                $headerCartQuantity.fadeOut(function() {
+                    $headerCartQuantity.text(skuQuantity).fadeIn();
+                });
+            } else {
+                $headerCartQuantity.text(skuQuantity);
+            }
+            var cartItems = cartInfo.items;
+            if(cartItems == null || cartItems.length <= 0){
+                $headerCartItems.html(
+                    '<table> <tr> <td>购物车是空的，请去挑选您的商品！<\/td> <\/tr> <\/table>'			);
+            } else {
+                var $headerCartTable = $headerCartItems.html('<table id="cartTable"><\/table>');
+                $.each(cartItems, function(i, cartItem) {
+                    $('#cartTable').append(
+                        '<tr> <td> <a href="/shopxxb2b2c' + cartItem.skuPath + '"> <img src="' + cartItem.skuThumbnail + '" \/> <\/a> <\/td> <td> <a href="/shopxxb2b2c' + cartItem.skuPath + '">' + escapeHtml(abbreviate(cartItem.skuName, 20, "...")) + '<\/a> <\/td> <td> <span>' + currency(cartItem.price, true, false) + '<\/span>&nbsp; &nbsp;<em>x' + cartItem.quantity + '<\/em> <\/td> <\/tr>'				);
+                });
+            }
+            $headerCartSummary.html(message('共<em>{0}<\/em>件商品', skuQuantity) + '&nbsp;&nbsp;&nbsp;&nbsp;共计: <em>' + currency(effectivePrice, true, true) + '<\/em><a href="/shopxxb2b2c/cart/list">商品结算<\/a>');
+        });
+
+        // 购物车详情
+        $headerCart.hover(
+            function() {
+                if ($headerCartDetail.is(":hidden")) {
+                    $headerCart.addClass("active");
+                    $headerCartDetail.slideDown("fast");
+                }
+            },
+            function() {
+                if ($headerCartDetail.is(":visible")) {
+                    $headerCart.removeClass("active");
+                    $headerCartDetail.slideUp("fast");
+                }
+            }
+        );
+
+        $broadsideNav.find("li").hover(
+            function() {
+                $(this).find("em").show();
+            },function(){
+                $(this).find("em").hide();
+            }
+        );
+
+    });
+</script>
+<div class="header">
+    <div class="top">
+        <div class="topNav">
+            <ul class="left">
+                <li>
+                    <span>您好，欢迎来到SHOP++商城</span>
+                    <span id="headerName" class="headerName">&nbsp;</span>
+                </li>
+                <li id="headerLogin" class="headerLogin">
+                    <a href="/shopxxb2b2c/member/login">登录</a>|
+                </li>
+                <li id="headerRegister" class="headerRegister">
+                    <a href="/shopxxb2b2c/member/register">注册</a>
+                </li>
+                <li id="headerLogout" class="headerLogout">
+                    <a href="/shopxxb2b2c/member/logout">[退出]</a>
+                </li>
+            </ul>
+            <ul class="right">
+                <li>
+                    <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/member/index" target="_blank">会员中心</a>
+                    |
+                </li>
+                <li>
+                    <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/business/index">商家中心</a>
+                    |
+                </li>
+                <li>
+                    <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/article/list/3">帮助中心</a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="span3">
+                <a href="/shopxxb2b2c/">
+                    <img src="../../upload/image/logo.png" alt="SHOP++商城" />
+                </a>
+            </div>
+            <div class="span6">
+                <div class="search">
+                    <form id="productSearchForm" action="/shopxxb2b2c/product/search" method="get">
+                        <input name="keyword" class="keyword" value="搜索 商品/店铺" autocomplete="off" x-webkit-speech="x-webkit-speech" x-webkit-grammar="builtin:search" maxlength="30" />
+                        <button type="submit">&nbsp;</button>
+                    </form>
+                </div>
+                <div class="hotSearch">
+                    热门搜索:
+                    <a href="/shopxxb2b2c/product/search?keyword=%E8%8B%B9%E6%9E%9C">苹果</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E4%B8%89%E6%98%9F">三星</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E7%B4%A2%E5%B0%BC">索尼</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E5%8D%8E%E4%B8%BA">华为</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E9%AD%85%E6%97%8F">魅族</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E4%BD%B3%E8%83%BD">佳能</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E5%8D%8E%E7%A1%95">华硕</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E7%BE%8E%E7%9A%84">美的</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E6%A0%BC%E5%8A%9B">格力</a>
+                </div>
+            </div>
+            <div id="headerCart" class="headerCart">
+                <a class="cartButton" href="/shopxxb2b2c/cart/list"><span>购物车(<em></em>)</span></a>
+                <div class="detail">
+                    <div class="title">购物车商品</div>
+                    <div class="items"></div>
+                    <div class="summary"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+                <dl class="mainNav">
+                    <dt>
+                        <a href="/shopxxb2b2c/product_category">所有商品分类</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/">首页</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/1">手机数码</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/2">电脑办公</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/3">家用电器</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/4">服装鞋靴</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/5">化妆护理</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list?type=exchange">积分商城</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div id="broadsideNav" class="broadsideNav">
+            <ul>
+                <li class="shoppingCart">
+                    <a href="/shopxxb2b2c/cart/list"><em>购物车</em></a>
+                </li>
+                <li class="memberCenter">
+                    <a href="/shopxxb2b2c/member/index"><em>会员中心</em></a>
+                </li>
+                <li class="myCoupons">
+                    <a href="/shopxxb2b2c/member/coupon_code/exchange"><em>我的优惠券</em></a>
+                </li>
+                <li class="collectCenter">
+                    <a href="/shopxxb2b2c/member/product_favorite/list"><em>我的收藏</em></a>
+                </li>
+            </ul>
+            <div id="goTop" class="goTop"></div>
+        </div>
+    </div>
+</div>	<div class="container products">
+    <div id="compareBar" class="compareBar">
+        <form action="/shopxxb2b2c/product/compare" method="get">
+            <dl>
+                <dt>对比栏</dt>
+                <dd class="action">
+                    <a href="javascript:;" class="submit">对 比</a>
+                    <a href="javascript:;" class="clear">清 空</a>
+                </dd>
+            </dl>
+        </form>
+    </div>
+    <div class="row">
+        <div class="span2">
+            <div class="hotProductCategory">
+                <dl class="odd clearfix">
+                    <dt>
+                        <a href="/shopxxb2b2c/product/list/1">手机数码</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/7">手机通讯</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/8">手机配件</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/9">摄影摄像</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/10">数码配件</a>
+                    </dd>
+                </dl>
+                <dl class="even clearfix">
+                    <dt>
+                        <a href="/shopxxb2b2c/product/list/2">电脑办公</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/14">电脑整机</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/15">电脑配件</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/16">电脑外设</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/17">网络设备</a>
+                    </dd>
+                </dl>
+                <dl class="odd clearfix">
+                    <dt>
+                        <a href="/shopxxb2b2c/product/list/3">家用电器</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/21">生活电器</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/22">厨卫电器</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/23">个护健康</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/24">五金家装</a>
+                    </dd>
+                </dl>
+                <dl class="even clearfix">
+                    <dt>
+                        <a href="/shopxxb2b2c/product/list/4">服装鞋靴</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/26">品质男装</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/27">时尚女装</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/28">精品内衣</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/29">精品男鞋</a>
+                    </dd>
+                </dl>
+                <dl class="odd clearfix">
+                    <dt>
+                        <a href="/shopxxb2b2c/product/list/5">化妆护理</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/31">面部护肤</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/32">身体护肤</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/33">口腔护理</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/34">洗发护发</a>
+                    </dd>
+                </dl>
+                <dl class="even clearfix">
+                    <dt>
+                        <a href="/shopxxb2b2c/product/list/6">家居家装</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/36">家纺布艺</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/37">家居照明</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/38">家装建材</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/product/list/39">生活日用</a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="hotBrand clearfix">
+                <dl>
+                    <dt>热门品牌</dt>
+                    <dd>
+                        <a href="/shopxxb2b2c/brand/detail/25" title="耐克">
+                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/37406672-e5af-4bbc-81a4-20852726633f.gif" alt="耐克" />
+                            <span>耐克</span>
+                        </a>
+                    </dd>
+                    <dd class="even">
+                        <a href="/shopxxb2b2c/brand/detail/26" title="特步">
+                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/c244049d-0463-4f98-88ec-f3b038f76706.gif" alt="特步" />
+                            <span>特步</span>
+                        </a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/brand/detail/27" title="安踏">
+                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/06a5aab7-27a1-4ed7-848b-fc7c85df2a22.gif" alt="安踏" />
+                            <span>安踏</span>
+                        </a>
+                    </dd>
+                    <dd class="even">
+                        <a href="/shopxxb2b2c/brand/detail/28" title="劲霸">
+                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/74ece407-1cea-4184-9cdf-c5d13759a0d1.gif" alt="劲霸" />
+                            <span>劲霸</span>
+                        </a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c/brand/detail/29" title="柒牌">
+                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/bbf66ea5-430b-43d3-987d-71ec5c60aca5.gif" alt="柒牌" />
+                            <span>柒牌</span>
+                        </a>
+                    </dd>
+                    <dd class="even">
+                        <a href="/shopxxb2b2c/brand/detail/30" title="杉杉">
+                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/3e6d3100-0558-43cb-88c7-77a09e0ea8c7.gif" alt="杉杉" />
+                            <span>杉杉</span>
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="span10">
+            <div class="breadcrumb">
+                <ul>
+                    <li>
+                        <a href="/shopxxb2b2c/">首页</a>
+                    </li>
+                    <li>服装鞋靴</li>
+                </ul>
+            </div>
+            <form id="productForm" action="/shopxxb2b2c/product/list/4" method="get">
+                <input type="hidden" name="storeProductCategoryId" value="" />
+                <input type="hidden" id="brandId" name="brandId" value="" />
+                <input type="hidden" id="promotionId" name="promotionId" value="" />
+                <input type="hidden" id="orderType" name="orderType" value="" />
+                <input type="hidden" id="type" name="type" value="" />
+                <input type="hidden" id="pageNumber" name="pageNumber" value="1" />
+                <input type="hidden" id="pageSize" name="pageSize" value="20" />
+                <div id="filter" class="filter">
+                    <div class="title">筛选商品</div>
+                    <div class="content">
+                        <dl class="clearfix">
+                            <dt>分类:</dt>
+                            <dd>
+                                <a href="/shopxxb2b2c/product/list/26">品质男装</a>
+                            </dd>
+                            <dd>
+                                <a href="/shopxxb2b2c/product/list/27">时尚女装</a>
+                            </dd>
+                            <dd>
+                                <a href="/shopxxb2b2c/product/list/28">精品内衣</a>
+                            </dd>
+                            <dd>
+                                <a href="/shopxxb2b2c/product/list/29">精品男鞋</a>
+                            </dd>
+                            <dd>
+                                <a href="/shopxxb2b2c/product/list/30">潮流女鞋</a>
+                            </dd>
+                            <dd class="moreOption" title="更多"></dd>
+                        </dl>
+                        <dl class="clearfix">
+                            <dt>品牌:</dt>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="25">耐克</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="26">特步</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="27">安踏</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="28">劲霸</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="29">柒牌</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="30">杉杉</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="31">红豆</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" class="brand" brandId="32">婷美</a>
+                            </dd>
+                            <dd class="moreOption" title="更多"></dd>
+                        </dl>
+                    </div>
+                    <div id="moreFilter" class="moreFilter">
+
+                    </div>
+                </div>
+                <div class="bar">
+                    <div id="layout" class="layout">
+                        <label>布局:</label>
+                        <a href="javascript:;" id="gridType" class="gridType">
+                            <span></span>
+                        </a>
+                        <a href="javascript:;" id="listType" class="listType">
+                            <span></span>
+                        </a>
+                        <label>数量:</label>
+                        <a href="javascript:;" class="size current" pageSize="20">
+                            <span>20</span>
+                        </a>
+                        <a href="javascript:;" class="size" pageSize="40">
+                            <span>40</span>
+                        </a>
+                        <a href="javascript:;" class="size" pageSize="80">
+                            <span>80</span>
+                        </a>
+                        <span class="page">
+								<label>共0个商品 1/1</label>
+							</span>
+                    </div>
+                    <div id="sort" class="sort">
+                        <div id="orderMenu" class="orderMenu">
+                            <span>置顶降序</span>
+                            <ul>
+                                <li orderType="topDesc">置顶降序</li>
+                                <li orderType="priceAsc">价格升序</li>
+                                <li orderType="priceDesc">价格降序</li>
+                                <li orderType="salesDesc">销量降序</li>
+                                <li orderType="scoreDesc">评分降序</li>
+                                <li orderType="dateDesc">日期降序</li>
+                            </ul>
+                        </div>
+                        <a href="javascript:;" class="asc" orderType="priceAsc">价格从低到高</a>
+                        <a href="javascript:;" class="desc" orderType="salesDesc">销量</a>
+                        <a href="javascript:;" class="desc" orderType="scoreDesc">评分</a>
+                        <input type="text" id="startPrice" name="startPrice" class="startPrice" value="" maxlength="16" title="价格过滤最低价格" onpaste="return false" />
+                        <label>-</label>
+                        <input type="text" id="endPrice" name="endPrice" class="endPrice" value="" maxlength="16" title="价格过滤最高价格" onpaste="return false" />
+                        <button type="submit">确 定</button>
+                    </div>
+                </div>
+                <div id="result" class="result grid clearfix">
+                    <dl><dt>对不起，没有找到符合您检索条件的商品</dt><dd>1、请确认设置的检索条件是否正确</dd><dd>2、可尝试修改检索条件，以获得更多的搜索结果</dd></dl>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="service clearfix">
+        <dl>
+            <dt class="icon1">新手指南</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="icon2">特色服务</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="icon3">支付方式</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="icon4">配送方式</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <div class="qrCode">
+            <img src="/shopxxb2b2c/resources/shop/images/qr_code.jpg" alt="官方微信" />
+            官方微信
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="bottomNav">
+            <ul>
+                <li>
+                    <a href="#">关于我们</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">联系我们</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">诚聘英才</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">隐私政策</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">法律声明</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">客户服务</a>
+                    |
+                </li>
+                <li>
+                    <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/friend_link">友情链接</a>
+
+                </li>
+            </ul>
+        </div>
+        <div class="info">
+            <p>湘ICP备10000000号</p>
+            <p>Copyright © 2005-2017 SHOP++商城 版权所有</p>
+            <ul>
+                <li>
+                    <a href="http://www.shopxx.net" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/1c675feb-e488-4fd5-a186-b28bb6de445a.gif" alt="SHOP++" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.alipay.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/ae13eddc-25ac-427a-875d-d1799d751076.gif" alt="支付宝" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.tenpay.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/adaa9ac5-9994-4aa3-a336-b65613c85d50.gif" alt="财付通" />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.95516.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/41c18c8d-f69a-49fe-ace3-f16c2eb07983.gif" alt="中国银联" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.kuaidi100.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/ea46ca0a-e8f0-4e2c-938a-5cb19a07cb9a.gif" alt="快递100" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.cnzz.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/e12f226b-07f9-4895-bcc2-78dbe551964b.gif" alt="站长统计" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://down.admin5.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/fd9d6268-e4e2-41f6-856d-4cb8a49eadd1.gif" alt="A5下载" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.ccb.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/6c57f398-0498-4044-80d8-20f6c40d5cef.gif" alt="中国建设银行" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div></body>
+</html>

@@ -1,0 +1,162 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>添加品牌 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/webuploader.js"></script>
+    <script type="text/javascript" src="../../resources/admin/ueditor/ueditor.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript">
+        $().ready(function() {
+
+            var $inputForm = $("#inputForm");
+            var $type = $("#type");
+            var $logo = $("#logo");
+            var $filePicker = $("#filePicker");
+            var $introduction = $("#introduction");
+
+
+            $filePicker.uploader();
+
+            $introduction.editor();
+
+            $type.change(function() {
+                if ($(this).val() == "text") {
+                    $logo.prop("disabled", true).closest("tr").hide();
+                } else {
+                    $logo.prop("disabled", false).closest("tr").show();
+                }
+            });
+
+            // 表单验证
+            $inputForm.validate({
+                rules: {
+                    name: "required",
+                    logo: {
+                        required: true,
+                        pattern: /^(http:\/\/|https:\/\/|\/).*$/i
+                    },
+                    url: {
+                       /* pattern: /^(http:\/\/|https:\/\/|ftp:\/\/|mailto:|\/|#).*$/i*/
+                    },
+                    order: "digits"
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="breadcrumb">
+    <a href="../../admin/index">首页</a> &raquo; 添加品牌
+</div>
+<form id="inputForm" >
+    <table class="input">
+        <tr>
+            <th>
+                <span class="requiredField">*</span>名称:
+            </th>
+            <td>
+                <input type="text" name="name" class="text" maxlength="200" v-model="business.name"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                类型:
+            </th>
+            <td>
+                <select id="type" name="type" v-model="business.type">
+                    <option value="text">文本</option>
+                    <option value="image">图片</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="hidden">
+            <th>
+                logo:
+            </th>
+            <td>
+					<span class="fieldSet">
+						<input type="text" id="logo" name="logo" class="text" maxlength="200" disabled="disabled" v-model="business.logo"/>
+						<a href="javascript:;" id="filePicker" class="button">选择文件</a>
+					</span>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                网址:
+            </th>
+            <td>
+                <input type="text" name="url" class="text" maxlength="200" v-model="business.url"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                排序:
+            </th>
+            <td>
+                <input type="text" name="orders" class="text" maxlength="9" v-model="business.orders" />
+            </td>
+        </tr>
+       <!-- <tr>
+            <th>
+                介绍:
+            </th>
+            <td>
+                <textarea id="introduction" name="introduction" class="editor"></textarea>
+            </td>
+        </tr>-->
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="submit" class="button" value="确 定" onclick="addBrand()"/>
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+    <script type="application/javascript">
+        var addVue ='';
+    addVue = new Vue({
+        el:'#inputForm',
+        data:{
+            business:{
+                name:'',
+                type:'',
+                logo:'',
+                url:'',
+                orders:''
+              /*  introduction:''*/
+            }
+        }
+    })
+    addBrand = function () {
+        $.ajax({
+            url:'../../brand/addBrand.do',
+            data:addVue.business,
+            type:'post',
+            dataType:'json',
+            success:function (data) {
+                alert(data.message);
+                location.href = "list.html"
+            },
+            error:function () {
+                alert("新增失败")
+            }
+        })
+
+    }
+</script>
+</html>
