@@ -16,7 +16,7 @@ public class BusinessattributeController {
     private BusinessattributeService businessattributeService;
 
     @RequestMapping("/searchBusinessattribute")
-    public PageResult searchBusinessattribute(Businessattribute businessattribute,@RequestParam(defaultValue = "1") Integer page,@RequestParam(defaultValue = "5") Integer rows){
+    public PageResult searchBusinessattribute(Businessattribute businessattribute, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows){
 
         return businessattributeService.findPageBusinessattribute(businessattribute,rows,page);
     }

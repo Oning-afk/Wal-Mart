@@ -2,8 +2,9 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.ProductCategoryBean;
 import com.walmart.pojo.ProductCategoryBeanExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductCategoryBeanMapper {
     int countByExample(ProductCategoryBeanExample example);

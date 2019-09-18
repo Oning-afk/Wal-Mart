@@ -2,8 +2,9 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Sku;
 import com.walmart.pojo.SkuExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SkuMapper {
     int countByExample(SkuExample example);

@@ -10,7 +10,7 @@
 
     <dubbo:protocol name="dubbo" port="20881"></dubbo:protocol>
 	<dubbo:application name="walmart-service"/>
-    <dubbo:registry address="zookeeper://localhost:2181" timeout="1200000"/>
+    <dubbo:registry address="zookeeper://localhost:2181" timeout="60000"/>
     <dubbo:annotation package="com.walmart.service.impl" />
    
    

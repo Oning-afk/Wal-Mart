@@ -2,8 +2,9 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Storecategory;
 import com.walmart.pojo.StorecategoryExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface StorecategoryMapper {
     int countByExample(StorecategoryExample example);

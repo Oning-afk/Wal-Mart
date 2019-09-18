@@ -6,6 +6,8 @@ import com.walmart.service.GradeService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,7 +27,13 @@ public class GradeController {
 }
     @RequestMapping("saveGrade")
     public void savegrade(Storerank storerank){
-         gradeService.savegrade(storerank);
+        storerank.setCreateddate(new Date());
+        storerank.setLastmodifieddate(new Date());
+        storerank.setIsallowregister(true);
+        storerank.setVersion((long)0);
+        storerank.setServicefee(BigDecimal.ONE);
+
+    gradeService.savegrade(storerank);
     }
     @RequestMapping("delGrade")
     public void delgrade(Long id){
@@ -35,4 +43,9 @@ public class GradeController {
     public List<Storerank> selectgrade(Long id){
         return gradeService.selectgrade(id);
     }
+    @RequestMapping("delGradeall")
+    public void delGradeall(Long[] id){
+        gradeService.delGradeall(id);
+    }
+    
 }

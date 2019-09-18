@@ -2,8 +2,9 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Specification;
 import com.walmart.pojo.SpecificationExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SpecificationMapper {
     int countByExample(SpecificationExample example);

@@ -2,8 +2,9 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Brand;
 import com.walmart.pojo.BrandExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BrandMapper {
     int countByExample(BrandExample example);

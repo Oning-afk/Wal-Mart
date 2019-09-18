@@ -3,7 +3,6 @@ package com.walmart.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.entity.PageResult;
 import com.walmart.service.ProductService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +29,7 @@ public class ProductController {
      */
     @RequestMapping("findAll")
     @ResponseBody
-    public PageResult findProductList(@RequestParam(defaultValue = "1") Integer page,@RequestParam(defaultValue = "5") Integer rows){
+    public PageResult findProductList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows){
 
         return productService.findProductList(rows,page);
     }

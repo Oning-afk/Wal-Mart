@@ -2,12 +2,12 @@ package com.walmart.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.walmart.mapper.StorecategoryMapper;
-import com.walmart.mapper.StorerankMapper;
 import com.walmart.pojo.Storecategory;
 import com.walmart.service.ClassifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
 @Service
 public class ClassifyServiceImpl implements ClassifyService {
     @Autowired
@@ -29,6 +29,15 @@ public class ClassifyServiceImpl implements ClassifyService {
 
     @Override
     public List<Storecategory> selectclassify(Integer id) {
+
         return storecategoryMapper.selectByExample(null);
     }
+
+    @Override
+    public void delclassifyall(Long[] id) {
+        for (long id4:id) {
+            storecategoryMapper.deleteByPrimaryKey(id4);
+        }
+    }
+
 }

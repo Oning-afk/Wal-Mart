@@ -14,12 +14,10 @@ import java.util.List;
 public class ClassifyController {
     @Reference
     private ClassifyService classifyService;
-
     @RequestMapping("findclassify")
     public List<Storecategory> findclassify(){
         return classifyService.findclassify();
     }
-
     @RequestMapping("saveclassify")
     public void saveclassify(Storecategory storecategory){
         storecategory.setCreateddate(new Date());
@@ -35,7 +33,12 @@ public class ClassifyController {
     }
     @RequestMapping("selectclassify")
     public List<Storecategory> selectclassify(Integer id){
+
         return classifyService.selectclassify(id);
+    }
+    @RequestMapping("delclassifyall")
+    public void delclassifyall(Long[] id){
+        classifyService.delclassifyall(id);
     }
 
 }

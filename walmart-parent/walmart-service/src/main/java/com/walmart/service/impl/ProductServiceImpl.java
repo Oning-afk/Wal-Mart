@@ -1,13 +1,15 @@
 package com.walmart.service.impl;
 
-import com.alibaba.druid.sql.PagerUtils;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.walmart.entity.PageResult;
 import com.walmart.mapper.ProductCategoryBeanMapper;
 import com.walmart.mapper.ProductMapper;
 import com.walmart.mapper.StoreMapper;
-import com.walmart.pojo.*;
+import com.walmart.pojo.Product;
+import com.walmart.pojo.ProductCategoryBean;
+import com.walmart.pojo.ProductWithBLOBs;
+import com.walmart.pojo.Store;
 import com.walmart.pojogroup.ProductStoreGroupBean;
 import com.walmart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public PageResult findProductList(Integer rows ,Integer page) {
+    public PageResult findProductList(Integer rows , Integer page) {
         PageHelper.startPage(page,rows);
         PageResult pageResult = new PageResult();
         List<Product> products = productMapper.selectByExample(null);

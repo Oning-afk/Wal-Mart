@@ -2,8 +2,9 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Storerank;
 import com.walmart.pojo.StorerankExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface StorerankMapper {
     int countByExample(StorerankExample example);
