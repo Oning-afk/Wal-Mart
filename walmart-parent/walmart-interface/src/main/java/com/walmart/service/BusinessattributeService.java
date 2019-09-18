@@ -11,7 +11,7 @@ public interface BusinessattributeService {
      * @param pageNum
      * @return
      */
-    PageResult findPageBusinessattribute(Businessattribute businessattribute, int pageSize, int pageNum);
+    PageResult findPageBusinessattribute(Businessattribute businessattribute, int pageSize , int pageNum);
 
     /**
      * 商家注册项批删

@@ -2,9 +2,8 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Attribute;
 import com.walmart.pojo.AttributeExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AttributeMapper {
     int countByExample(AttributeExample example);

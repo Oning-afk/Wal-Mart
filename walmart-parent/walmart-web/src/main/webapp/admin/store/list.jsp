@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
@@ -16,10 +15,23 @@
     <script type="text/javascript">
         $(function() {
             findStore();
+            vm = new Vue({
+                el:'#listForm',
+                data:{
+                    stores:'',
+                    pageSize:'',
+                    pageNum:'',
+                    storePage:'',
+                    checkboxIds:[]
+                }
+            });
+            storeVue = new Vue({
+                el: '#storeVue',
+                data: {
+                    message : "查询到" + 0 + "条信息"
+                }
+            });
         });
-
-        var vm;
-        var storeVue;
         function findStore() {
             $.ajax({
                 url:"/store/findStore.do",
@@ -27,23 +39,12 @@
                 data:$("#listForm").serialize(),
                 dataType:"json",
                 success:function(data){
-                  vm =  new Vue({
-                        el:'#listForm',
-                        data:{
-                            stores:data.rows,
-                            pageSize:data.pageSize,
-                            pageNum:data.pageNum,
-                            storePage:data.total,
-                            checkboxIds:[]
-                        }
-                    });
-                    storeVue = new Vue({
-                        el:'#storeVue',
-                        data:{
-                            message:"查询到"+data.total+"条信息"
-                        }
-                    })
-                },
+                        vm.stores=data.rows;
+                        vm.pageSize=data.pageSize;
+                        vm.pageNum=data.pageNum;
+                        vm.storePage=data.total;
+                        storeVue.message="查询到"+data.total+"条信息"
+                    },
                 error:function(){
                     alert("错误");
                 }
@@ -79,6 +80,39 @@
         function add() {
             window.location.href="addstore.jsp";
         }
+
+        //删除
+        function del() {
+            //获取选中的店铺
+            var id='';
+            var ids=vm.checkboxIds;
+            for (var i = 0; i < ids.length; i++) {
+                id+=","+ids[i];
+            }
+            id=id.substr(1);
+            $.ajax({
+                url:"/store/delStore.do",
+                type:"post",
+                data:{id:id},
+                dataType:"json",
+                success:function(data){
+                    if(data.success){
+                        searchStore();
+                    }else{
+                        alert(data.message)
+                    }
+                },
+                error:function(){
+                    alert("错误");
+                }
+            })
+
+        }
+
+        //刷新页面
+        function replace() {
+            window.location.href=location;
+        }
     </script>
 </head>
 <body>
@@ -95,10 +129,10 @@
             <a href="javascript:;" class="iconButton" onclick="add()">
                 <span class="addIcon">&nbsp;</span>添加
             </a>
-            <a href="javascript:;" id="deleteButton" class="iconButton disabled">
+            <a href="javascript:;" id="deleteButton" class="iconButton" onclick="del()">
                 <span class="deleteIcon">&nbsp;</span>删除
             </a>
-            <a href="javascript:;" id="refreshButton" class="iconButton">
+            <a href="javascript:replace()" id="refreshButton" class="iconButton">
                 <span class="refreshIcon">&nbsp;</span>刷新
             </a>
             <div id="filterMenu" class="dropdownMenu">
@@ -191,7 +225,7 @@
             <td>{{entity.storecategory.name}}</td>
             <td>
                 <span v-if="entity.store.status==0" class="gray">审核中</span>
-                <span v-else-if="entity.store.status==1" class="red"></span>
+                <span v-else-if="entity.store.status==1" class="red">审核失败</span>
                 <span v-else-if="entity.store.status==2" class="green">审核成功</span>
                 <span v-else-if="entity.store.status==3" class="green">开店成功</span>
             </td>
@@ -202,8 +236,7 @@
             <td><span title="entity.store.createddate">{{entity.store.createddate}}</span></td>
             <td><span title="entity.store.enddate">{{entity.store.enddate}}</span></td>
             <td>
-                <button type="button" class="btn btn-info btn-lg" onclick="findStoreById(entity.store.id)">查看</button>&nbsp;
-                <button type="button" class="btn btn-info btn-lg" onclick="editStore(entity.store.id)">编辑</button>
+                <button type="button" class="btn btn-info btn-lg" @click="editStore(entity.store.id)" >编辑</button>
             </td>
         </tr>
     </table>

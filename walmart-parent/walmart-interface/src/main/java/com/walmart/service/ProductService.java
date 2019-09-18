@@ -15,6 +15,4 @@ public interface ProductService {
     boolean updateToUp(Long id);
 
     boolean updateToDown(Long id);
-
-    boolean deleteProduct(Long[] ids);
 }

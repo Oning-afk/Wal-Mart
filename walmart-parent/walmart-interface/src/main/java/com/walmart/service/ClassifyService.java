@@ -12,6 +12,4 @@ public interface ClassifyService {
     void dleclassify(Long id);
 
     List<Storecategory> selectclassify(Integer id);
-
-    void delclassifyall(Long[] id);
 }

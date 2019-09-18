@@ -7,14 +7,13 @@ import com.walmart.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-
 @Service
 public class GradeServiceImpl implements GradeService {
     @Autowired
     private StorerankMapper storerankMapper;
     @Override
-    public List<Storerank> findgrade() {
-        return storerankMapper.selectByExample(null);
+    public List<Storerank> findgrade(Boolean isallowregister) {
+        return storerankMapper.selectByRank(isallowregister);
     }
 
     @Override
@@ -30,12 +29,5 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public List<Storerank> selectgrade(Long id) {
         return storerankMapper.selectByExample(null);
-    }
-
-    @Override
-    public void delGradeall(Long[] id) {
-        for ( long id5:id) {
-            storerankMapper.deleteByPrimaryKey(id5);
-        }
     }
 }

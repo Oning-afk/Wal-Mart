@@ -3,9 +3,8 @@ package com.walmart.mapper;
 import com.walmart.pojo.Product;
 import com.walmart.pojo.ProductExample;
 import com.walmart.pojo.ProductWithBLOBs;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface ProductMapper {
     int countByExample(ProductExample example);

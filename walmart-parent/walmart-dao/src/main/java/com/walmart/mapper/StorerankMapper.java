@@ -19,6 +19,8 @@ public interface StorerankMapper {
 
     List<Storerank> selectByExample(StorerankExample example);
 
+    List<Storerank> selectByRank(Boolean isallowregister);
+
     Storerank selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Storerank record, @Param("example") StorerankExample example);

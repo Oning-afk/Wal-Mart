@@ -3,6 +3,7 @@ package com.walmart.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.entity.PageResult;
 import com.walmart.service.ProductService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  **/
 @RequestMapping("product")
 @Controller
+@RequiresPermissions("admin:product")
 public class ProductController {
 
     @Reference
@@ -29,7 +31,7 @@ public class ProductController {
      */
     @RequestMapping("findAll")
     @ResponseBody
-    public PageResult findProductList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows){
+    public PageResult findProductList(@RequestParam(defaultValue = "1") Integer page,@RequestParam(defaultValue = "5") Integer rows){
 
         return productService.findProductList(rows,page);
     }
@@ -52,11 +54,5 @@ public class ProductController {
     @ResponseBody
     public boolean updateToDown(Long id){
         return productService.updateToDown(id);
-    }
-
-    @RequestMapping("deleteProduct")
-    @ResponseBody
-    public boolean deleteProduct(Long[] ids){
-        return productService.deleteProduct(ids);
     }
 }

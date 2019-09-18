@@ -3,6 +3,7 @@ package com.walmart.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.pojo.Storecategory;
 import com.walmart.service.ClassifyService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,13 +12,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("classify")
+@RequiresPermissions("admin:storecategory")
 public class ClassifyController {
     @Reference
     private ClassifyService classifyService;
+
     @RequestMapping("findclassify")
     public List<Storecategory> findclassify(){
         return classifyService.findclassify();
     }
+
     @RequestMapping("saveclassify")
     public void saveclassify(Storecategory storecategory){
         storecategory.setCreateddate(new Date());
@@ -33,12 +37,7 @@ public class ClassifyController {
     }
     @RequestMapping("selectclassify")
     public List<Storecategory> selectclassify(Integer id){
-
         return classifyService.selectclassify(id);
-    }
-    @RequestMapping("delclassifyall")
-    public void delclassifyall(Long[] id){
-        classifyService.delclassifyall(id);
     }
 
 }

@@ -1,13 +1,13 @@
 package com.walmart.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.github.pagehelper.PageHelper;
-import com.walmart.entity.PageResult;
 import com.walmart.pojo.Business;
 import com.walmart.service.BusinessService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @program: Wal-Mart
@@ -17,20 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("business")
+@RequiresPermissions("admin:business")
 public class BusinessController {
 
     @Reference
     private BusinessService businessService;
 
-    @RequestMapping("/findPageBusiness")
-    public PageResult findPageBusiness(Business business, @RequestParam(defaultValue = "1")Integer pageSize,@RequestParam(defaultValue = "124")Integer pageNum){
-
-        return businessService.findPageBusiness(business,pageSize,pageNum);
-    }
-
-    @RequestMapping("/delBusiness")
-    public boolean delBusiness(String [] ids){
-
-        return businessService.delBusiness(ids);
+    /**
+    * @Description: 商家自动补全
+    * @Param: 用户输入的名字
+    * @return: List<Business
+    * @Author: 邓希凡
+    * @Date: 2019/9/17
+    */
+    @RequestMapping("queryBusiness")
+    public List<Business> queryBusiness(){
+        return businessService.queryBusiness();
     }
 }

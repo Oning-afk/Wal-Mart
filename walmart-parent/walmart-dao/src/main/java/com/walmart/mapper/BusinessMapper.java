@@ -2,9 +2,8 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Business;
 import com.walmart.pojo.BusinessExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface BusinessMapper {
     int countByExample(BusinessExample example);
