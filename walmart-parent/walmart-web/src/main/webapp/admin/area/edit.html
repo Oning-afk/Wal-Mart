@@ -1,0 +1,98 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>编辑地区 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript">
+        var editAreaTableVue;
+        var id = window.location.href.split("?")[1].split("=")[1];
+        $().ready(function() {
+            $.ajax({
+                type: "post",
+                url: "../../system/searchAreaById.do",
+                data:{
+                    "id":id,
+                },
+                dataType: "json",
+                success: function (result) {
+                    editAreaTableVue = new Vue({
+                        el: '#editArea',
+                        data: {
+                            area:{
+                                id:id,
+                                name:result.name,
+                                orders:result.orders
+                            },
+                            parentName:result.fullname
+                        }
+                    })
+                }
+            })
+        });
+
+        function editAreaById(){
+            $.ajax({
+                type: "post",
+                url: "../../system/editAreaById.do",
+                data:editAreaTableVue.area,
+                dataType: "json",
+                success: function (result) {
+                    if(result){
+                        history.back();
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div class="breadcrumb">
+    <a href="../../admin/index.jsp">首页</a> &raquo; 编辑地区
+</div>
+    <table class="input" id="editArea">
+        <tr>
+            <th>
+                上级地区:
+            </th>
+            <td>
+                {{parentName}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>名称:
+            </th>
+            <td>
+                <input type="text" name="name" class="text" v-model="area.name" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                排序:
+            </th>
+            <td>
+                <input type="text" name="order" class="text" v-model="area.orders" maxlength="9" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="submit" onclick="editAreaById()" class="button" value="确 定" />
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

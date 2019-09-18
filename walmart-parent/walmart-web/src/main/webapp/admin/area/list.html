@@ -1,0 +1,195 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>地区列表 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/business/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/business/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../resources/business/js/bootstrap.js"></script>
+
+</head>
+<body>
+<div class="breadcrumb">
+    <a href="../../admin/index.jsp">首页</a>
+</div>
+<div class="bar" id="up">
+    <a onclick="add(0)" class="iconButton">
+        <span class="addIcon">&nbsp;</span>添加
+    </a>
+</div>
+<table id="listTable" class="list">
+</table>
+</body>
+<script>
+    var contentVue;
+    var html;
+    var upTr;
+    $(function () {
+        $.ajax({
+            type: "post",
+            url: "../../system/getArea.do",
+            data: "",
+            dataType: "json",
+            success: function (result) {
+                html = '<tr>' +
+                    '<th colspan="5" class="green" style="text-align: center;">' +
+                    '顶级地区' +
+                    '</th>' +
+                    '</tr>'
+                ;
+                common(result)
+                $("#listTable").append(html);
+            }
+        })
+        contentVue = new Vue({
+            el: '#content',
+            data: {
+                area: {
+                    id: '',
+                    name: '',
+                    orders: '',
+                    parentId: ''
+                }
+            }
+        })
+    })
+
+    function getArea(id,name) {
+        $.ajax({
+            type: "post",
+            url: "../../system/getArea.do",
+            data:{
+                id:id
+            },
+            dataType: "json",
+            success: function (result) {
+                html =  '<tr>' +
+                    '<th colspan="5" class="green" style="text-align: center;">'+
+                    '上级地区 - '+name+''+
+                    '</th>'+
+                    '</tr>'
+                var sss = '<a onclick="add('+id+')" class="iconButton">'+
+                    '<span class="addIcon">&nbsp;</span>添加'+
+                    '</a>'
+                ;
+                if(result.length>0){
+                    common(result);
+                    if(result[0].parentId != null){
+                        sss +=  '<a href="javascript:getup('+id+')" class="iconButton">'+
+                            '<span class="upIcon">&nbsp;</span>上级地区'+
+                            '</a>'
+                    }
+                }else{
+                    sss +=  '<a href="javascript:getup('+id+')" class="iconButton">'+
+                        '<span class="upIcon">&nbsp;</span>上级地区'+
+                        '</a>';
+                    html += '<tr>'+
+                        '<td colspan="5" style="text-align: center; color: red;">'+
+                        '无下级地区'+
+                        '<a onclick="add('+id+')" class="silver">添加</a>'+
+                        '</td>'+
+                        '</tr>';
+                }
+                $("#listTable").html(html);
+                $("#up").html(sss);
+            }
+        })
+    }
+
+    function common(result) {
+        for(var i =0;i < result.length/5;i++){
+            html+="<tr>";
+            var s = result.length/5;
+            if(i !=s && i>s-1){
+                for(var j =0;j<result.length%5;j++){
+                    var s = i*5+j;
+                    html += '<td>'+
+                        '<a href="javascript:getArea('+result[s].id+',\''+result[s].name+'\')">'+result[s].name+'</a>'+
+                        '<a onclick="editArea('+result[s].id+')">[编辑]</a>'+
+                        '<a href="javascript:deleteArea('+result[s].id+')">[删除]</a>'+
+                        '</td>';
+                }
+            }else{
+                for(var j =0;j<5;j++){
+                    var s = i*5+j;
+                    html += '<td>'+
+                        '<a href="javascript:getArea('+result[s].id+',\''+result[s].name+'\')">'+result[s].name+'</a>'+
+                        '<a onclick="editArea('+result[s].id+')">[编辑]</a>'+
+                        '<a href="javascript:deleteArea('+result[s].id+')">[删除]</a>'+
+                        '</td>';
+                }
+            }
+            html+="</tr>"
+        }
+    }
+
+    function getup(id){
+        $.ajax({
+            type: "post",
+            url: "../../system/getAreaUp.do",
+            data:{
+                id:id
+            },
+            dataType: "json",
+            success: function (result) {
+                var sss =   '<a onclick="add('+id+')" class="iconButton">'+
+                    '<span class="addIcon">&nbsp;</span>添加'+
+                    '</a>'
+                ;
+                if(result.length>0){
+                    html = '';
+                    if(result[0].parentId != null){
+                        sss +=  '<a href="javascript:getup('+result[0].parentId+',\''+result[0].fullname+'\')" class="iconButton">'+
+                            '<span class="upIcon">&nbsp;</span>上级地区'+
+                            '</a>';
+                        html += '<tr>' +
+                            '<th colspan="5" class="green" style="text-align: center;">'+
+                            '上级地区 - '+result[0].fullname+''+
+                            '</th>'+
+                            '</tr>';
+                    }else{
+                        html += '<tr>' +
+                            '<th colspan="5" class="green" style="text-align: center;">'+
+                            '顶级地区'+
+                            '</th>'+
+                            '</tr>';
+                    }
+                    common(result);
+                }else{
+                    sss +=  '<a href="javascript:getup('+result[i].parentId+')" class="iconButton">'+
+                        '<span class="upIcon">&nbsp;</span>上级地区'+
+                        '</a>';
+                }
+                $("#listTable").html(html);
+                $("#up").html(sss);
+            }
+        })
+    }
+
+    function deleteArea(id) {
+        $.ajax({
+            type: "post",
+            url: "../../system/deleteArea.do",
+            data:{
+                id:id
+            },
+            dataType: "json",
+            success: function (result) {
+                location.href="";
+            }
+        })
+    }
+
+    function add(id) {
+        location.href="add.html?id="+id;
+    }
+
+    function editArea(id) {
+        location.href = "edit.html?id="+id;
+    }
+</script>
+</html>
