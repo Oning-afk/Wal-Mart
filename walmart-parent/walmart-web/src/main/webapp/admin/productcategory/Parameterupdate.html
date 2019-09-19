@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>编辑参数 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/list.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript">
+        $().ready(function() {
+
+            var $inputForm = $("#inputForm");
+            var $addNameButton = $("#addNameButton");
+            var $nameTable = $("#nameTable");
+
+
+            // 增加参数名称
+            $addNameButton.click(function() {
+                $nameTable.append(
+                    '<tr> <td> <input type="text" name="names" class="text" maxlength="200" \/> <\/td> <td> <a href="javascript:;" class="remove">[删除]<\/a> <\/td> <\/tr>'		);
+            });
+
+            // 删除参数名称
+            $nameTable.on("click", "a.remove", function() {
+                if ($nameTable.find("tr").size() <= 2) {
+                    $.message("warn", "删除失败，必须至少保留一项");
+                    return false;
+                }
+                $(this).closest("tr").remove();
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="breadcrumb">
+    <a href="/shopxxb2b2c/admin/common/index">首页</a> &raquo; 编辑参数
+</div>
+<form id="inputForm" action="save" method="post">
+    <table class="input">
+        <input type="text" id="id" name="id" style="display:none" class="text" maxlength="200" />
+        <tr>
+            <th>
+                绑定分类:
+            </th>
+            <td>
+                <select id="roleSelect" name="productcategoryId">
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>参数组:
+            </th>
+            <td>
+                <input type="text" name="parametergroup" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                排序:
+            </th>
+            <td>
+                <input type="text" name="orders" class="text" maxlength="9" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <a href="javascript:;" id="addNameButton" class="button">增加参数名称</a>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <table id="nameTable" class="item">
+                    <tr>
+                        <th>
+                            参数名称
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" name="names" class="text" maxlength="200" />
+                        </td>
+                        <td>
+                            <a href="javascript:;" class="remove">[删除]</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="button" class="button" value="确 定" onclick="subadd()"/>
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+<script type="text/javascript">
+    $(function(){
+        hanshu();
+    })
+    hanshu=function(){
+
+        $.ajax({
+            url:"../../parameter/query.do",
+            success:function(data){
+                var op="<option value=''>顶级分类";
+                for (var i = 0; i < data.length; i++) {
+                    op+="<option value='"+data[i].id+"'>"+data[i].name;
+                }
+                $("#roleSelect").html(op);
+            },
+            error:function(){
+                alert(55555)
+            }
+        })
+    }
+
+    function subadd(){
+        $.ajax({
+            url:"../../parameter/update.do",
+            data:$("#inputForm").serialize(),
+            dataType:"json",
+            success:function(data){
+                location.href = "../productcategory/ParameterList.html";
+            },
+            error:function(){
+
+                alert("系统错误，请联系管理员")
+                location.href = "../productcategory/ParameterList.html";
+            }
+        })
+    }
+</script>
+</html>

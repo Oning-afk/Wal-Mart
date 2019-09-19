@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walmart.mapper.ArticlecategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.walmart.pojo.Articlecategory" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="createdDate" property="createddate" jdbcType="TIMESTAMP" />
+    <result column="lastModifiedDate" property="lastmodifieddate" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="seoDescription" property="seodescription" jdbcType="VARCHAR" />
+    <result column="seoKeywords" property="seokeywords" jdbcType="VARCHAR" />
+    <result column="seoTitle" property="seotitle" jdbcType="VARCHAR" />
+    <result column="treePath" property="treepath" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, createdDate, lastModifiedDate, version, orders, grade, name, seoDescription, 
+    seoKeywords, seoTitle, treePath, parent_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.walmart.pojo.ArticlecategoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from articlecategory
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from articlecategory
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from articlecategory
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.walmart.pojo.ArticlecategoryExample" >
+    delete from articlecategory
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.walmart.pojo.Articlecategory" >
+    insert into articlecategory (id, createdDate, lastModifiedDate, 
+      version, orders, grade, 
+      name, seoDescription, seoKeywords, 
+      seoTitle, treePath, parent_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{createddate,jdbcType=TIMESTAMP}, #{lastmodifieddate,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=BIGINT}, #{orders,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{seodescription,jdbcType=VARCHAR}, #{seokeywords,jdbcType=VARCHAR}, 
+      #{seotitle,jdbcType=VARCHAR}, #{treepath,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.walmart.pojo.Articlecategory" >
+    insert into articlecategory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createddate != null" >
+        createdDate,
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="orders != null" >
+        orders,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="seodescription != null" >
+        seoDescription,
+      </if>
+      <if test="seokeywords != null" >
+        seoKeywords,
+      </if>
+      <if test="seotitle != null" >
+        seoTitle,
+      </if>
+      <if test="treepath != null" >
+        treePath,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createddate != null" >
+        #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="orders != null" >
+        #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="seodescription != null" >
+        #{seodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="seokeywords != null" >
+        #{seokeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="seotitle != null" >
+        #{seotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="treepath != null" >
+        #{treepath,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.walmart.pojo.ArticlecategoryExample" resultType="java.lang.Integer" >
+    select count(*) from articlecategory
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update articlecategory
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createddate != null" >
+        createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifieddate != null" >
+        lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=BIGINT},
+      </if>
+      <if test="record.orders != null" >
+        orders = #{record.orders,jdbcType=INTEGER},
+      </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seodescription != null" >
+        seoDescription = #{record.seodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seokeywords != null" >
+        seoKeywords = #{record.seokeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seotitle != null" >
+        seoTitle = #{record.seotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.treepath != null" >
+        treePath = #{record.treepath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update articlecategory
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      orders = #{record.orders,jdbcType=INTEGER},
+      grade = #{record.grade,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      seoDescription = #{record.seodescription,jdbcType=VARCHAR},
+      seoKeywords = #{record.seokeywords,jdbcType=VARCHAR},
+      seoTitle = #{record.seotitle,jdbcType=VARCHAR},
+      treePath = #{record.treepath,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.walmart.pojo.Articlecategory" >
+    update articlecategory
+    <set >
+      <if test="createddate != null" >
+        createdDate = #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="seodescription != null" >
+        seoDescription = #{seodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="seokeywords != null" >
+        seoKeywords = #{seokeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="seotitle != null" >
+        seoTitle = #{seotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="treepath != null" >
+        treePath = #{treepath,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.walmart.pojo.Articlecategory" >
+    update articlecategory
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      orders = #{orders,jdbcType=INTEGER},
+      grade = #{grade,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      seoDescription = #{seodescription,jdbcType=VARCHAR},
+      seoKeywords = #{seokeywords,jdbcType=VARCHAR},
+      seoTitle = #{seotitle,jdbcType=VARCHAR},
+      treePath = #{treepath,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

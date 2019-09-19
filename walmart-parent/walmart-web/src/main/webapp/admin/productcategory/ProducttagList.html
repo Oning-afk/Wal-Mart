@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>商品标签列表 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/list.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+</head>
+<body class="hold-transition skin-red sidebar-mini" >
+<!-- .box-body -->
+
+<div class="breadcrumb">
+    商品标签列表
+</div>
+
+<div class="box-body">
+
+    <!-- 数据表格 -->
+    <div class="table-box" id="productid">
+
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <a href="Producttagadd.html" class="iconButton">
+                        <span class="addIcon">&nbsp;</span>添加
+                    </a>
+                    <div class="buttonGroup">
+                        <a href="javascript:delContentType();" class="iconButton disabled">
+                            <span class="deleteIcon">&nbsp;</span>删除
+                        </a>
+                        <a href="javascript:;" onclick="window.location.reload();" id="refreshButton" class="iconButton">
+                            <span class="refreshIcon">&nbsp;</span>刷新
+                        </a>
+                    </div>
+               </div>
+           </div>
+        <table id="listTable" class="list">
+            <thead>
+            <tr>
+                <th class="" style="padding-right:0px">
+                    <label for="selall"></label><input id="selall" type="checkbox"/>
+                </th>
+                <th class="sorting_asc">名称</th>
+                <th class="sorting">图标</th>
+                <th class="sorting">排序</th>
+                <th class="sorting">创建日期</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="entity in productList">
+                <td>
+                    <label>
+                        <input  type="checkbox"  v-bind:value="entity.id" name="check">
+                    </label>
+                </td>
+                <td>{{entity.name}}</td>
+                <td>{{entity.icon}}</td>
+                <td>{{entity.orders}}</td>
+                <td>{{entity.createddate}}</td>
+                <td class="text-center">
+                    <a @click="updateprdoct(entity.id);">[编辑]</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+       </div>
+   </div>
+</div>
+</body>
+<script type="text/javascript">
+    var vm ;
+    $(function(){
+        $.ajax({
+            text:"post",
+            url:"../../Producttag/search.do",
+            data:"",
+            dataType:"json",
+            success:function(result){
+
+                vm = new Vue({
+                    el: '#productid',
+                    data: {
+                        productList : result.rows
+                    }
+                })
+            },
+            error:function(){
+
+                alert("系统错误，请联系管理员")
+
+            }
+        })
+
+    })
+
+    function search (page, rows) {
+        $.ajax({
+            type: "post",
+            url: "../../Producttag/search.do",
+            data: {account:$("#account").val(),page:page,rows:rows},
+            dataType: "",
+            success: function (result) {
+                    vm.userList = result.rows
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+
+
+    function delContentType() {
+        var ids=""
+        $("input[name='check']:checked").each(function(){
+            ids += ids==""?$(this).val():","+$(this).val();
+        })
+        $.post("../../Producttag/delete.do",{ids:ids},function(data){
+            if (data) {
+                alert("删除失败，请重新操作!")
+                location.reload();
+            } else {
+
+                alert("恭喜您成功删除选中的广告")
+                location.reload();
+            }
+        })
+
+    }
+
+    function updateprdoct (id){
+        $.post("../../Producttag/findOne.do",{ids:id},function(data){
+            if (data) {
+                location.reload();
+            } else {
+                location.href = "Producttagupdate.html";
+
+            }
+        })
+
+    }
+</script>
+</html>

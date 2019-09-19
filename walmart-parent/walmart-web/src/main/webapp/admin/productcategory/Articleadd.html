@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>添加文章 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="../../resources/admin/ueditor/ueditor.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+</head>
+<body>
+<div class="breadcrumb">
+    添加文章
+</div>
+<form id="inputForm">
+    <table class="input">
+        <tr>
+            <th>
+                <span class="requiredField">*</span>标题:
+            </th>
+            <td>
+                <input type="text" name="title" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>文章分类:
+            </th>
+            <td>
+                <select id="roleSelect" name="articlecategoryId">
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>文章类型:
+            </th>
+            <td>
+                <select name="type">
+                    <option value="images">三张图
+                        &nbsp;&nbsp;
+                    </option>
+                    <option value="bigimage">一张图
+                        &nbsp;&nbsp;
+                    </option>
+                    <option value="video">视频
+                        &nbsp;&nbsp;
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                作者:
+            </th>
+            <td>
+                <input type="text" name="author" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                设置:
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="isPublication" value="true" checked="checked" />是否发布
+                    <input type="hidden" name="_isPublication" value="false" />
+                </label>
+                <label>
+                    <input type="checkbox" name="isTop" value="true" />是否置顶
+                    <input type="hidden" name="_isTop" value="false" />
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                文章标签:
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="articleTagIds" value="1" />热点
+                </label>
+                <label>
+                    <input type="checkbox" name="articleTagIds" value="2" />推荐
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                内容:
+            </th>
+            <td>
+                <textarea id="content" name="content" class="editor"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                页面标题:
+            </th>
+            <td>
+                <input type="text" name="seotitle" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                页面关键词:
+            </th>
+            <td>
+                <input type="text" name="seokeywords" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                页面描述:
+            </th>
+            <td>
+                <input type="text" name="seodescription" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="button" class="button" value="确 定" onclick="subadd()"/>
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    $(function(){
+        hanshu();
+    })
+    hanshu=function(){
+        $.ajax({
+            url:"../../articlecategory/query.do",
+            success:function(data){
+                var op="<option value=''>顶级分类";
+                for (var i = 0; i < data.length; i++) {
+                    op+="<option value='"+data[i].id+"'>"+data[i].name;
+                }
+                $("#roleSelect").html(op);
+            },
+            error:function(){
+                alert(55555)
+            }
+        })
+    }
+
+    function subadd () {
+        $.ajax({
+            url:"../../article/add.do",
+            data:$("#inputForm").serialize(),
+            dataType:"json",
+            success:function(data){
+                location.href = "ArticlecategoryList.html";
+            },
+            error:function(){
+
+                alert("系统错误，请联系管理员")
+                location.href = "ArticlecategoryList.html";
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

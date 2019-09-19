@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>添加商品分类 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
+    <style type="text/css">
+        .brands label, .promotions label {
+            width: 150px;
+            display: block;
+            float: left;
+            padding-right: 6px;
+        }
+    </style>
+    <script type="text/javascript">
+        $().ready(function() {
+
+            var $inputForm = $("#inputForm");
+
+
+            // 表单验证
+            $inputForm.validate({
+                rules: {
+                    name: "required",
+                    generalRate: {
+                        required: true,
+                        min: 0,
+                        decimal: {
+                            integer: 3,
+                            fraction: 3
+                        }
+                    },
+                    selfRate: {
+                        required: true,
+                        min: 0,
+                        decimal: {
+                            integer: 3,
+                            fraction: 3
+                        }
+                    },
+                    order: "digits"
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="breadcrumb">
+    <a href="/shopxxb2b2c/admin/common/index">首页</a> &raquo; 添加商品分类
+</div>
+
+<form id="inputForm">
+    <table class="input">
+        <tr>
+            <th>
+                <span class="requiredField">*</span>名称:
+            </th>
+            <td>
+                <input type="text" id="name" name="name" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                上级分类:
+            </th>
+            <td>
+                <select id="roleSelect" name="parentId">
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>普通店铺分佣比例:
+            </th>
+            <td>
+                <input type="text" id="generalRate" name="generalrate" class="text" maxlength="200"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>自营店铺分佣比例:
+            </th>
+            <td>
+                <input type="text" id="selfRate" name="selfrate" class="text" maxlength="200"/>
+            </td>
+        </tr>
+        <tr class="brands">
+            <th>
+                关联品牌:
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="brandIds" value="1" />苹果
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="2" />三星
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="3" />索尼
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="4" />华为
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="5" />魅族
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="6" />佳能
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="7" />尼康
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="8" />松下
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="9" />戴尔
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="10" />惠普
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="11" />华硕
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="12" />微星
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="13" />宏碁
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="14" />联想
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="15" />兄弟
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="16" />得力
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="17" />海尔
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="18" />美的
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="19" />格力
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="20" />海信
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="21" />创维
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="22" />先锋
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="23" />夏普
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="24" />九阳
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="25" />耐克
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="26" />特步
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="27" />安踏
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="28" />劲霸
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="29" />柒牌
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="30" />杉杉
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="31" />红豆
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="32" />婷美
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="33" />薇姿
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="34" />美即
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="35" />多芬
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="36" />沙宣
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="37" />欧莱雅
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="38" />美宝莲
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="39" />妮维雅
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="40" />海飞丝
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="41" />欧普
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="42" />公牛
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="43" />妙洁
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="44" />中宇
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="45" />多喜爱
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="46" />北极绒
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="47" />恒源祥
+                </label>
+                <label>
+                    <input type="checkbox" name="brandIds" value="48" />富安娜
+                </label>
+            </td>
+        </tr>
+        <tr class="promotions">
+            <th>
+                关联促销:
+            </th>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                页面标题:
+            </th>
+            <td>
+                <input type="text" name="seotitle" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                页面关键词:
+            </th>
+            <td>
+                <input type="text" name="seokeywords" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                页面描述:
+            </th>
+            <td>
+                <input type="text" name="seodescription" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                排序:
+            </th>
+            <td>
+                <input type="text" name="orders" class="text" maxlength="9" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="button" class="button"  value="确 定" onclick="subadd()"/>
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    $(function(){
+        hanshu();
+    })
+    hanshu=function(){
+        $.ajax({
+            url:"../../product/query.do",
+            success:function(data){
+                var op="<option value=''>顶级分类";
+                for (var i = 0; i < data.length; i++) {
+                    op+="<option value='"+data[i].id+"'>"+data[i].name;
+                }
+                $("#roleSelect").html(op);
+            },
+            error:function(){
+                alert(55555)
+            }
+        })
+    }
+
+    function subadd () {
+        $.ajax({
+            url:"../../product/add.do",
+            data:$("#inputForm").serialize(),
+            dataType:"json",
+            success:function(data){
+                location.href = "ProductcategoryList.html";
+            },
+            error:function(){
+
+                alert("系统错误，请联系管理员")
+                location.href = "ProductcategoryList.html";
+            }
+        })
+    }
+    $().ready(function() {
+
+        var $inputForm = $("#inputForm");
+
+
+        // 表单验证
+        $inputForm.validate({
+            rules: {
+                name: "required",
+                generalRate: {
+                    required: true,
+                    min: 0,
+                    decimal: {
+                        integer: 3,
+                        fraction: 3
+                    }
+                },
+                selfRate: {
+                    required: true,
+                    min: 0,
+                    decimal: {
+                        integer: 3,
+                        fraction: 3
+                    }
+                },
+                order: "digits"
+            }
+        });
+
+    });
+
+</script>
+</body>
+</html>

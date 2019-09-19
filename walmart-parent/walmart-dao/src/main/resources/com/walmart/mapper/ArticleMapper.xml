@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walmart.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.walmart.pojo.Article" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="createdDate" property="createddate" jdbcType="TIMESTAMP" />
+    <result column="lastModifiedDate" property="lastmodifieddate" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="hits" property="hits" jdbcType="BIGINT" />
+    <result column="isPublication" property="ispublication" jdbcType="BIT" />
+    <result column="isTop" property="istop" jdbcType="BIT" />
+    <result column="seoDescription" property="seodescription" jdbcType="VARCHAR" />
+    <result column="seoKeywords" property="seokeywords" jdbcType="VARCHAR" />
+    <result column="seoTitle" property="seotitle" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="articleCategory_id" property="articlecategoryId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.walmart.pojo.Article" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, createdDate, lastModifiedDate, version, author, hits, isPublication, isTop, seoDescription, 
+    seoKeywords, seoTitle, title, type, articleCategory_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.walmart.pojo.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.walmart.pojo.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.walmart.pojo.ArticleExample" >
+    delete from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.walmart.pojo.Article" >
+    insert into article (id, createdDate, lastModifiedDate, 
+      version, author, hits, 
+      isPublication, isTop, seoDescription, 
+      seoKeywords, seoTitle, title, 
+      type, articleCategory_id, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{createddate,jdbcType=TIMESTAMP}, #{lastmodifieddate,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=BIGINT}, #{author,jdbcType=VARCHAR}, #{hits,jdbcType=BIGINT}, 
+      #{ispublication,jdbcType=BIT}, #{istop,jdbcType=BIT}, #{seodescription,jdbcType=VARCHAR}, 
+      #{seokeywords,jdbcType=VARCHAR}, #{seotitle,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{articlecategoryId,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.walmart.pojo.Article" >
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createddate != null" >
+        createdDate,
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="hits != null" >
+        hits,
+      </if>
+      <if test="ispublication != null" >
+        isPublication,
+      </if>
+      <if test="istop != null" >
+        isTop,
+      </if>
+      <if test="seodescription != null" >
+        seoDescription,
+      </if>
+      <if test="seokeywords != null" >
+        seoKeywords,
+      </if>
+      <if test="seotitle != null" >
+        seoTitle,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="articlecategoryId != null" >
+        articleCategory_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createddate != null" >
+        #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null" >
+        #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="ispublication != null" >
+        #{ispublication,jdbcType=BIT},
+      </if>
+      <if test="istop != null" >
+        #{istop,jdbcType=BIT},
+      </if>
+      <if test="seodescription != null" >
+        #{seodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="seokeywords != null" >
+        #{seokeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="seotitle != null" >
+        #{seotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="articlecategoryId != null" >
+        #{articlecategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.walmart.pojo.ArticleExample" resultType="java.lang.Integer" >
+    select count(*) from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update article
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createddate != null" >
+        createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifieddate != null" >
+        lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=BIGINT},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hits != null" >
+        hits = #{record.hits,jdbcType=BIGINT},
+      </if>
+      <if test="record.ispublication != null" >
+        isPublication = #{record.ispublication,jdbcType=BIT},
+      </if>
+      <if test="record.istop != null" >
+        isTop = #{record.istop,jdbcType=BIT},
+      </if>
+      <if test="record.seodescription != null" >
+        seoDescription = #{record.seodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seokeywords != null" >
+        seoKeywords = #{record.seokeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seotitle != null" >
+        seoTitle = #{record.seotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.articlecategoryId != null" >
+        articleCategory_id = #{record.articlecategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      author = #{record.author,jdbcType=VARCHAR},
+      hits = #{record.hits,jdbcType=BIGINT},
+      isPublication = #{record.ispublication,jdbcType=BIT},
+      isTop = #{record.istop,jdbcType=BIT},
+      seoDescription = #{record.seodescription,jdbcType=VARCHAR},
+      seoKeywords = #{record.seokeywords,jdbcType=VARCHAR},
+      seoTitle = #{record.seotitle,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      articleCategory_id = #{record.articlecategoryId,jdbcType=BIGINT},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=BIGINT},
+      author = #{record.author,jdbcType=VARCHAR},
+      hits = #{record.hits,jdbcType=BIGINT},
+      isPublication = #{record.ispublication,jdbcType=BIT},
+      isTop = #{record.istop,jdbcType=BIT},
+      seoDescription = #{record.seodescription,jdbcType=VARCHAR},
+      seoKeywords = #{record.seokeywords,jdbcType=VARCHAR},
+      seoTitle = #{record.seotitle,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      articleCategory_id = #{record.articlecategoryId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.walmart.pojo.Article" >
+    update article
+    <set >
+      <if test="createddate != null" >
+        createdDate = #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifieddate != null" >
+        lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null" >
+        hits = #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="ispublication != null" >
+        isPublication = #{ispublication,jdbcType=BIT},
+      </if>
+      <if test="istop != null" >
+        isTop = #{istop,jdbcType=BIT},
+      </if>
+      <if test="seodescription != null" >
+        seoDescription = #{seodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="seokeywords != null" >
+        seoKeywords = #{seokeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="seotitle != null" >
+        seoTitle = #{seotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="articlecategoryId != null" >
+        articleCategory_id = #{articlecategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.walmart.pojo.Article" >
+    update article
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      author = #{author,jdbcType=VARCHAR},
+      hits = #{hits,jdbcType=BIGINT},
+      isPublication = #{ispublication,jdbcType=BIT},
+      isTop = #{istop,jdbcType=BIT},
+      seoDescription = #{seodescription,jdbcType=VARCHAR},
+      seoKeywords = #{seokeywords,jdbcType=VARCHAR},
+      seoTitle = #{seotitle,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      articleCategory_id = #{articlecategoryId,jdbcType=BIGINT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.walmart.pojo.Article" >
+    update article
+    set createdDate = #{createddate,jdbcType=TIMESTAMP},
+      lastModifiedDate = #{lastmodifieddate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT},
+      author = #{author,jdbcType=VARCHAR},
+      hits = #{hits,jdbcType=BIGINT},
+      isPublication = #{ispublication,jdbcType=BIT},
+      isTop = #{istop,jdbcType=BIT},
+      seoDescription = #{seodescription,jdbcType=VARCHAR},
+      seoKeywords = #{seokeywords,jdbcType=VARCHAR},
+      seoTitle = #{seotitle,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      articleCategory_id = #{articlecategoryId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

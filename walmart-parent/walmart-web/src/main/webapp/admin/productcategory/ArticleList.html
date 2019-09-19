@@ -1,0 +1,139 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>文章列表 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/list.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+</head>
+<body class="hold-transition skin-red sidebar-mini">
+<div class="breadcrumb">
+    文章列表
+</div>
+
+<div class="box-body">
+
+    <!-- 数据表格 -->
+    <div class="table-box" id="articleid">
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <a href="Articleadd.html" class="iconButton">
+                        <span class="addIcon">&nbsp;</span>添加
+                    </a>
+                    <div class="buttonGroup">
+                        <a href="javascript:delContentType();" class="iconButton disabled">
+                            <span class="deleteIcon">&nbsp;</span>删除
+                        </a>
+                        <a href="javascript:;" onclick="window.location.reload();" id="refreshButton" class="iconButton">
+                            <span class="refreshIcon">&nbsp;</span>刷新
+                        </a>
+                   </div>
+           </div>
+   </div>
+            <!--工具栏/-->
+    <table id="listTable" class="list">
+        <tr>
+            <th class="" style="padding-right:0px">
+                <label for="selall"></label><input id="selall" type="checkbox"/>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" name="title">标题</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" name="articleCategory">文章分类</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" name="isPublication">是否发布</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" name="createdDate">创建日期</a>
+            </th>
+            <th>
+                <span>操作</span>
+            </th>
+        </tr>
+        <tbody>
+        <tr v-for="entity in articleList">
+            <td>
+                <label>
+                    <input  type="checkbox"  v-bind:value="entity.article.id" name="check"/>
+                </label>
+            </td>
+            <td>{{entity.article.title}}</td>
+            <td>{{entity.articlecategory.name}}</td>
+            <td>{{entity.article.ispublication==1? "是" : "否"}}</td>
+            <td>{{entity.article.createddate}}</td>
+            <td class="text-center">
+                <a @click="updateprdoct(entity.article.id);">[编辑]</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+        <!-- 数据表格 /-->
+    </div>
+</div>
+<script type="text/javascript">
+    var vm ;
+    $(function(){
+        $.ajax({
+            text:"post",
+            url:"../../article/search.do",
+            data:"",
+            dataType:"json",
+            success:function(result){
+                vm = new Vue({
+                    el: '#articleid',
+                    data: {
+                        articleList : result.rows
+                    }
+                })
+            },
+            error:function(){
+
+                alert("系统错误，请联系管理员")
+
+            }
+        })
+
+    })
+
+    function delContentType() {
+        var ids=""
+        $("input[name='check']:checked").each(function(){
+            ids += ids==""?$(this).val():","+$(this).val();
+        })
+        $.post("../../article/delete.do",{ids:ids},function(data){
+            if (data) {
+                alert("删除失败，请重新操作!")
+                location.reload();
+            } else {
+
+                alert("恭喜您成功删除选中的广告")
+                location.reload();
+            }
+        })
+
+    }
+    function updateprdoct (id){
+        $.post("../../article/findOne.do",{ids:id},function(data){
+            if (data) {
+                location.reload();
+            } else {
+                location.href = "Articleupdate.html";
+
+            }
+        })
+    }
+</script>
+</body>
+</html>
