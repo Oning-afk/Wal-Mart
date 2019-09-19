@@ -19,4 +19,9 @@ public interface BrandService {
      * @param brand
      */
     void addBrand(Brand brand);
+    /**
+     * 品牌管理删除
+     * @param ids
+     */
+    boolean deleteBrand(String[] ids);
 }

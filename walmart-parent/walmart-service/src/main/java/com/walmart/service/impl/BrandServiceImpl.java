@@ -34,4 +34,17 @@ public class BrandServiceImpl implements BrandService {
     public void addBrand(Brand brand) {
         brandMapper.insert(brand);
     }
+
+    @Override
+    public boolean deleteBrand(String[] ids) {
+        int i =0;
+        for (String id: ids){
+            i = brandMapper.deleteByPrimaryKey(Long.parseLong(id));
+        }
+        if (i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

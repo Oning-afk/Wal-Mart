@@ -19,4 +19,9 @@ public interface MemberrankService {
      * @param memberrank
      */
     void addMemberrank(Memberrank memberrank);
+    /**
+     * 会员管理删除
+     * @param ids
+     */
+    boolean deleteMemberrank(String[] ids);
 }

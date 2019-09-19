@@ -12,6 +12,17 @@
     <script type="text/javascript" src="../../resources/business/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/pager.js"></script>
+    <style type="text/css">
+        .glyphicon-remove {
+            color: #ff4d5c;
+        }
+        .glyphicon-ok {
+            color: #5be980;
+        }
+        .glyphicon-refresh {
+            color: #5be980;
+        }
+    </style>
 </head>
 <body>
 <div class="breadcrumb">
@@ -26,8 +37,8 @@
                         <span class="addIcon">&nbsp;</span>添加
                     </a>
                    <!-- <button onclick="showModal()" type="button" class="btn btn-default" title="添加"><i class="fa fa-file-o"></i> 添加</button>-->
-                    <button onclick="delProduct()" type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
-                    <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                    <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
+                    <button onclick="deleteProduct()" type="button" class="btn btn-default" title="删除"><span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
                 </div>
             </div>
         </div>
@@ -50,15 +61,19 @@
             </thead>
             <tbody>
             <tr v-for="entity in productList">
-                <td><input  type="checkbox" id="selectAll"></td>
+                <td>
+                    <label>
+                        <input type="checkbox" value="entity.product.id">
+                    </label>
+                </td>
                 <td>{{entity.name}}</td>
-                <td>{{entity.logo}}</td>
                 <td>
-                    {{entity.url}}
+                    <a @click="toUrl(entity.logo)">{{entity.logo}}</a>
                 </td>
                 <td>
-                    {{entity.orders}}
+                    <a @click="toUrl(entity.url)">{{entity.url}}</a>
                 </td>
+                <td>{{entity.orders}}</td>
                 <td class="text-center">
                     <a @click="updateContent(entity.product.id)">[编辑]</a>
                     <a @click="updateContent(entity.product.id)">[查看]</a>
@@ -163,6 +178,50 @@
                 alert("系统错误，请联系管理员！");
             }
         })
+    }
+
+    function searchByPage(page,rows) {
+        if(page == null){
+            page = document.getElementById("current").innerHTML;
+        }
+        if(rows == null){
+            rows = document.getElementById("display").innerHTML;
+        }
+        $.ajax({
+            type: "post",
+            url: "../../brand/deleteBrand.do",
+            data:{
+                "page":page,
+                "rows":rows
+            },
+            dataType: "json",
+            success: function (result) {
+                productListVue.productList = result.rows;
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+    function delProduct() {
+        var ids=""
+        $("input[name='check']:checked").each(function(){
+            ids += ids==""?$(this).val():","+$(this).val();
+        })
+        alert(ids)
+        $.post("../../brand/deleteBrand.do",{ids:ids},function(data){
+            if (data) {
+                alert("恭喜您成功删除选中的广告")
+                location.reload();
+            } else {
+
+                alert("删除失败，请重新操作!")
+                location.reload();
+            }
+        })
+    }
+    function toUrl(url) {
+        window.open(url);
     }
 </script>
 </html>

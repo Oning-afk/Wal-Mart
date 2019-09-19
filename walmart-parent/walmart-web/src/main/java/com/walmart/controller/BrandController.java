@@ -24,5 +24,9 @@ public class BrandController {
     public void addBrand(Brand brand){
         brandService.addBrand(brand);
     }
+    @RequestMapping("/deleteBrand")
+    public boolean deleteBrand(String[] ids) {
+        return brandService.deleteBrand(ids);
+    }
 
 }

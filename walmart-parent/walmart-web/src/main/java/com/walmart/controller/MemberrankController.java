@@ -22,4 +22,9 @@ public class MemberrankController {
     public  void addMemberrank(Memberrank memberrank){
         memberrankService.addMemberrank(memberrank);
     }
+    @RequestMapping("/deleteMemberrank")
+    public boolean deleteMemberrank(String[] ids) {
+        return memberrankService.deleteMemberrank(ids);
+    }
+
 }

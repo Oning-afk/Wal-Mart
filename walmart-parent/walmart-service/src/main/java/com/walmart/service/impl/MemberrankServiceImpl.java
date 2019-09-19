@@ -33,4 +33,17 @@ public class MemberrankServiceImpl implements MemberrankService {
     public void addMemberrank(Memberrank memberrank) {
         memberrankMapper.insert(memberrank);
     }
+
+    @Override
+    public boolean deleteMemberrank(String[] ids) {
+        int i =0;
+        for (String id: ids){
+            i = memberrankMapper.deleteByPrimaryKey(Long.parseLong(id));
+        }
+        if (i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
