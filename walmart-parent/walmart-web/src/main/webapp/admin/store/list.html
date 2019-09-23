@@ -1,0 +1,246 @@
+<html lang="en" >
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>店铺列表 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/business/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/pager.js"></script>
+    <script type="text/javascript">
+        $(function() {
+
+            vm = new Vue({
+                el:'#listForm',
+                data:{
+                    stores:{},
+                    storePage:"",
+                    checkboxIds:[]
+                }
+            });
+
+
+        pages =new Vue({
+            el: '#apps',
+            data: {
+                total: 0,     // 记录总条数
+                display: 20,   // 每页显示条数
+                current: 1     // 当前第n页 ， 也可以 watch current 的变化
+            },
+            methods: {
+                pagechange: function (p) {
+                    this.current = p;// 页码改变event ， p 为新的 current
+                }
+            }
+        });
+            searchByPage();
+        });
+        function setDisplay(display) {
+            $("#display").html(display);
+        }
+
+        //查询列表
+        function searchByPage(pageNum,pageSize) {
+            if(pageSize==null){
+                pageSize= $("#display").html();
+            }
+            if(pageNum==null){
+                pageNum=$("#current").html();
+            }
+            $.ajax({
+                url:"/store/findStore.do?pageSize="+pageSize+"&&pageNum="+pageNum,
+                type:"post",
+                data:$("#listForm").serialize(),
+                dataType:"json",
+                success:function(data){
+                    vm.stores=data.rows;
+                    pages.total=data.total;
+                    pages.current=data.totalPage+1;
+                    pages.display=data.pageSize;
+                },
+                error:function(){
+                    alert("错误");
+                }
+            })
+        }
+
+
+        //类型条查
+        function queryType(id) {
+            $("#type").val(id);
+            searchByPage();
+        }
+
+        //修改跳页面
+        function editStore(id) {
+            window.location.href="editStore.html?id="+id;
+        }
+
+        //新增页面
+        function add() {
+            window.location.href="addstore.jsp";
+        }
+
+        //删除
+        function del() {
+            //获取选中的店铺
+            var id='';
+            var ids=vm.checkboxIds;
+            for (var i = 0; i < ids.length; i++) {
+                id+=","+ids[i];
+            }
+            id=id.substr(1);
+            $.ajax({
+                url:"/store/delStore.do",
+                type:"post",
+                data:{id:id},
+                dataType:"json",
+                success:function(data){
+                    if(data.success){
+                        searchStore();
+                    }else{
+                        alert(data.message)
+                    }
+                },
+                error:function(){
+                    alert("错误");
+                }
+            })
+
+        }
+
+        //刷新页面
+        function replace() {
+            window.location.href=location;
+        }
+    </script>
+</head>
+<body>
+<div class="breadcrumb" id="storeVue">
+    <a href="../../admin/common/index">首页</a> &raquo; 店铺列表
+</div>
+<div class="box-body">
+<form id="listForm" method="post">
+    <input type="hidden" name="type" id="type" value="-1">
+    <input type="hidden" id="status" name="status" value="-1" />
+    <input type="hidden" id="hasExpired" name="hasExpired"  value="-1"/>
+    <div class="form-group"  >
+        <div class="btn-group col-sm-2">
+            <button type="button" class="btn btn-info" onclick="add()">
+                <i class="glyphicon glyphicon-plus">&nbsp;</i>添加
+            </button>
+            <button type="button"  class="btn btn-red" onclick="del()">
+                <i class="glyphicon glyphicon-minus">&nbsp</i>删除
+            </button>
+            <button type="button" id="refreshButton" class="btn btn-info" onclick="replace()">
+                <i class="glyphicon glyphicon-refresh">&nbsp</i>刷新
+            </button>
+        </div>
+        <div class="col-lg-1">
+            <select class="form-control" onchange="queryType(this.value)">
+                <option value="-1">--请选择--</option>
+                <option value="0">普通店铺</option>
+                <option value="1">自营店铺</option>
+            </select>
+        </div>
+    </div>
+    <table id="listTable" class="table table-bordered table-striped table-hover dataTable">
+        <tr>
+            <th class="check">
+                <input type="checkbox" id="selectAll" />
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" >名称</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" >类型</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" >商家</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" >店铺等级</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" >店铺分类</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort"  >状态</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort"  >是否启用</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" >创建日期</a>
+            </th>
+            <th>
+                <a href="javascript:;" class="sort" >到期日期</a>
+            </th>
+            <th>
+                <span>操作</span>
+            </th>
+        </tr>
+        <tr v-for="entity in stores" >
+            <td><input type="checkbox" :value="entity.store.id" v-model="checkboxIds" ></td>
+            <td>{{entity.store.name}}</td>
+            <td>{{entity.store.type==1?"普通":"自营"}}</td>
+            <td>{{entity.business.username}}</td>
+            <td>{{entity.storerank.name}}</td>
+            <td>{{entity.storecategory.name}}</td>
+            <td>
+                <span v-if="entity.store.status==0" class="gray">审核中</span>
+                <span v-else-if="entity.store.status==1" class="red">审核失败</span>
+                <span v-else-if="entity.store.status==2" class="green">审核成功</span>
+                <span v-else-if="entity.store.status==3" class="green">开店成功</span>
+            </td>
+            <td>
+                <span class="green" v-if="entity.store.isenabled==true">启用</span>
+                <span class="red" v-else>未启用</span>
+            </td>
+            <td><span title="entity.store.createddate">{{entity.store.createddate}}</span></td>
+            <td><span title="entity.store.enddate">{{entity.store.enddate}}</span></td>
+            <td>
+                <button type="button" class="btn btn-info btn-lg" @click="editStore(entity.store.id)" >
+                    <i class="glyphicon glyphicon-pencil"></i>编辑
+                </button>
+            </td>
+        </tr>
+    </table>
+</form>
+</div>
+<div id="apps">
+    <div class="container">
+        <pagination :total="total" :current.sync="current" @pagechange="pagechange" ></pagination>
+    </div>
+</div>
+<template id="template_paginations">
+    <nav>
+        <ul class="pagination">
+            <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="searchByPage(1)"> 首页 </a></li>
+            <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="searchByPage(current - 1)"> 上一页 </a></li>
+            <li >
+                <select id="tests" @change="setDisplay(this.value)" class="btn btn-default dropdown-toggle">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">20</option>
+                </select>
+            </li>
+            <li v-for="p in grouplist" :class="{'active': current == p.val}"><a href="javascript:searchByPage();" @click="searchByPage(p.val)"> {{ p.text }} </a></li>
+            <li :class="{'disabled': current == page}"><a href="javascript:searchByPage();" @click="searchByPage(current + 1)"> 下一页</a></li>
+            <li :class="{'disabled': current == page}"><a href="javascript:searchByPage();" @click="searchByPage(page)"> 尾页 </a></li>
+        </ul>
+        <ul class="pagination pull-right">
+            <li><span> 共 {{total}}  条数据 </span></li>
+            <li><span> 每页显示 {{display}}  条数据 </span></li>
+            <li><span> 共 {{page}} 页 </span></li>
+            <li><span > 当前第 {{current}} 页 </span></li>
+            <li><span id="current"  name="current" style="display: none">{{current}}</span></li>
+            <li><span id="display"  name="display" style="display: none">{{display}}</span></li>
+        </ul>
+    </nav>
+</template>
+</body>
+</html>
