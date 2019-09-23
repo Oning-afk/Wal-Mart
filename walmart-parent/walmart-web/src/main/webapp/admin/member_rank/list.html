@@ -29,16 +29,24 @@
     会员等级列表 <span>(共4条记录)</span>
 </div>
 <div class="box-body">
-    <div class="table-box" id="content_grid">
-        <div class="pull-left">
+    <div class="table-box">
+        <div class="pull-left" id="content_grid">
             <div class="form-group form-inline">
                 <div class="btn-group">
-                    <a href="add.html" class="iconButton">
+                   <!-- <a href="add.html" class="iconButton">
                         <span class="addIcon">&nbsp;</span>添加
-                    </a>
-                    <!--<button onclick="addMemberRank()" type="button" class="btn btn-default glyphicon glyphicon-plus" title="添加"><i class="fa fa-file-o"></i> 添加</button>-->
+                    </a>-->
+<!--
+                    <button onclick="addMemberRank()" type="button" class="btn btn-default" title="添加"><i class="fa fa-file-o"></i> 添加</button>
+-->
                     <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
                     <button onclick="deleteProduct()" type="button" class="btn btn-default" title="删除"><span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
+                    <a href="../../memberrank/exportStockList.do" class="btn btn-default"><span class="glyphicon glyphicon-share-alt">&nbsp;</span>导出</a>
+                </div>
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                        名称：<input type="text" id="name" name="name"> <button onclick="searchByPage()" type="button" class="btn btn-default" title="查询"><i class="fa fa-trash-o"></i>查询</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,7 +84,7 @@
                     <span v-else style="color:red">否</span>
                 </td>
                 <td class="text-center">
-                    <a @click="updateContent(entity.product.id)">编辑</a>
+                    <a @click="updateMemberRank(entity.id)">[编辑]</a>
                 </td>
             </tr>
             </tbody>
@@ -94,7 +102,7 @@
             <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(1)"> 首页 </a></li>
             <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(current - 1)"> 上一页 </a></li>
             <li >
-                <select id="tests" @change="setDisplay()">
+                <select id="tests" @change="setDisplay()" class="btn btn-default dropdown-toggle">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
@@ -168,7 +176,8 @@
             url: "../../memberrank/searchMemberrank.do",
             data:{
                 "page":page,
-                "rows":rows
+                "rows":rows,
+                "name" : $("#name").val()
             },
             dataType: "json",
             success: function (result) {
@@ -180,29 +189,6 @@
         })
     }
 
-    function searchByPage(page,rows) {
-        if(page == null){
-            page = document.getElementById("current").innerHTML;
-        }
-        if(rows == null){
-            rows = document.getElementById("display").innerHTML;
-        }
-        $.ajax({
-            type: "post",
-            url: "../../memberrank/deleteMemberrank.do",
-            data:{
-                "page":page,
-                "rows":rows
-            },
-            dataType: "json",
-            success: function (result) {
-                productListVue.productList = result.rows;
-            },
-            error: function () {
-                alert("系统错误，请联系管理员！");
-            }
-        })
-    }
     function delProduct() {
         var ids=""
         $("input[name='check']:checked").each(function(){
@@ -220,8 +206,24 @@
             }
         })
     }
- /* function addMemberRank(){
+    function updateMemberRank(id) {
+        location.href="edit.html?id="+id;
+    }
+    function addMemberRank(){
         location.href="add.html";
-    }*/
+    }
+
+    function exportStockList() {
+        $.ajax({
+            type: "post",
+            url: "../../memberrank/exportStockList.do",
+            data:{
+            },
+            dataType: "json",
+            success: function () {
+
+            }
+        })
+    }
 </script>
 </html>

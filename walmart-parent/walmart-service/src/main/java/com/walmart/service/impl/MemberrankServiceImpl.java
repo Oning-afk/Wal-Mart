@@ -11,6 +11,8 @@ import com.walmart.pojo.MemberrankExample;
 import com.walmart.service.MemberrankService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Service
 public class MemberrankServiceImpl implements MemberrankService {
     @Autowired
@@ -20,7 +22,7 @@ public class MemberrankServiceImpl implements MemberrankService {
         PageHelper.startPage(pageNum,pageSize);
         MemberrankExample memberrankExample = new MemberrankExample();
         MemberrankExample.Criteria criteria = memberrankExample.createCriteria();
-        if (memberrank !=null){
+        if (memberrank.getName()!=null){
             if (memberrank.getName() !=null && memberrank.getName().length() >0){
                 criteria.andNameLike( "%" + memberrank.getName() +"%");
             }
@@ -45,5 +47,20 @@ public class MemberrankServiceImpl implements MemberrankService {
         }else{
             return false;
         }
+    }
+
+    @Override
+    public Memberrank searchBusinessattributeById(Long id) {
+        return memberrankMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public boolean updateBusinessattribute(Memberrank memberrank) {
+        return memberrankMapper.updateByPrimaryKeySelective(memberrank)>0;
+    }
+
+    @Override
+    public List<Memberrank> findPage() {
+        return memberrankMapper.selectByExample(null);
     }
 }

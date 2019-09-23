@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>编辑会员等级 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.tools.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/webuploader.js"></script>
+    <script type="text/javascript" src="../../resources/admin/ueditor/ueditor.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript">
+        $().ready(function() {
+
+            var $inputForm = $("#inputForm");
+            var $amount = $("#amount");
+            var $isSpecial = $("#isSpecial");
+
+
+            // 是否特殊
+            $isSpecial.click(function() {
+                if ($(this).prop("checked")) {
+                    $amount.val("").prop("disabled", true);
+                } else {
+                    $amount.prop("disabled", false);
+                }
+            });
+
+            // 表单验证
+            $inputForm.validate({
+                rules: {
+                    name: "required",
+                    scale: {
+                        required: true,
+                        min: 0,
+                        decimal: {
+                            integer: 3,
+                            fraction: 3
+                        }
+                    },
+                    amount: {
+                        required: true,
+                        min: 0,
+                        decimal: {
+                            integer: 12,
+                            fraction: 2
+                        },
+                        remote: {
+                            url: "",
+                            cache: false
+                        }
+                    }
+                },
+                messages: {
+                    amount: {
+                        remote: "已存在"
+                    }
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="breadcrumb">
+    编辑会员等级
+</div>
+<form id="inputForm" action="update" method="post">
+    <input type="hidden" name="id" value="4" v-model="memberRank.id"/>
+    <table class="input">
+        <tr>
+            <th>
+                <span class="requiredField">*</span>名称:
+            </th>
+            <td>
+                <input type="text" name="name" class="text" value="金牌会员" maxlength="200" v-model="memberRank.name"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>优惠比例:
+            </th>
+            <td>
+                <input type="text" name="scale" class="text" value="1" maxlength="7" v-model="memberRank.scale"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>消费金额:
+            </th>
+            <td>
+                <input type="text" id="amount" name="amount" class="text" value="100000" maxlength="16" v-model="memberRank.amount"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                设置:
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="isdefault" value="true" v-model="memberRank.isdefault"/>是否默认
+                    <input type="hidden" name="isdefault" value="false" v-model="memberRank.isdefault"/>
+                </label>
+                <label title="特殊会员等级不随消费金额变化">
+                    <input type="checkbox" id="isspecial" name="isspecial" value="true" v-model="memberRank.isspecial"/>是否特殊
+                    <input type="hidden" name="isspecial" value="false" v-model="memberRank.isspecial"/>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="submit" class="button" value="确 定" onclick="editMemberRank()"/>
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+<script type="text/javascript">
+    var editList;
+    $().ready(function() {
+        var id = window.location.href.split("?")[1].split("=")[1];
+        $.ajax({
+            type: "post",
+            url: "../../memderrank/searchMemberrankById.do",
+            data: {
+                "id": id,
+            },
+            dataType: "json",
+            success: function (result) {
+                editList = new Vue({
+                    el: '#editList',
+                    data: {
+                        memberRank: {
+                            id: "",
+                            name: "",
+                            scale: "",
+                            amount: "",
+                            isdefault: "",
+                            isspecial: ""
+                        }
+                    }
+                })
+                editList.memberRank.id = result.id;
+                editList.memberRank.name = result.name;
+                editList.memberRank.scale = result.scale;
+                editList.memberRank.amount = result.amount;
+                editList.memberRank.isdefault = result.isdefault;
+                editList.memberRank.isspecial = result.isspecial;
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+
+        function editMemberRank() {
+            $.ajax({
+                type: "post",
+                url: "../../memderrank/updateMemderrank.do",
+                data: editList.memberRank,
+                dataType: "json",
+                success: function (result) {
+                    if (result) {
+                        location.href = "list.html";
+                    }
+                }
+            })
+
+        }
+
+</script>
+</html>

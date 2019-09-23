@@ -1,0 +1,153 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>编辑配送方式 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.tools.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/webuploader.js"></script>
+    <script type="text/javascript" src="../../resources/admin/ueditor/ueditor.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <style type="text/css">
+        .paymentMethods label {
+            width: 150px;
+            display: block;
+            float: left;
+            padding-right: 6px;
+        }
+    </style>
+    <script type="text/javascript">
+        var id = window.location.href.split("?")[1].split("=")[1];
+        $().ready(function() {
+
+            var $inputForm = $("#inputForm");
+            var $filePicker = $("#filePicker")
+
+            $filePicker.uploader();
+
+            // 表单验证
+            $inputForm.validate({
+                rules: {
+                    name: "required",
+                    icon: {
+                        pattern: /^(http:\/\/|https:\/\/|\/).*$/i
+                    },
+                    order: "digits"
+                }
+            });
+
+            $.ajax({
+                type:"post",
+                url:"../../shippingmethod/searchShippingDeliverycorpPaymentmethod.do",
+                dataType:"json",
+                data:id,
+                success:function (result) {
+                    console.info(result)
+                }
+
+            })
+
+        });
+    </script>
+</head>
+<body>
+<div class="breadcrumb">
+    <a href="../../admin/index.html">首页</a> &raquo; 编辑配送方式
+</div>
+<form id="inputForm" action="update" method="post">
+    <input type="hidden" name="id" value="1" v-model="shippingmethod.id" />
+    <table class="input" id="liujieshabi">
+        <tr>
+            <th>
+                <span class="requiredField">*</span>名称:
+            </th>
+            <td>
+                <input type="text" name="name" class="text" maxlength="200" v-model="shippingmethod.name"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                默认物流公司:
+            </th>
+            <td>
+                <select name="deliverycorp.name" v-model="shippingmethod.deliverycorp.name">
+                    <option value="">请选择...</option>
+                    <option value="1" selected="selected">
+                        圆通速递
+                    </option>
+                    <option value="2">
+                        申通快递
+                    </option>
+                    <option value="3">
+                        顺丰速运
+                    </option>
+                    <option value="4">
+                        韵达快递
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                图标:
+            </th>
+            <td>
+					<span class="fieldSet">
+						<input type="text" name="icon" class="text" value="http://image.demo.shopxx.net/b2b2c/5.0/201601/473d43a5-f519-4d31-bc96-a90599aaf4a7.gif" maxlength="200" v-model="shippingmethod.icon"/>
+						<a href="javascript:;" id="filePicker" class="button">选择文件</a>
+							<a href="http://image.demo.shopxx.net/b2b2c/5.0/201601/473d43a5-f519-4d31-bc96-a90599aaf4a7.gif" target="_blank">查看</a>
+					</span>
+            </td>
+        </tr>
+        <tr class="paymentMethods">
+            <th>
+                支持支付方式:
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="paymentmethod.name" value="1" checked="checked" v-model="shippingmethod.paymentmethod.name"/>网上支付
+                </label>
+                <label>
+                    <input type="checkbox" name="paymentmethod.name" value="2" checked="checked" v-model="shippingmethod.paymentmethod.name"/>银行汇款
+                </label>
+                <label>
+                    <input type="checkbox" name="paymentmethod.name" value="3" v-model="shippingmethod.paymentmethod.name"/>货到付款
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                介绍:
+            </th>
+            <td>
+                <input type="text" name="description" class="text" value="系统将根据您的收货地址自动匹配快递公司进行配送，享受免运费服务" maxlength="200" v-model="shippingmethod.description"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                排序:
+            </th>
+            <td>
+                <input type="text" name="orders" class="text" value="1" maxlength="9" v-model="shippingmethod.orders"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="submit" class="button" value="确 定" onclick="editShippingMethod()"/>
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

@@ -22,9 +22,15 @@
         <div class="pull-left">
             <div class="form-group form-inline">
                 <div class="btn-group">
-                    <button onclick="showModal()" type="button" class="btn btn-default" title="添加"><i class="fa fa-file-o"></i> 添加</button>
+                   <!-- <button onclick="showModal()" type="button" class="btn btn-default" title="添加"><i class="fa fa-file-o"></i> 添加</button>-->
                     <button onclick="delProduct()" type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                    <a href="../../businessattribute/exportStockList.do" class="btn btn-default"><span class="glyphicon glyphicon-share-alt">&nbsp;</span>导出</a>
+                </div>
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                        名称：<input type="text" id="name" name="name"> <button onclick="searchByPage()" type="button" class="btn btn-default" title="查询"><i class="fa fa-trash-o"></i>查询</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,7 +56,7 @@
             <tr v-for="entity in productList">
                 <td><input  type="checkbox" id="selectAll"></td>
                 <td>{{entity.name}}</td>
-                <td>{{entity.type}}</td>
+                <td>{{entity.name}}</td>
                 <td>
                     <span v-if="entity.isrequired == 1" style="color:limegreen"  >是</span>
                     <span v-else style="color:red">否</span>
@@ -61,7 +67,7 @@
                 </td>
                 <td>{{entity.orders}}</td>
                 <td class="text-center">
-                    <a @click="updateContent(entity.product.id)">编辑</a>
+                    <a @click="updateBusinessattribute(entity.id)">[编辑]</a>
                 </td>
             </tr>
             </tbody>
@@ -79,7 +85,7 @@
             <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(1)"> 首页 </a></li>
             <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(current - 1)"> 上一页 </a></li>
             <li >
-                <select id="tests" @change="setDisplay()">
+                <select id="tests" @change="setDisplay()" class="btn btn-default dropdown-toggle">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
@@ -153,7 +159,8 @@
             url: "../../businessattribute/searchBusinessattribute.do",
             data:{
                 "page":page,
-                "rows":rows
+                "rows":rows,
+                "name" : $("#name").val()
             },
             dataType: "json",
             success: function (result) {
@@ -161,6 +168,24 @@
             },
             error: function () {
                 alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+    function updateBusinessattribute(id) {
+        location.href="edit.html?id="+id;
+    }
+    function showModal() {
+        location.href="add.html";
+    }
+    function exportStockList() {
+        $.ajax({
+            type: "post",
+            url: "../../businessattribute/exportStockList.do",
+            data:{
+            },
+            dataType: "json",
+            success: function () {
+
             }
         })
     }

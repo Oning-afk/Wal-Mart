@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>编辑支付方式 - Powered By SHOP++</title>
+    <title>编辑商家注册项 - Powered By SHOP++</title>
     <meta name="author" content="SHOP++ Team" />
     <meta name="copyright" content="SHOP++" />
     <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
@@ -21,7 +21,7 @@
             var id = window.location.href.split("?")[1].split("=")[1];
             $.ajax({
                 type: "post",
-                url: "../../paymentmethod/searchPaymentMethodById.do",
+                url: "../../businessattribute/searchBusinessattributeById.do",
                 data:{
                     "id":id,
                 },
@@ -30,27 +30,22 @@
                     editList = new Vue({
                         el: '#editList',
                         data: {
-                            paymentMethod:{
+                            businessAttribute:{
                                 id:"",
                                 name:"",
-                                type:"",
-                                method:"",
-                                timeout:"",
-                                icon:"",
-                                description:"",
+                                pattern:"",
                                 orders:"",
-                                content:""
+                                isenabled:"",
+                                isrequired:""
                             }
                         }
                     })
-                    editList.paymentMethod.id = result.id;
-                    editList.paymentMethod.name = result.name;
-                    editList.paymentMethod.type = result.type;
-                    editList.paymentMethod.method = result.method;
-                    editList.paymentMethod.timeout = result.timeout;
-                    editList.paymentMethod.icon = result.icon;
-                    editList.paymentMethod.description = result.description;
-                    editList.paymentMethod.orders = result.orders;
+                    editList.businessAttribute.id = result.id;
+                    editList.businessAttribute.name = result.name;
+                    editList.businessAttribute.pattern = result.pattern;
+                    editList.businessAttribute.orders = result.orders;
+                    editList.businessAttribute.isenabled = result.isenabled;
+                    editList.businessAttribute.isrequired = result.isrequired;
                 },
                 error: function () {
                     alert("系统错误，请联系管理员！");
@@ -73,12 +68,12 @@
             });
 
         });
-        
+
         function editPaymentMethod() {
             $.ajax({
                 type: "post",
-                url: "../../paymentmethod/updatePaymentById.do",
-                data: editList.paymentMethod,
+                url: "../../businessattribute/updateBusinessattribute.do",
+                data: editList.businessAttribute,
                 dataType: "json",
                 success: function (result) {
                     if(result){
@@ -91,55 +86,33 @@
 </head>
 <body>
 <div class="breadcrumb">
-    <a href="../../admin/index.html">首页</a> &raquo; 编辑支付方式
+    <a href="../../admin/index.html">首页</a> &raquo; 编辑商家注册项
 </div>
 <form id="inputForm">
-    <input type="hidden" name="id" v-model="paymentMethod.id"/>
+    <input type="hidden" name="id" v-model="businessAttribute.id"/>
     <table class="input" id="editList">
-        <tr>
-            <th>
-                <span class="requiredField">*</span>名称:
-            </th>
-            <td>
-                <input type="text" name="name" class="text" maxlength="200" v-model="paymentMethod.name"/>
-            </td>
-        </tr>
         <tr>
             <th>
                 类型:
             </th>
             <td>
-                <select name="type" v-model="paymentMethod.type">
-                    <option value="0">款到发货</option>
-                    <option value="1">货到付款</option>
-                </select>
+                营业执照
             </td>
         </tr>
         <tr>
             <th>
-                方式:
+                <span class="requiredField">*</span>名称:
             </th>
             <td>
-                <select name="method" v-model="paymentMethod.method">
-                    <option value="0">在线支付</option>
-                    <option value="1">线下支付</option>
-                </select>
+                <input type="text" name="name" class="text" value="营业执照" maxlength="200" v-model="businessAttribute.name"/>
             </td>
         </tr>
         <tr>
             <th>
-                超时时间:
+                配比:
             </th>
             <td>
-                <input type="text" name="timeout" class="text" v-model="paymentMethod.timeout" maxlength="9" title="单位：分钟，留空表示永久有效" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                介绍:
-            </th>
-            <td>
-                <input type="text" name="description" class="text" v-model="paymentMethod.description" maxlength="200" />
+                <input type="text" id="pattern" name="pattern" class="text" value="" maxlength="200" v-model="businessAttribute.pattern"/>
             </td>
         </tr>
         <tr>
@@ -147,7 +120,22 @@
                 排序:
             </th>
             <td>
-                <input type="text" name="order" class="text" v-model="paymentMethod.orders" maxlength="9" />
+                <input type="text" name="orders" class="text" value="2" maxlength="9" v-model="businessAttribute.orders" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                设置:
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="isenabled" value="true" checked="checked" v-model="businessAttribute.isenabled"/>是否启用
+                    <input type="hidden" name="isenabled" value="false" v-model="businessAttribute.isenabled"/>
+                </label>
+                <label>
+                    <input type="checkbox" name="isrequired" value="true" v-model="businessAttribute.isrequired"/>是否必填
+                    <input type="hidden" name="isrequired" value="false" v-model="businessAttribute.isrequired"/>
+                </label>
             </td>
         </tr>
         <tr>
@@ -155,7 +143,7 @@
                 &nbsp;
             </th>
             <td>
-                <input type="submit" class="button" onclick="editPaymentMethod()" value="确 定" />
+                <input type="submit" class="button" value="确 定" onclick="editPaymentMethod()"/>
                 <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
             </td>
         </tr>
