@@ -1,6 +1,8 @@
 package com.walmart.service;
 
 import com.walmart.entity.PageResult;
+import com.walmart.pojo.Product;
+import com.walmart.pojo.ProductWithBLOBs;
 import com.walmart.pojogroup.ProductStoreGroupBean;
 
 import java.util.List;
@@ -22,4 +24,13 @@ public interface ProductService {
     boolean deleteProduct(Long[] ids);
 
     List<ProductStoreGroupBean> findProductAll();
+
+    List<Product> queryHotPhone();
+
+    List<Product> queryHotComputer();
+
+    List<Product> queryHotTv();
+
+    ProductWithBLOBs queryProductById(Long id);
+
 }

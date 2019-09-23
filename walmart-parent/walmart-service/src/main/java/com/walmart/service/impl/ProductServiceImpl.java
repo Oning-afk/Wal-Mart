@@ -5,10 +5,12 @@ import com.github.pagehelper.PageHelper;
 import com.walmart.entity.PageResult;
 import com.walmart.mapper.ProductCategoryBeanMapper;
 import com.walmart.mapper.ProductMapper;
+import com.walmart.mapper.ProductProducttagMapper;
 import com.walmart.mapper.StoreMapper;
 import com.walmart.pojo.*;
 import com.walmart.pojogroup.ProductStoreGroupBean;
 import com.walmart.service.ProductService;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductCategoryBeanMapper productCategoryBeanMapper;
+    @Autowired
+    private ProductProducttagMapper productProducttagMapper;
 
 
 
@@ -86,7 +90,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductStoreGroupBean> findProductAll() {
         List<Product> products = productMapper.selectByExample(null);
-        int count = productMapper.countByExample(null);
         List<ProductStoreGroupBean> productStoreGroupBeans = new ArrayList<>();
         for (Product product : products) {
             ProductStoreGroupBean productStoreGroupBean = new ProductStoreGroupBean();
@@ -98,5 +101,74 @@ public class ProductServiceImpl implements ProductService {
             productStoreGroupBeans.add(productStoreGroupBean);
         }
         return productStoreGroupBeans;
+    }
+
+    @Override
+    public List<Product> queryHotPhone() {
+        List<Long> ids = new ArrayList<>();
+        ProductProducttagExample productProducttagExample = new ProductProducttagExample();
+        ProductProducttagExample.Criteria productProducttagExampleCriteria = productProducttagExample.createCriteria();
+        productProducttagExampleCriteria.andProducttagsIdEqualTo((long)1);
+        List<ProductProducttagKey> productProducttagKeys = productProducttagMapper.selectByExample(productProducttagExample);
+        for (ProductProducttagKey productProducttagKey : productProducttagKeys) {
+            ids.add(productProducttagKey.getProductsId());
+        }
+        List<Long> type = new ArrayList<>();
+        type.add((long)41);
+        type.add((long)49);
+        ProductExample productExample = new ProductExample();
+        ProductExample.Criteria criteria = productExample.createCriteria();
+        criteria.andProductcategoryIdIn(type);
+        criteria.andIdIn(ids);
+        List<Product> products = productMapper.selectByExample(productExample);
+        return products;
+    }
+
+    @Override
+    public List<Product> queryHotComputer() {
+        List<Long> ids = new ArrayList<>();
+        ProductProducttagExample productProducttagExample = new ProductProducttagExample();
+        ProductProducttagExample.Criteria productProducttagExampleCriteria = productProducttagExample.createCriteria();
+        productProducttagExampleCriteria.andProducttagsIdEqualTo((long)1);
+        List<ProductProducttagKey> productProducttagKeys = productProducttagMapper.selectByExample(productProducttagExample);
+        for (ProductProducttagKey productProducttagKey : productProducttagKeys) {
+            ids.add(productProducttagKey.getProductsId());
+        }
+        List<Long> type = new ArrayList<>();
+        type.add((long)79);
+        type.add((long)82);
+        ProductExample productExample = new ProductExample();
+        ProductExample.Criteria criteria = productExample.createCriteria();
+        criteria.andProductcategoryIdIn(type);
+        criteria.andIdIn(ids);
+        List<Product> products = productMapper.selectByExample(productExample);
+        return products;
+    }
+
+    @Override
+    public List<Product> queryHotTv() {
+        List<Long> ids = new ArrayList<>();
+        ProductProducttagExample productProducttagExample = new ProductProducttagExample();
+        ProductProducttagExample.Criteria productProducttagExampleCriteria = productProducttagExample.createCriteria();
+        productProducttagExampleCriteria.andProducttagsIdEqualTo((long)1);
+        List<ProductProducttagKey> productProducttagKeys = productProducttagMapper.selectByExample(productProducttagExample);
+        for (ProductProducttagKey productProducttagKey : productProducttagKeys) {
+            ids.add(productProducttagKey.getProductsId());
+        }
+        List<Long> type = new ArrayList<>();
+        type.add((long)145);
+        type.add((long)150);
+        ProductExample productExample = new ProductExample();
+        ProductExample.Criteria criteria = productExample.createCriteria();
+        criteria.andProductcategoryIdIn(type);
+        criteria.andIdIn(ids);
+        List<Product> products = productMapper.selectByExample(productExample);
+        return products;
+    }
+
+    @Override
+    public ProductWithBLOBs queryProductById(Long id) {
+        ProductWithBLOBs productWithBLOBs = productMapper.selectByPrimaryKey(id);
+        return productWithBLOBs;
     }
 }
