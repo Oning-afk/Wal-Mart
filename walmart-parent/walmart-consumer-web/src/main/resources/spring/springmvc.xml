@@ -24,8 +24,8 @@
 	</mvc:annotation-driven>
 
 	<!-- 引用dubbo 服务 -->
-	<dubbo:application name="warmart-web" />
+	<dubbo:application name="warmart-consumer-web" />
 	<dubbo:registry address="zookeeper://localhost:2181"/>
-	<dubbo:annotation package="com.walmart.controller" />
+	<dubbo:annotation package="com.walmart.consumer.controller" />
 
 </beans>

@@ -3,7 +3,6 @@ package com.walmart.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.pojo.Storecategory;
 import com.walmart.service.ClassifyService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("classify")
-@RequiresPermissions("admin:storecategory")
 public class ClassifyController {
     @Reference
     private ClassifyService classifyService;

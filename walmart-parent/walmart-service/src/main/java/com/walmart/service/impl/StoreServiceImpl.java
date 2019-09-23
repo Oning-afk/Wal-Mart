@@ -96,6 +96,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public void editStore(Store store) {
+        store.setLastmodifieddate(new Date());
         storeMapper.updateByPrimaryKey(store);
     }
 

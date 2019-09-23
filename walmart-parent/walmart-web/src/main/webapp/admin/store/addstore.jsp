@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -9,34 +10,38 @@
     <meta name="copyright" content="SHOP++" />
     <link href="../../resources/admin/css/selectmultiple.css" rel="stylesheet" type="text/css" />
     <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/admin/css/iview.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/jquery.tools.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/webuploader.js"></script>
-    <script type="text/javascript" src="../../resources/admin/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/jquery.selectmultiple.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/iview.min.js"></script>
     <script type="text/javascript">
         addVue = new Vue({
             el:'#inputForm',
-            data:{
-                store:{
+            data: {
+                store: {
                     storerankId: 1,
                     storecategoryId: 1,
-                    type:'',
-                    name:'',
-                    email:'',
+                    type: '',
+                    name: '',
+                    email: '',
                     zipcode: '',
-                    mobile:'',
-                    phone:'',
-                    address:'',
-                    introduction:''
-
+                    mobile: '',
+                    phone: '',
+                    address: '',
+                    introduction: ''
                 }
             }
         });
+
+
+
+
 
         //提交表单
         function addStore() {
@@ -48,6 +53,8 @@
                 success:function(data){
                     if(data.success){
                         window.location.href="list.jsp";
+                    }else{
+                        alert("新增失败!")
                     }
                 },
                 error:function(){
@@ -58,25 +65,11 @@
 
         $(function () {
             //查询店铺等级
-            $.ajax({
-                url:"/grade/findGrade.do",
-                type:"post",
-                dataType:"json",
-                success:function(data){
-                    var rank="";
-                    for (var i = 0; i < data.length; i++) {
-                        rank+="<option value='"+data[i].id+"'>"+data[i].name+"</option>";
-                    }
-                    $("#storeRankId").html(rank);
-                },
-                error:function(){
-                    alert("错误");
-                }
-            });
+            findGrade(1);
 
             //查询店铺分类
             $.ajax({
-                url:"/classify/findClassify.do",
+                url:"/classify/findclassify.do",
                 type:"post",
                 dataType:"json",
                 success:function(data){
@@ -90,7 +83,44 @@
                     alert("错误");
                 }
             });
-        })
+
+            //查询商家列表
+            $.ajax({
+                url:"/business/queryBusiness.do",
+                type:"post",
+                dataType:"json",
+                success:function(data){
+                    var bus="";
+                    for (var i = 0; i < data.length; i++) {
+                        bus+="<option value="+data[i].id+">"+data[i].username+"</option>";
+                    }
+                    $("#businessId").html(bus);
+                },
+                error:function(){
+                    alert("错误");
+                }
+            })
+        });
+
+        function findGrade(a) {
+            $.ajax({
+                url:"/grade/findGrade.do",
+                type:"post",
+                data:{isallowregister:a},
+                dataType:"json",
+                success:function(data){
+                    var rank="";
+                    for (var i = 0; i < data.length; i++) {
+                        rank+="<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                    }
+                    $("#storerankId").html(rank);
+                },
+                error:function(){
+                    alert("错误");
+                }
+            });
+        }
+
     </script>
 </head>
 <body>
@@ -98,14 +128,15 @@
     <a href="../../admin/common/index">首页</a> &raquo; 添加店铺
 </div>
 <form id="inputForm"  method="post">
-    <input type="hidden" id="businessId" name="businessId" value="2"/>
     <table class="input">
         <tr>
             <th>
                 <span class="requiredField">*</span>商家选择:
             </th>
             <td>
-                <input type="text" id="businessSelect" name="businessSelect" class="text" maxlength="200" title="请输入用户名查找商家" />
+                <select id="businessId" name="businessId">
+                    <option value="2">admin</option>
+                </select>
             </td>
         </tr>
         <tr class="hidden">
@@ -127,9 +158,9 @@
                 类型:
             </th>
             <td>
-                <select id="type" name="type" v-model="store.type">
-                    <option value="1">普通</option>
-                    <option value="2">自营</option>
+                <select id="type" name="type" v-model="store.type" onchange="findGrade(this.value)">
+                    <option value="true">普通</option>
+                    <option value="false">自营</option>
                 </select>
             </td>
         </tr>
@@ -197,7 +228,7 @@
                 店铺等级:
             </th>
             <td>
-                <select name="storerankId" id="storerankId" v-model="store.storerankId">
+                <select name="storerankId" id="storerankId" v-model="store.storerankId" >
                     <option value="1">普通店铺</option>
                 </select>
             </td>
@@ -1385,10 +1416,8 @@
             </th>
             <td>
                 <label>
-                    <input type="checkbox" name="isEnabled" value="true" checked="checked" />是否启用
-                </label>
-                <label>
-                    <input type="checkbox" name="isEnabled" value="false" />
+                    <input type="radio" name="isenabled" value="true" checked="checked" />是否启用
+                    <input type="radio" name="isenabled" value="false" />
                 </label>
             </td>
         </tr>

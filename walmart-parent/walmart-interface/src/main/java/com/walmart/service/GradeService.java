@@ -12,4 +12,6 @@ public interface GradeService {
     void delgrade(Long id);
 
     List<Storerank> selectgrade(Long id);
+
+    List<Storerank> findGradeAll();
 }

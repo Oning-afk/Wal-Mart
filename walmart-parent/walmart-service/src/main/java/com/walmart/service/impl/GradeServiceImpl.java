@@ -30,4 +30,9 @@ public class GradeServiceImpl implements GradeService {
     public List<Storerank> selectgrade(Long id) {
         return storerankMapper.selectByExample(null);
     }
+
+    @Override
+    public List<Storerank> findGradeAll() {
+        return storerankMapper.selectByExample(null);
+    }
 }

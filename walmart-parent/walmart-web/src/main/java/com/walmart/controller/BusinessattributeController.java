@@ -5,14 +5,12 @@ import com.walmart.entity.PageResult;
 import com.walmart.entity.Result;
 import com.walmart.pojo.Businessattribute;
 import com.walmart.service.BusinessattributeService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/businessattribute")
-@RequiresPermissions("admin:businessattribute")
 public class BusinessattributeController {
     @Reference(timeout = 60000)
     private BusinessattributeService businessattributeService;

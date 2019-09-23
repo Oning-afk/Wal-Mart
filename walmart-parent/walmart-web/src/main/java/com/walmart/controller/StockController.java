@@ -1,11 +1,11 @@
 package com.walmart.controller;
 
+import com.alibaba.druid.sql.PagerUtils;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.entity.ExportExcel;
 import com.walmart.entity.PageResult;
 import com.walmart.pojogroup.StocklogSkuGroupBean;
 import com.walmart.service.StockService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +25,6 @@ import java.util.List;
  **/
 @RequestMapping("stock")
 @Controller
-@RequiresPermissions("admin:stock")
 public class StockController {
 
     @Reference

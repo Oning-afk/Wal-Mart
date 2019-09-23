@@ -5,7 +5,6 @@ import com.walmart.entity.PageResult;
 import com.walmart.entity.Result;
 import com.walmart.pojo.Store;
 import com.walmart.service.StoreService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("store")
-@RequiresPermissions("admin:store")
 public class StoreController {
 
     @Reference(timeout = 120000,retries = 0)
@@ -32,7 +30,7 @@ public class StoreController {
     * @Date: 2019/9/11 
     */ 
     @RequestMapping("findStore")
-    public PageResult findStore(@RequestParam(defaultValue = "20") int pageSize,@RequestParam(defaultValue = "1") int pageNum, Store store,int hasExpired){
+    public PageResult findStore(@RequestParam(defaultValue = "20") int pageSize,@RequestParam(defaultValue = "1") int pageNum, Store store,@RequestParam(defaultValue = "-1") int hasExpired){
         return storeService.findStore(pageSize,pageNum,store,hasExpired);
     }
 
