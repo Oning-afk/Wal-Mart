@@ -7,9 +7,7 @@ import com.walmart.entity.PageResult;
 import com.walmart.mapper.ProductMapper;
 import com.walmart.mapper.SkuMapper;
 import com.walmart.mapper.StocklogMapper;
-import com.walmart.pojo.ProductWithBLOBs;
-import com.walmart.pojo.Sku;
-import com.walmart.pojo.Stocklog;
+import com.walmart.pojo.*;
 import com.walmart.pojogroup.StocklogSkuGroupBean;
 import com.walmart.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,33 +35,36 @@ public class StockServiceImpl implements StockService {
 
 
     @Override
-    public PageResult findStockAll(Integer page, Integer rows) {
+    public PageResult findStockAll(Integer page, Integer rows,Integer skuId, String name) {
         PageHelper.startPage(page,rows);
-        PageResult pageResult = new PageResult();
-        List<Stocklog> stocklogs = stocklogMapper.selectByExample(null);
-        int count = stocklogMapper.countByExample(null);
+        StocklogExample stocklogExample = new StocklogExample();
+        StocklogExample.Criteria criteria = stocklogExample.createCriteria();
+        if(skuId !=null){
+            criteria.andTypeEqualTo(skuId);
+        }
+        List<Stocklog> stocklogList = stocklogMapper.selectByExample(stocklogExample);
         List<StocklogSkuGroupBean> productWithBLOBsList = new ArrayList<>();
-        for (Stocklog stocklog : stocklogs) {
+        int count = stocklogMapper.countByExample(stocklogExample);
+        for (Stocklog stocklogs : stocklogList) {
             StocklogSkuGroupBean stocklogSkuGroupBean = new StocklogSkuGroupBean();
-            stocklogSkuGroupBean.setStocklog(stocklog);
-            Sku sku = skuMapper.selectByPrimaryKey(stocklog.getSkuId());
-
+            Sku sku = skuMapper.selectByPrimaryKey(stocklogs.getSkuId());
             if(sku.getSpecificationvalues()!=null){
                 String string = sku.getSpecificationvalues();
-                String name = "";
+                String names = "";
                 List<Map> parse = (List) JSONUtils.parse(string);
                 for (Map o : parse) {
-                    if(name.equals("")){
-                        name = o.get("value").toString();
+                    if(names.equals("")){
+                        names = o.get("value").toString();
                     }else{
-                        name += ","+ o.get("value").toString();
+                        names += ","+ o.get("value").toString();
                     }
-                    sku.setSpecificationvalues(name);
+                    sku.setSpecificationvalues(names);
                 }
             }
-            stocklogSkuGroupBean.setSku(sku);
             ProductWithBLOBs productWithBLOBs = productMapper.selectByPrimaryKey(sku.getProductId());
             stocklogSkuGroupBean.setProductWithBLOBs(productWithBLOBs);
+            stocklogSkuGroupBean.setSku(sku);
+            stocklogSkuGroupBean.setStocklog(stocklogs);
             productWithBLOBsList.add(stocklogSkuGroupBean);
         }
         return new PageResult(count,productWithBLOBsList);

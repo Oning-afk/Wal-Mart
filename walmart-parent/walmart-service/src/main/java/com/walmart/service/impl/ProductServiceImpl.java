@@ -6,10 +6,7 @@ import com.walmart.entity.PageResult;
 import com.walmart.mapper.ProductCategoryBeanMapper;
 import com.walmart.mapper.ProductMapper;
 import com.walmart.mapper.StoreMapper;
-import com.walmart.pojo.Product;
-import com.walmart.pojo.ProductCategoryBean;
-import com.walmart.pojo.ProductWithBLOBs;
-import com.walmart.pojo.Store;
+import com.walmart.pojo.*;
 import com.walmart.pojogroup.ProductStoreGroupBean;
 import com.walmart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +36,16 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public PageResult findProductList(Integer rows , Integer page) {
+    public PageResult findProductList(Integer rows , Integer page,String name) {
         PageHelper.startPage(page,rows);
         PageResult pageResult = new PageResult();
-        List<Product> products = productMapper.selectByExample(null);
-        int count = productMapper.countByExample(null);
+        ProductExample productExample = new ProductExample();
+        ProductExample.Criteria productExampleCriteria = productExample.createCriteria();
+        if(name!=null && !"".equals(name)){
+            productExampleCriteria.andNameLike("%"+name+"%");
+        }
+        List<Product> products = productMapper.selectByExample(productExample);
+        int count = productMapper.countByExample(productExample);
         List<ProductStoreGroupBean> productStoreGroupBeans = new ArrayList<>();
         for (Product product : products) {
             ProductStoreGroupBean productStoreGroupBean = new ProductStoreGroupBean();

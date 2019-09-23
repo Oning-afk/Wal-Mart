@@ -29,9 +29,9 @@ public class ProductController {
      */
     @RequestMapping("findAll")
     @ResponseBody
-    public PageResult findProductList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows){
+    public PageResult findProductList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows,String name){
 
-        return productService.findProductList(rows,page);
+        return productService.findProductList(rows,page,name);
     }
 
     /**

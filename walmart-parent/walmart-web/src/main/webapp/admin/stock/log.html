@@ -15,16 +15,21 @@
 </head>
 <body>
     <div class="breadcrumb">
-        <a href="../../admin/index.jsp">首页</a>
+        <a href="../../admin/index.html">首页</a>
     </div>
     <div class="box-body">
         <div class="table-box" id="content_grid">
             <div class="pull-left">
-                <div class="form-group form-inline">
+                <div class="form-group form-inline" id="searchInfo">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
+                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon ">&nbsp;</span>刷新</button>
                         <a href="../../stock/exportStockList.do" class="btn btn-default"><span class="glyphicon glyphicon-share-alt">&nbsp;</span>导出</a>
                     </div>
+                        类型：   <select v-model="skuId" class="btn btn-default dropdown-toggle">
+                                    <option value="0">入库</option>
+                                    <option value="1">出库</option>
+                                </select>
+                        <button class="btn btn-default" onclick="searchByPage()">查询</button>
                 </div>
             </div>
             <div class="box-tools pull-right">
@@ -113,25 +118,34 @@
 </body>
 <script>
     var stockListVue;
+    var searchInfoVue;
+    var pageVue;
 
     $(function(){
+        searchInfoVue =new Vue({
+            el: '#searchInfo',
+            data: {
+                skuId:''
+            }
+        })
         searchProduct();
-
     })
     function searchProduct() {
         $.ajax({
             type: "post",
             url: "../../stock/findStockAll.do",
-            data:"",
+            data:{
+                skuId:searchInfoVue.skuId
+            },
             dataType: "json",
             success: function (result) {
                 stockListVue = new Vue({
                     el: '#stockList',
                     data: {
-                        stockList: result.rows
+                        stockList: result.rows,
                     }
                 })
-                new Vue({
+                pageVue = new Vue({
                     el: '#app',
                     data: {
                         total: result.total,     // 记录总条数
@@ -163,11 +177,13 @@
             url: "../../stock/findStockAll.do",
             data:{
                 "page":page,
-                "rows":rows
+                "rows":rows,
+                "skuId":searchInfoVue.skuId
             },
             dataType: "json",
             success: function (result) {
                 stockListVue.stockList = result.rows;
+                pageVue.total = result.total
             },
             error: function () {
                 alert("系统错误，请联系管理员！");

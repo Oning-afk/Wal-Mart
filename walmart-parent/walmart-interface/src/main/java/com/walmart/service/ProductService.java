@@ -10,7 +10,7 @@ import com.walmart.entity.PageResult;
  **/
 public interface ProductService {
 
-    PageResult findProductList(Integer rows, Integer page);
+    PageResult findProductList(Integer rows, Integer page,String name);
 
     boolean updateToUp(Long id);
 

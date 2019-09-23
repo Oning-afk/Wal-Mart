@@ -3,6 +3,7 @@ package com.walmart.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.entity.ExportExcel;
 import com.walmart.entity.PageResult;
+import com.walmart.pojo.Stocklog;
 import com.walmart.pojogroup.StocklogSkuGroupBean;
 import com.walmart.service.StockService;
 import org.springframework.stereotype.Controller;
@@ -37,8 +38,8 @@ public class StockController {
      */
     @RequestMapping("findStockAll")
     @ResponseBody
-    public PageResult findStockAll(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows){
-        return stockService.findStockAll(page,rows);
+    public PageResult findStockAll(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer rows, Integer skuId,String name){
+        return stockService.findStockAll(page,rows,skuId,name);
     }
 
     @RequestMapping("/exportStockList")
