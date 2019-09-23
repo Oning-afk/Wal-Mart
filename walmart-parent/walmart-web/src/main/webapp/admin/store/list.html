@@ -118,11 +118,10 @@
 </div>
 <div class="box-body">
 <form id="listForm" method="post">
-    <input type="hidden" id="type" name="type" value="-1" />
     <input type="hidden" id="status" name="status" value="-1" />
     <input type="hidden" id="hasExpired" name="hasExpired"  value="-1"/>
-    <div class="form-group" role="group" aria-label="">
-        <div class="btn-group">
+    <div class="form-group" role="group" >
+        <div class="btn-group col-lg-4">
             <button type="button" class="btn btn-info" onclick="add()">
                 <i class="glyphicon glyphicon-plus">&nbsp;</i>添加
             </button>
@@ -132,6 +131,16 @@
             <button type="button" id="refreshButton" class="btn btn-info" onclick="replace()">
                 <i class="glyphicon glyphicon-refresh">&nbsp</i>刷新
             </button>
+        </div>
+        <div class="col-lg-4 col-lg-offset-2">
+            <div class="control-label">
+                类型:
+            </div>
+            <div class="control-label">
+                <select class="" name="type" onchange="searchByPage()">
+                    <option value="-1">--请选择--</option>
+                </select>
+            </div>
         </div>
     </div>
     <table id="listTable" class="table table-bordered table-striped table-hover dataTable">
