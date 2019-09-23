@@ -82,4 +82,21 @@ public class ProductServiceImpl implements ProductService {
         }
         return true;
     }
+
+    @Override
+    public List<ProductStoreGroupBean> findProductAll() {
+        List<Product> products = productMapper.selectByExample(null);
+        int count = productMapper.countByExample(null);
+        List<ProductStoreGroupBean> productStoreGroupBeans = new ArrayList<>();
+        for (Product product : products) {
+            ProductStoreGroupBean productStoreGroupBean = new ProductStoreGroupBean();
+            Store store = storeMapper.selectByPrimaryKey(product.getStoreId());
+            ProductCategoryBean productCategoryBean = productCategoryBeanMapper.selectByPrimaryKey(product.getProductcategoryId());
+            productStoreGroupBean.setStore(store);
+            productStoreGroupBean.setProduct(product);
+            productStoreGroupBean.setProductCategoryBean(productCategoryBean);
+            productStoreGroupBeans.add(productStoreGroupBean);
+        }
+        return productStoreGroupBeans;
+    }
 }

@@ -1,6 +1,9 @@
 package com.walmart.service;
 
 import com.walmart.entity.PageResult;
+import com.walmart.pojogroup.ProductStoreGroupBean;
+
+import java.util.List;
 
 /**
  * @program: Wal-Mart
@@ -17,4 +20,6 @@ public interface ProductService {
     boolean updateToDown(Long id);
 
     boolean deleteProduct(Long[] ids);
+
+    List<ProductStoreGroupBean> findProductAll();
 }

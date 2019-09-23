@@ -3,7 +3,6 @@ package com.walmart.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.entity.ExportExcel;
 import com.walmart.entity.PageResult;
-import com.walmart.pojo.Stocklog;
 import com.walmart.pojogroup.StocklogSkuGroupBean;
 import com.walmart.service.StockService;
 import org.springframework.stereotype.Controller;
@@ -80,7 +79,6 @@ public class StockController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String ss = "";
     }
 
 }
