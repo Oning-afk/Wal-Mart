@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Title</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/list.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/pager.js"></script>
+</head>
+<body>
+<div class="breadcrumb">
+    <a href="../../admin/common/index">首页</a> &raquo; 添加商品分类
+</div>
+<form id="inputForm" name="editArea"  >
+    <table class="input" >
+        <tr>
+            <th>
+                <span class="requiredField">*</span>名称:
+            </th>
+            <td>
+                <input type="text" id="name" name="name" v-model="deliverycorp.name" class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                保证金:
+            </th>
+            <td>
+                <input type="text" id="bail" name="bail" v-model="deliverycorp.bail" class="text" maxlength="200" />
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>排序:
+            </th>
+            <td>
+                <input type="text" id="orders" name="orders" v-model="deliverycorp.orders" class="text" maxlength="200"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>内容:
+            </th>
+            <td>
+                <input type="text" id="version" name="version" v-model="deliverycorp.version" class="text" maxlength="200"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                会员:
+            </th>
+            <td>
+                <input type="text" id="memberid" name="memberid" v-model="deliverycorp.memberid" class="text" maxlength="200"/>
+            </td>
+        </tr>
+    </table>
+    <table class="input">
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <input type="button" onclick="updatemanage()" class="button" value="确 定" />
+                <input type="button" class="button" value="返 回" onclick="history.back(); return false;" />
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    var id = window.location.href.split("?")[1].split("=")[1];
+    $().ready(function() {
+        editAreaTableVue = new Vue({
+            el:'#inputForm',
+            data:{
+                deliverycorp:{}
+            }
+        })
+        $.ajax({
+            type: "post",
+            url: "../../classify/selectclassify.do",
+            data:{
+                "id":id,
+            },
+            dataType: "json",
+            success: function (result) {
+                editAreaTableVue.deliverycorp=result;
+            }
+        })
+    });
+    function updatemanage () {
+        $.ajax({
+            url: "../../classify/updateclassify.do",
+            data: $("#inputForm").serialize(),
+            dataType: "json",
+            success: function (vdata) {
+                location.href = "../classify/classify.html";
+            },
+            error: function () {
+
+                alert("系统错误，请联系管理员")
+                location.href = "../classify/classify.html";
+            }
+        })
+    }
+</script>
+</body>

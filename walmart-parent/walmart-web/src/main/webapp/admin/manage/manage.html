@@ -19,6 +19,7 @@
     <div class="box-body">
         <div class="table-box" id="content_grid">
             <div class="pull-left">
+
                 <div class="form-group form-inline">
                     <div class="form-group form-inline">
                         <div class="btn-group">
@@ -28,13 +29,11 @@
                                 <span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
                             <button onclick="delall()" type="button" class="btn btn-default" title="删除">
                                 <span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
-                    </div>
-                </div>
-                    <div class="box-tools pull-right">
-                        <div class="has-feedback">
-                            名称<input type="text" id="123" name="name"> <button onclick="searchByPage()" type="button" class="btn btn-default" title="查询"><i class="fa fa-trash-o"></i>查询</button>
+
                         </div>
                     </div>
+                </div>
+
             </div>
             <div class="box-tools pull-right">
                 <div class="has-feedback">
@@ -44,28 +43,30 @@
                 <thead>
                 <tr>
                     <th class="" style="padding-right:0px">
-                        <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                        <input id="selall"
+                               type="checkbox" class="icheckbox_square-blue">
                     </th>
-                    <th class="sorting_asc">名称</th>
-                    <th class="sorting">服务费</th>
-                    <th class="sorting">可发布商品数量</th>
-                    <th class="sorting">备注</th>
-                    <th class="sorting">是否允许注册</th>
-                    <th class="sorting">排序</th>
+                    <th class="sorting_asc">类型</th>
+                    <th class="sortingbzj">获取积分</th>
+                    <th class="sortingpx">扣除积分</th>
+                    <th class="sortingnr">当前积分</th>
+                    <th class="text-center">会员</th>
+                    <th class="text-center">备注</th>
+                    <th class="text-center">创建日期</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="entity in artictagList">
                     <td><input  type="checkbox" @value="entity.id" name="check"></td>
-                    <td>{{entity.name}}</td>
-                    <td>{{entity.servicefee}}</td>
-                    <td>{{entity.quantity}}</td>
-                    <td>{{entity.memo}}</td>
+                    <td>{{entity.type}}</td>
+                    <td>{{entity.credit}}</td>
+                    <td>{{entity.debit}}</td>
                     <td>{{entity.version}}</td>
-                    <td>{{entity.orders}}</td>
+                    <td>{{entity.memberId}}</td>
+                    <td>{{entity.memo}}</td>
+                    <td>{{entity.createddate}}</td>
                     <td class="text-center">
-
                         <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" @click="update(entity.id)">修改</button>
                         <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" @click="daochu()">导出</button>
                     </td>
@@ -76,7 +77,6 @@
                 <div class="container">
                     <pagination :total="total" :current.sync="current" @pagechange="pagechange"></pagination>
                 </div>
-            </div>
         </div>
     </div>
     <template id="template_paginations">
@@ -105,16 +105,14 @@
             </ul>
         </nav>
     </template>
-</div>
-</body>        </div>
-</div>
-</div>
+        </div>
+</body>
 <script>
     var vm ;
     $(function(){
         $.ajax({
             text:"post",
-            url:"../../grade/findAll.do",
+            url:"../../manage/findAll.do",
             data:"",
             dataType:"json",
             success:function(result){
@@ -156,7 +154,7 @@
         }
         $.ajax({
             type: "post",
-            url: "../../grade/findAll.do",
+            url: "../../manage/findAll.do",
             data:{
                 "page":page,
                 "rows":rows
@@ -170,12 +168,32 @@
             }
         })
     }
-    function delall() {
+    var contentVUE = new Vue({
+        el: '#content_add',
+        data: {
+            content: ""
+        }
+    })
+    function savead() {
+        $.ajax({
+            type: "post",
+            url: "../manage/saveclassify.do",
+            data: contentVUE.content,
+            dataType:"json",
+            success: function (result) {
+
+            },
+            error: function () {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+    function delContentType() {
         var ids=""
         $("input[name='check']:checked").each(function(){
             ids += ids==""?$(this).val():","+$(this).val();
         })
-        $.post("../../grade/delGradeall.do",{id:ids},function(data){
+        $.post("../../manage/delmanageall.do",{id:ids},function(data){
             if (data) {
                 alert("删除失败，请重新操作!")
                 location.reload();
@@ -188,13 +206,14 @@
 
     }
     function daochu() {
-        location.href="../../grade/exportArticletagList.do"
+        location.href="../../manage/exportArticletagList.do"
     }
     function update(id) {
-        location.href="../grade/update.html?id="+id
+        location.href="../manage/update.html?id="+id
     }
+
     function addym() {
-        location.href="../grade/add.html"
+        location.href="../manage/manageadd.html"
     }
 </script>
 </html>

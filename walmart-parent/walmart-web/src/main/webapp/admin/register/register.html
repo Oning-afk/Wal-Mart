@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>商品列表 - Powered By SHOP++</title>
+    <title>会员注册管理 - Powered By SHOP++</title>
     <meta name="author" content="SHOP++ Team" />
     <meta name="copyright" content="SHOP++" />
     <link href="../../resources/business/css/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,22 +19,19 @@
     <div class="box-body">
         <div class="table-box" id="content_grid">
             <div class="pull-left">
-                <div class="form-group form-inline">
+
                     <div class="form-group form-inline">
                         <div class="btn-group">
-                            <button onclick="addym()" type="button" class="btn btn-default" title="新增">
+                            <button onclick="tiao()" type="button" class="btn btn-default" title="新增">
                                 <span class="glyphicon glyphicon-plus">&nbsp;</span>新增</button>
                             <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();">
                                 <span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
                             <button onclick="delall()" type="button" class="btn btn-default" title="删除">
                                 <span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
-                    </div>
-                </div>
-                    <div class="box-tools pull-right">
-                        <div class="has-feedback">
-                            名称<input type="text" id="123" name="name"> <button onclick="searchByPage()" type="button" class="btn btn-default" title="查询"><i class="fa fa-trash-o"></i>查询</button>
+
                         </div>
                     </div>
+
             </div>
             <div class="box-tools pull-right">
                 <div class="has-feedback">
@@ -47,26 +44,23 @@
                         <input id="selall" type="checkbox" class="icheckbox_square-blue">
                     </th>
                     <th class="sorting_asc">名称</th>
-                    <th class="sorting">服务费</th>
-                    <th class="sorting">可发布商品数量</th>
-                    <th class="sorting">备注</th>
-                    <th class="sorting">是否允许注册</th>
-                    <th class="sorting">排序</th>
+                    <th class="sortingbzj">类型</th>
+                    <th class="sortingpx">是否必填</th>
+                    <th class="sortingnr">是否启用</th>
+                    <th class="sortingnr">排序</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="entity in artictagList">
-                    <td><input  type="checkbox" @value="entity.id" name="check"></td>
+                <tr v-for="entity in dataList">
+                    <td><input  type="checkbox" v-bind:value="entity.id" name="check"></td>
                     <td>{{entity.name}}</td>
-                    <td>{{entity.servicefee}}</td>
-                    <td>{{entity.quantity}}</td>
-                    <td>{{entity.memo}}</td>
-                    <td>{{entity.version}}</td>
+                    <td>{{entity.type}}</td>
+                    <td>{{entity.isrequired}}</td>
+                    <td>{{entity.isenabled}}</td>
                     <td>{{entity.orders}}</td>
                     <td class="text-center">
-
-                        <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" @click="update(entity.id)">修改</button>
+                        <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" v-on:click="update(entity.id)">修改</button>
                         <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" @click="daochu()">导出</button>
                     </td>
                 </tr>
@@ -76,7 +70,6 @@
                 <div class="container">
                     <pagination :total="total" :current.sync="current" @pagechange="pagechange"></pagination>
                 </div>
-            </div>
         </div>
     </div>
     <template id="template_paginations">
@@ -85,7 +78,7 @@
                 <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(1)"> 首页 </a></li>
                 <li :class="{'disabled': current == 1}"><a href="javascript:searchByPage();" @click="setCurrent(current - 1)"> 上一页 </a></li>
                 <li >
-                    <select id="tests" @change="setDisplay()"  class="btn btn-default dropdown-toggle">
+                    <select id="tests" @change="setDisplay()"  class="btn btn-default dropdown-toggle" >
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
@@ -105,16 +98,16 @@
             </ul>
         </nav>
     </template>
-</div>
-</body>        </div>
-</div>
-</div>
+        </div>
+
+
+</body>
 <script>
     var vm ;
     $(function(){
         $.ajax({
             text:"post",
-            url:"../../grade/findAll.do",
+            url:"../../register/findAll.do",
             data:"",
             dataType:"json",
             success:function(result){
@@ -156,7 +149,7 @@
         }
         $.ajax({
             type: "post",
-            url: "../../grade/findAll.do",
+            url: "../../register/findAll.do",
             data:{
                 "page":page,
                 "rows":rows
@@ -170,12 +163,34 @@
             }
         })
     }
-    function delall() {
+    var contentVUE = new Vue({
+        el: '#content_add',
+        data: {
+            content: ""
+        }
+    })
+    function del () {
+        $.ajax({
+            url:"../../register/delregister.do",
+            data:$("#inputForm").serialize(),
+            dataType:"json",
+            success:function(data){
+                location.href = "../register/register.html";
+            },
+            error:function(){
+
+                alert("系统错误，请联系管理员")
+                location.href = "../register/register.html";
+            }
+        })
+    }
+    function delll() {
         var ids=""
         $("input[name='check']:checked").each(function(){
             ids += ids==""?$(this).val():","+$(this).val();
         })
-        $.post("../../grade/delGradeall.do",{id:ids},function(data){
+
+        $.post("../../register/delgisterall.do",{id:ids},function(data){
             if (data) {
                 alert("删除失败，请重新操作!")
                 location.reload();
@@ -188,13 +203,7 @@
 
     }
     function daochu() {
-        location.href="../../grade/exportArticletagList.do"
-    }
-    function update(id) {
-        location.href="../grade/update.html?id="+id
-    }
-    function addym() {
-        location.href="../grade/add.html"
+        location.href="../../register/exportArticletagList.do"
     }
 </script>
 </html>

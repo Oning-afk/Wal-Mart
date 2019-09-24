@@ -66,4 +66,6 @@ public class ArticleServiceImpl implements ArticleService {
     public void updateproducttag(Article article) {
         articleMapper.updateByPrimaryKey(article);
     }
+
+
 }

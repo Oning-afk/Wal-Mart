@@ -1,11 +1,12 @@
 package com.walmart.service;
 
+import com.walmart.entity.PageResult;
 import com.walmart.pojo.Storerank;
 
 import java.util.List;
 
 public interface GradeService {
-    List<Storerank> findgrade(Boolean isallowregister);
+    List<Storerank> findgrade();
 
     void savegrade(Storerank storerank);
 
@@ -13,5 +14,11 @@ public interface GradeService {
 
     List<Storerank> selectgrade(Long id);
 
-    List<Storerank> findGradeAll();
+    void delGradeall(Long[] id);
+
+    PageResult findAll(Storerank storerank, Integer page, Integer rows);
+
+    List<Storerank> queryList();
+
+    void updateGrade(Storerank storerank);
 }
