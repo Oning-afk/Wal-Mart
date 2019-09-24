@@ -12,11 +12,12 @@
   <name>parent</name>
 
   <modules>
-    <module>walmart-pojo</module>
-    <module>walmart-web</module>
-    <module>walmart-service</module>
-    <module>walmart-interface</module>
-    <module>walmart-dao</module>
+      <module>walmart-pojo</module>
+      <module>walmart-web</module>
+      <module>walmart-service</module>
+      <module>walmart-interface</module>
+      <module>walmart-dao</module>
+      <module>walmart-consumer-web</module>
   </modules>
 
 
@@ -172,17 +173,6 @@
         <groupId>commons-fileupload</groupId>
         <artifactId>commons-fileupload</artifactId>
         <version>${commons-fileupload.version}</version>
-      </dependency>
-      <!-- 缓存 -->
-      <dependency>
-        <groupId>redis.clients</groupId>
-        <artifactId>jedis</artifactId>
-        <version>2.8.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.data</groupId>
-        <artifactId>spring-data-redis</artifactId>
-        <version>1.7.2.RELEASE</version>
       </dependency>
       <dependency>
         <groupId>org.freemarker</groupId>
