@@ -116,6 +116,21 @@
         function replace() {
             window.location.href=location;
         }
+
+        //导出ex报表
+        function exportTable() {
+            $.ajax({
+                url:"/store/exportTable.do",
+                type:"post",
+                data:$("#inputForm").serialize(),
+                dataType:"json",
+                success:function(){
+                },
+                error:function(){
+                    alert("错误");
+                }
+            })
+        }
     </script>
 </head>
 <body>
@@ -138,6 +153,7 @@
             <button type="button" id="refreshButton" class="btn btn-info" onclick="replace()">
                 <i class="glyphicon glyphicon-refresh">&nbsp</i>刷新
             </button>
+            <button type="button" class="btn btn-info" onclick="exportTable()"></button>
         </div>
         <div class="col-lg-1">
             <select class="form-control" onchange="queryType(this.value)">
