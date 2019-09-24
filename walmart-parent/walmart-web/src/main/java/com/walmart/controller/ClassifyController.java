@@ -73,7 +73,6 @@ public class ClassifyController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String ss = "";
     }
     @RequestMapping("updateclassify")
     public void updateclassify(Storecategory storecategory){
