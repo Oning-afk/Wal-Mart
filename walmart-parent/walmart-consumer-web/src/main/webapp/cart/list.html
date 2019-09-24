@@ -1,0 +1,401 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>购物车 - Powered By SHOP++</title>
+    <meta name="author" content="SHOP++ Team" />
+    <meta name="copyright" content="SHOP++" />
+    <link href="../resources/shop/css/animate.css" rel="stylesheet" type="text/css" />
+    <link href="../resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="../resources/shop/css/cart.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../resources/shop/js/jquery.js"></script>
+    <script>
+        var productEnums;
+        $(function () {
+            searchProductEnums()
+            searchCartList();
+        })
+
+
+        function toDetail(id) {
+            location.href="/product/detail.html?id="+id;
+        }
+        
+        function searchProductEnums() {
+            $.ajax({
+                url: "../cart/queryCartQuantity.do",
+                type: "POST",
+                data:{},
+                dataType: "json",
+                success: function(result) {
+                    productEnums = result;
+                }
+            })
+        }
+        
+        function searchCartList() {
+            $.ajax({
+                url: "../cart/queryCartDetail.do",
+                type: "POST",
+                data:{},
+                dataType: "json",
+                success: function(result) {
+                    var html = '';
+                    var totalPrice=0;
+                    for (var i=0;i<result.length;i++){
+                        for(var j=0;j<productEnums.length;j++){
+                            if(result[i].product.id == productEnums[j].skuId){
+                                var count = result[i].product.price*productEnums[j].quantity;
+                                totalPrice +=count;
+                                html += '<tr><th class="cartNull">&nbsp;</th></tr><tr><th class="storeName" colspan="6"><a href="../store/1">'+result[i].store.name+'</a>';
+                                if(result[i].store.type==0){
+                                    html += '&nbsp;&nbsp;&nbsp;<span>自营店铺</span>'
+                                }
+                                html += '</th></tr><tr>' +
+                                    '<td width="60">' +
+                                    '<input type="hidden" name="id" value="'+result[i].id+'" />' +
+                                    '<img src="'+result[i].product.image+'" alt="'+result[i].product.name+'" />'+
+                                    '</td>' +
+                                    '<td width="240">' +
+                                    '<a onclick="toDetail('+result[i].product.id+')" title="'+result[i].product.name+'" target="_blank">'+result[i].product.name+'</a>'+
+                                    '</td>'+
+                                    '<td class="price" width="180"><span>￥'+result[i].product.price+'</span></td>'+
+                                    '<td class="quantity" width="130">' +
+                                    '<span class="decrease" onselectstart="return false;">-</span><input type="text" name="quantity" value="'+productEnums[j].quantity+'" maxlength="4" onpaste="return false;" />' +
+                                    '<span class="increase" onselectstart="return false;">+</span>' +
+                                    '</td>'+
+                                    '<td><span class="subtotal">￥'+count+'</span></td>'+
+                                    '<td><a href="javascript:;" class="remove">删除</a></td>'+
+                                    '</tr>'
+                                ;
+                            }
+                        }
+                    }
+                    var html2 = '<em>登录后确认是否享有优惠</em>赠送积分: <em id="effectiveRewardPoint">'+totalPrice+'</em>商品金额: <strong id="effectivePrice">'+totalPrice+'</strong>'
+                    $("#cartDiv").html(html);
+                    $("#totalPrice").html(html2);
+
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="header">
+    <div class="top">
+        <div class="topNav">
+            <ul class="left">
+                <li>
+                    <span>您好，欢迎来到SHOP++商城</span>
+                    <span id="headerName" class="headerName">&nbsp;</span>
+                </li>
+                <li id="headerLogin" class="headerLogin">
+                    <a href="../member/login">登录</a>|
+                </li>
+                <li id="headerRegister" class="headerRegister">
+                    <a href="../member/register">注册</a>
+                </li>
+                <li id="headerLogout" class="headerLogout">
+                    <a href="../member/logout">[退出]</a>
+                </li>
+            </ul>
+            <ul class="right">
+                <li>
+                    <a href="../member/index" target="_blank">会员中心</a>
+                    |
+                </li>
+                <li>
+                    <a href="../business/index">商家中心</a>
+                    |
+                </li>
+                <li>
+                    <a href="../article/list/3">帮助中心</a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="span3">
+                <a href="">
+                    <img src="../upload/image/logo.png" alt="SHOP++商城" />
+                </a>
+            </div>
+            <div class="span6">
+                <div class="search">
+                    <form id="productSearchForm" action="../product/search" method="get">
+                        <input name="keyword" class="keyword" value="搜索 商品/店铺" autocomplete="off" x-webkit-speech="x-webkit-speech" x-webkit-grammar="builtin:search" maxlength="30" />
+                        <button type="submit">&nbsp;</button>
+                    </form>
+                </div>
+                <div class="hotSearch">
+                    热门搜索:
+                    <a href="/shopxxb2b2c/product/search?keyword=%E8%8B%B9%E6%9E%9C">苹果</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E4%B8%89%E6%98%9F">三星</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E7%B4%A2%E5%B0%BC">索尼</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E5%8D%8E%E4%B8%BA">华为</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E9%AD%85%E6%97%8F">魅族</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E4%BD%B3%E8%83%BD">佳能</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E5%8D%8E%E7%A1%95">华硕</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E7%BE%8E%E7%9A%84">美的</a>
+                    <a href="/shopxxb2b2c/product/search?keyword=%E6%A0%BC%E5%8A%9B">格力</a>
+                </div>
+            </div>
+            <div id="headerCart" class="headerCart">
+                <a class="cartButton" href="../cart/list.html"><span>购物车(<em></em>)</span></a>
+                <div class="detail">
+                    <div class="title">购物车商品</div>
+                    <div class="items"></div>
+                    <div class="summary"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+                <dl class="mainNav">
+                    <dt>
+                        <a href="/shopxxb2b2c/product_category">所有商品分类</a>
+                    </dt>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/">首页</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/1">手机数码</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/2">电脑办公</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/3">家用电器</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/4">服装鞋靴</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list/5">化妆护理</a>
+                    </dd>
+                    <dd>
+                        <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/product/list?type=exchange">积分商城</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div id="broadsideNav" class="broadsideNav">
+            <ul>
+                <li class="shoppingCart">
+                    <a href="../cart/list.html"><em>购物车</em></a>
+                </li>
+                <li class="memberCenter">
+                    <a href="/shopxxb2b2c/member/index"><em>会员中心</em></a>
+                </li>
+                <li class="myCoupons">
+                    <a href="/shopxxb2b2c/member/coupon_code/exchange"><em>我的优惠券</em></a>
+                </li>
+                <li class="collectCenter">
+                    <a href="/shopxxb2b2c/member/product_favorite/list"><em>我的收藏</em></a>
+                </li>
+            </ul>
+            <div id="goTop" class="goTop"></div>
+        </div>
+    </div>
+</div>	<div class="container cart">
+    <div class="row">
+        <div class="span12">
+            <div class="step">
+                <ul>
+                    <li class="current">查看购物车</li>
+                    <li>订单结算</li>
+                    <li>订单完成</li>
+                </ul>
+            </div>
+            <table class="cartTable" id="cartTable">
+                <tr class="title" >
+                    <th>图片</th>
+                    <th>商品</th>
+                    <th>价格</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                    <th>操作</th>
+                </tr>
+                <tbody class="cartDiv" id="cartDiv">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div class="bottom" >
+                <span class="total" id="totalPrice">
+
+                </span>
+                <span>
+                    <a href="javascript:;" id="clear" class="clear">清空</a>
+                    <a href="/shopxxb2b2c/order/checkout" id="submit" class="submit">提交订单</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="service clearfix">
+        <dl>
+            <dt class="icon1">新手指南</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="icon2">特色服务</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="icon3">支付方式</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="icon4">配送方式</dt>
+            <dd>
+                <a href="#">购物流程</a>
+            </dd>
+            <dd>
+                <a href="#">会员注册</a>
+            </dd>
+            <dd>
+                <a href="#">购买宝贝</a>
+            </dd>
+            <dd>
+                <a href="#">支付货款</a>
+            </dd>
+            <dd>
+                <a href="#">用户协议</a>
+            </dd>
+        </dl>
+        <div class="qrCode">
+            <img src="../resources/shop/images/qr_code.jpg" alt="官方微信" />
+            官方微信
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="bottomNav">
+            <ul>
+                <li>
+                    <a href="#">关于我们</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">联系我们</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">诚聘英才</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">隐私政策</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">法律声明</a>
+                    |
+                </li>
+                <li>
+                    <a href="#">客户服务</a>
+                    |
+                </li>
+                <li>
+                    <a href="/shopxxb2b2c-5.0.2-SNAPSHOT/friend_link">友情链接</a>
+
+                </li>
+            </ul>
+        </div>
+        <div class="info">
+            <p>湘ICP备10000000号</p>
+            <p>Copyright © 2005-2017 SHOP++商城 版权所有</p>
+            <ul>
+                <li>
+                    <a href="http://www.shopxx.net" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/1c675feb-e488-4fd5-a186-b28bb6de445a.gif" alt="SHOP++" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.alipay.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/ae13eddc-25ac-427a-875d-d1799d751076.gif" alt="支付宝" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.tenpay.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/adaa9ac5-9994-4aa3-a336-b65613c85d50.gif" alt="财付通" />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.95516.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/41c18c8d-f69a-49fe-ace3-f16c2eb07983.gif" alt="中国银联" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.kuaidi100.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/ea46ca0a-e8f0-4e2c-938a-5cb19a07cb9a.gif" alt="快递100" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.cnzz.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/e12f226b-07f9-4895-bcc2-78dbe551964b.gif" alt="站长统计" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://down.admin5.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/fd9d6268-e4e2-41f6-856d-4cb8a49eadd1.gif" alt="A5下载" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.ccb.com" target="_blank">
+                        <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/6c57f398-0498-4044-80d8-20f6c40d5cef.gif" alt="中国建设银行" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div></body>
+</html>

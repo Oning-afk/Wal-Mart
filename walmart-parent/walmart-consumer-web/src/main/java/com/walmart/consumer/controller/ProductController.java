@@ -6,6 +6,7 @@ import com.walmart.pojo.Product;
 import com.walmart.pojo.ProductWithBLOBs;
 import com.walmart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,5 +55,11 @@ public class ProductController {
     public ProductWithBLOBs queryProductById(Long id){
 
         return productService.queryProductById(id);
+    }
+
+    @ResponseBody
+    @RequestMapping("addToShopCart")
+    public void addToShopCart(Long skuId,Integer quantity){
+
     }
 }

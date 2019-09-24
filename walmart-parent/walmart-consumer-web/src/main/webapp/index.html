@@ -28,6 +28,7 @@
         seachHotPhone();
         seachHotComputer();
         seachHotTv();
+       var productImage;
     })
 
     function seachHotPhone(){
@@ -56,7 +57,7 @@
                 for(var i =0;i < result.length;i++){
                     if(result[i].productcategoryId == 49){
                         html += '<li class="low">'+
-                            '<a onclick="toDetail('+result[i].id+') title="'+result[i].name+'" target="_blank">' +
+                            '<a onclick="toDetail('+result[i].id+')" title="'+result[i].name+'" target="_blank">' +
                             '<img src="upload/image/blank.gif" data-original="'+result[i].image+'" />'+
                             '<span title="'+result[i].name+'">'+result[i].name+'</span>' +
                             '<strong>￥'+result[i].price+'</strong>'+
@@ -87,7 +88,7 @@
                 for(var i =0;i < result.length;i++){
                     if(result[i].productcategoryId == 79){
                         html += '<li>'+
-                            '<a onclick="toDetail('+result[i].id+') title="'+result[i].name+'" target="_blank">' +
+                            '<a onclick="toDetail('+result[i].id+')" title="'+result[i].name+'" target="_blank">' +
                             '<div>' +
                             '<span title="'+result[i].name+'">'+result[i].name+'</span>' +
                             '<em title="'+result[i].caption+'">'+result[i].caption+'</em>'+
@@ -102,7 +103,7 @@
                 for(var i =0;i < result.length;i++){
                     if(result[i].productcategoryId == 82){
                         html += '<li class="low">'+
-                            '<a onclick="toDetail('+result[i].id+') title="'+result[i].name+'" target="_blank">' +
+                            '<a onclick="toDetail('+result[i].id+')" title="'+result[i].name+'" target="_blank">' +
                             '<img src="upload/image/blank.gif" data-original="'+result[i].image+'" />'+
                             '<span title="'+result[i].name+'">'+result[i].name+'</span>' +
                             '<strong>￥'+result[i].price+'</strong>'+
@@ -133,7 +134,7 @@
                 for(var i =0;i < result.length;i++){
                     if(result[i].productcategoryId == 145){
                         html += '<li>'+
-                            '<a onclick="toDetail('+result[i].id+') title="'+result[i].name+'" target="_blank">' +
+                            '<a onclick="toDetail('+result[i].id+')" title="'+result[i].name+'" target="_blank">' +
                             '<div>' +
                             '<span title="'+result[i].name+'">'+result[i].name+'</span>' +
                             '<em title="'+result[i].caption+'">'+result[i].caption+'</em>'+
@@ -148,7 +149,7 @@
                 for(var i =0;i < result.length;i++){
                     if(result[i].productcategoryId == 150){
                         html += '<li class="low">'+
-                            '<a onclick="toDetail('+result[i].id+') title="'+result[i].name+'" target="_blank">' +
+                            '<a onclick="toDetail('+result[i].id+')" title="'+result[i].name+'" target="_blank">' +
                             '<img src="upload/image/blank.gif" data-original="'+result[i].image+'" />'+
                             '<span title="'+result[i].name+'">'+result[i].name+'</span>' +
                             '<strong>￥'+result[i].price+'</strong>'+
