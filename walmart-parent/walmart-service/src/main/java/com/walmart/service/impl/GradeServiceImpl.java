@@ -17,8 +17,8 @@ public class GradeServiceImpl implements GradeService {
     @Autowired
     private StorerankMapper storerankMapper;
     @Override
-    public List<Storerank> findgrade(Boolean isallowregister) {
-        return storerankMapper.selectByRank(isallowregister);
+    public List<Storerank> findgrade() {
+        return storerankMapper.selectByExample(null);
     }
 
     @Override
@@ -37,8 +37,10 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public List<Storerank> findGradeAll() {
-        return storerankMapper.selectByExample(null);
+    public void delGradeall(Long[] id) {
+        for ( long id5:id) {
+            storerankMapper.deleteByPrimaryKey(id5);
+        }
     }
     @Override
     public PageResult findAll(Storerank storerank, Integer page, Integer rows) {

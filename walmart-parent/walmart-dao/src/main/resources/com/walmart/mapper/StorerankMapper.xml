@@ -288,8 +288,4 @@
       serviceFee = #{servicefee,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
-  <select id="selectByRank" resultMap="BaseResultMap">
-    select * from storerank where isallowregister = #{value}
-  </select>
 </mapper>

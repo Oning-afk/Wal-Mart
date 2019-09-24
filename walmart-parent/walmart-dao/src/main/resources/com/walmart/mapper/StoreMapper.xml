@@ -319,6 +319,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.createddate != null" >
+        createdDate = #{record.createddate,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.lastmodifieddate != null" >
         lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
       </if>
@@ -390,6 +393,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map" >
     update store
     set id = #{record.id,jdbcType=BIGINT},
+      createdDate = #{record.createddate,jdbcType=TIMESTAMP},
       lastModifiedDate = #{record.lastmodifieddate,jdbcType=TIMESTAMP},
       version = #{record.version,jdbcType=BIGINT},
       address = #{record.address,jdbcType=VARCHAR},
