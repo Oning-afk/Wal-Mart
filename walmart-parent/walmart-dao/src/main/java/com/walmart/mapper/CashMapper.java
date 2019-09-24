@@ -2,9 +2,8 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Cash;
 import com.walmart.pojo.CashExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface CashMapper {
     int countByExample(CashExample example);

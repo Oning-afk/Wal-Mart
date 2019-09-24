@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <head>
@@ -13,12 +12,11 @@
     <script type="text/javascript" src="../../resources/admin/js/list.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
     <script type="text/javascript">
-        $().ready(function() {
-            findMember();
-
-        });
         var vm;
         var total;
+        $().ready(function() {
+            findMember();
+        });
         //查询列表
         function findMember() {
             $.ajax({
@@ -26,7 +24,7 @@
                 type:"post",
                 dataType:"json",
                 success:function(data){
-                    vm=new VUe({
+                    vm=new Vue({
                         el:'#listForm',
                         data:{
                             members:data.rows,
@@ -112,6 +110,7 @@
             </th>
         </tr>
         <tr v-for="entity in members">
+            <td>{{entity.member.id}}</td>
             <td>{{entity.member.username}}</td>
             <td>{{entity.memberrank.name}}</td>
             <td>{{entity.member.email}}</td>

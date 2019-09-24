@@ -12,11 +12,12 @@
   <name>parent</name>
 
   <modules>
-    <module>walmart-pojo</module>
-    <module>walmart-web</module>
-    <module>walmart-service</module>
-    <module>walmart-interface</module>
-    <module>walmart-dao</module>
+      <module>walmart-pojo</module>
+      <module>walmart-web</module>
+      <module>walmart-service</module>
+      <module>walmart-interface</module>
+      <module>walmart-dao</module>
+      <module>walmart-consumer-web</module>
   </modules>
 
 

@@ -2,33 +2,43 @@ package com.walmart.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.walmart.mapper.StorecategoryMapper;
-import com.walmart.mapper.StorerankMapper;
 import com.walmart.pojo.Storecategory;
-import com.walmart.service.ClassifyService;
+import com.walmart.service.OneService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
 @Service
-public class ClassifyServiceImpl implements ClassifyService {
+public class OneServiceImpl implements OneService {
     @Autowired
     private StorecategoryMapper storecategoryMapper;
+
     @Override
-    public List<Storecategory> findclassify() {
+    public List<Storecategory> find() {
+
         return storecategoryMapper.selectByExample(null);
     }
 
     @Override
-    public void saveclassify(Storecategory storecategory) {
-        storecategoryMapper.insert(storecategory);
-    }
-
-    @Override
-    public void dleclassify(Long id) {
+    public void delone(Long id) {
         storecategoryMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public List<Storecategory> selectclassify(Integer id) {
+    public void saveone(Storecategory storecategory) {
+
+        storecategoryMapper.insert(storecategory);
+    }
+
+    @Override
+    public List<Storecategory> findone(Long id) {
+
         return storecategoryMapper.selectByExample(null);
     }
+
+    @Override
+    public void updateone(Storecategory storecategory) {
+        storecategoryMapper.updateByPrimaryKey(storecategory);
+    }
+
 }

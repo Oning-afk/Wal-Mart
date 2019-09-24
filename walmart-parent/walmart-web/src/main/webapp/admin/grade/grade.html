@@ -21,16 +21,9 @@
             <div class="pull-left">
                 <div class="form-group form-inline">
                     <div class="btn-group">
-                        <a href="../grade/add.html" class="iconButton">
-                            <span class="addIcon">&nbsp;</span>添加
-                        </a>
-
-                        <a href="javascript:;" id="refreshButton" class="iconButton">
-                            <span class="refreshIcon">&nbsp;</span>刷新
-                        </a>
-                        <a href="javascript:delall();"  class="iconButton">
-                            <span class="refreshIcon">&nbsp;</span>删除
-                        </a>
+                        <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
+                        <button onclick="delProduct()" type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                     </div>
                 </div>
             </div>
@@ -55,11 +48,11 @@
                 </thead>
                 <tbody>
                 <tr v-for="entity in contentList">
-                    <td><input  type="checkbox" v-bind:value="entity.id" name="check"></td>
+                    <td><input  type="checkbox" v-bind:value="entity.id"></td>
                     <td>{{entity.name}}</td>
                     <td>{{entity.servicefee}}</td>
                     <td>{{entity.quantity}}</td>
-                    <td>{{entity.memo}}</td>
+                    <td>{{entity.hh}}</td>
                     <td>{{entity.version}}</td>
                     <td>{{entity.orders}}</td>
                     <td class="text-center">
@@ -70,6 +63,48 @@
             </table>
         </div>
     </div>
+    <!-- 编辑窗口 -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" >
+            <div class="modal-content" id="content_add">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">店铺等级</h3>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-bordered table-striped"  width="800px">
+                        <tr>
+                            <td>标题</td>
+                            <td><input  class="form-control" placeholder="标题" v-model="content.name">  </td>
+                        </tr>
+                        <tr>
+                            <td>URL</td>
+                            <td><input  class="form-control" placeholder="URL" v-model="content.url">  </td>
+                        </tr>
+                        <td>标题</td>
+                        <td><input  class="form-control" placeholder="标题" v-model="content.name">  </td>
+                        </tr>
+                        <tr>
+                            <td>URL</td>
+                            <td><input  class="form-control" placeholder="URL" v-model="content.url">  </td>
+                        </tr>
+                        <td>标题</td>
+                        <td><input  class="form-control" placeholder="标题" v-model="content.name">  </td>
+                        </tr>
+                        <tr>
+                            <td>URL</td>
+                            <td><input  class="form-control" placeholder="URL" v-model="content.url">  </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="savead()">保存</button>
+                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <script>
@@ -77,7 +112,7 @@
     $(function () {
         $.ajax({
             type: "post",
-            url: "../../grade/findGrade.do",
+            url: "../grade/findGrade.do",
             data: "",
             dataType: "",
             success: function (result) {
@@ -94,22 +129,5 @@
             }
         })
     })
-    function delall() {
-        var ids=""
-        $("input[name='check']:checked").each(function(){
-            ids += ids==""?$(this).val():","+$(this).val();
-        })
-        $.post("../../grade/delGradeall.do",{id:ids},function(data){
-            if (data) {
-                alert("删除失败，请重新操作!")
-                location.reload();
-            } else {
-
-                alert("恭喜您成功删除选中的广告")
-                location.reload();
-            }
-        })
-
-    }
 </script>
 </html>

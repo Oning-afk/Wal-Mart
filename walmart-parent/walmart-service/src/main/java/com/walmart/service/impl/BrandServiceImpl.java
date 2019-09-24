@@ -12,8 +12,6 @@ import com.walmart.pojo.MemberrankExample;
 import com.walmart.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
@@ -23,7 +21,7 @@ public class BrandServiceImpl implements BrandService {
         PageHelper.startPage(pageNum,pageSize);
         BrandExample brandExample = new BrandExample();
         BrandExample.Criteria criteria = brandExample.createCriteria();
-        if (brand.getName() !=null){
+        if (brand !=null){
             if (brand.getName() !=null && brand.getName().length() >0){
                 criteria.andNameLike( "%" + brand.getName() +"%");
             }
@@ -48,10 +46,5 @@ public class BrandServiceImpl implements BrandService {
         }else{
             return false;
         }
-    }
-
-    @Override
-    public List<Brand> findPage() {
-        return brandMapper.selectByExample(null);
     }
 }

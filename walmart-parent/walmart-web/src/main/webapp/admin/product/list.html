@@ -54,8 +54,7 @@
                 <div class="form-group form-inline">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh">&nbsp;</span>刷新</button>
-                        <button onclick="deleteProduct()" type="button" class="btn btn-default" title="删除"><span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
-                        <a href="../../product/exportProductList.do" class="btn btn-default"><span class="glyphicon glyphicon-share-alt">&nbsp;</span>导出</a>
+                        <button onclick="delProduct()" type="button" class="btn btn-default" title="删除"><span class="glyphicon glyphicon-remove">&nbsp;</span>删除</button>
                     </div>
                     名称:<input type="text" v-model="name" class="tl-price-input"/>
                     <button class="btn btn-default" onclick="searchByPage()">查询</button>
@@ -254,24 +253,6 @@
                 alert("系统错误，请联系管理员！");
             }
         })
-    }
-
-    function deleteProduct() {
-        var arr = $("[name = 'boxId']:checked")
-        if (arr.length > 0) {
-            var ids = "";
-            for (var i = 0; arr.length  > i; i++) {
-                ids += ids == "" ? arr[i].value : "," + arr[i].value;
-            }
-            alert(ids);
-            $.post("../../product/deleteProduct.do",{ids:ids},function (data) {
-                if(data.success==true){
-                    $("#listTable").reload();
-                }
-            })
-        }else {
-            alert("请选择要删除的数据")
-        }
     }
 </script>
 </html>

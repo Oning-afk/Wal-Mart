@@ -1,57 +1,33 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>添加店铺 - Powered By SHOP++</title>
+    <title>修改店铺 - Powered By SHOP++</title>
     <meta name="author" content="SHOP++ Team" />
     <meta name="copyright" content="SHOP++" />
     <link href="../../resources/admin/css/selectmultiple.css" rel="stylesheet" type="text/css" />
     <link href="../../resources/admin/css/common.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../resources/admin/js/jquery.js"></script>
-    <script type="text/javascript" src="../../resources/admin/js/jquery.validate.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/jquery.tools.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/webuploader.js"></script>
-    <script type="text/javascript" src="../../resources/admin/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/jquery.selectmultiple.js"></script>
-    <script type="text/javascript" src="../../resources/admin/js/common.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/input.js"></script>
     <script type="text/javascript" src="../../resources/admin/js/jquery.params.js"></script>
-    <script type="text/javascript" src="../../resources/admin/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../resources/admin/js/vue.js"></script>
     <script type="text/javascript">
-        $().ready(function() {
 
-            var $inputForm = $("#inputForm");
+        $(function () {
+            findGrade(1);
             //查询店铺分类
             $.ajax({
-                url:"/grade/findGrade.do",
+                url:"/classify/findclassify.do",
                 type:"post",
-                async:false,
                 dataType:"json",
-                success:function(data){
-                    var rank="";
-                    for (var i = 0; i < data.length; i++) {
-                        rank+="<option value='"+data[i].id+"'>"+data[i].name+"</option>";
-                    }
-                    $("#storeRankId").html(rank);
-                },
-                error:function(){
-                    alert("错误");
-                }
-            });
-
-            //查询店铺等级
-            $.ajax({
-                url:"/classify/findClassify.do",
-                type:"post",
                 async:false,
-                dataType:"json",
                 success:function(data){
                     var classify="";
                     for (var i = 0; i < data.length; i++) {
-                        classify+="<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        classify+="<option value="+data[i].id+">"+data[i].name+"</option>";
                     }
                     $("#storecategoryId").html(classify);
                 },
@@ -62,83 +38,75 @@
 
             //修改回显
             var id=$.query.get("id");
-            var vm;
+            var vm=new Vue({
+                el:'#inputForm',
+                data:{
+                    name:"",
+                    id:'',
+                    businessId:'',
+                    mobile:'',
+                    createddate:'',
+                    status:'',
+                    email:'',
+                    phone:'',
+                    address:'',
+                    zipcode:'',
+                    type:'',
+                    introduction:'',
+                    storecategoryId:'',
+                    isenabled:'',
+                    storerankId:""
+                }
+            });
+
             $.ajax({
                 url:"/store/findStoreById.do",
                 type:"post",
                 data:{id:id},
                 dataType:"json",
                 success:function(data){
-                    vm=new Vue({
-                        el:'#inputForm',
-                        data:{
-                            name:data.name,
-                            id:data.id,
-                            businessId:data.businessId,
-                            mobile:data.mobile,
-                            type:data.type,
-                            email:data.email,
-                            phone:data.phone,
-                            address:data.address,
-                            zipcode:data.zipcode,
-                            introduction:data.introduction,
-                            storerankId:data.storerankId,
-                            storecategoryId:data.storecategoryId,
-                        }
-                    })
+                            vm.name=data.name;
+                            vm.id=data.id;
+                            vm.businessId=data.businessId;
+                            vm.mobile=data.mobile;
+                            vm.createddate=data.createddate;
+                            vm.status=data.status;
+                            vm.email=data.email;
+                            vm.phone=data.phone;
+                            vm.address=data.address;
+                            vm.zipcode=data.zipcode;
+                            vm.type=data.type;
+                            vm.introduction=data.introduction;
+                            vm.storecategoryId=data.storecategoryId;
+                            vm.isenabled=data.isenabled;
+                            vm.storerankId=data.storerankId
                 },
                 error:function(){
                     alert("错误");
                 }
             });
 
+        });
 
-
-
-            // 表单验证
-            $inputForm.validate({
-                rules: {
-                    name: {
-                        required: true,
-                        remote: {
-                            url: "check_name",
-                            cache: false
-                        }
-                    },
-                    logo: {
-                        pattern: /^(http:\/\/|https:\/\/|\/).*$/i
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    mobile:{
-                        required: true,
-                        pattern: /^1[3|4|5|7|8]\d{9}$/
-                    },
-                    introduction: {
-                        maxlength: 200
+        //查询店铺等级
+        function findGrade() {
+            $.ajax({
+                url:"/grade/findGradeAll.do",
+                type:"post",
+                async:false,
+                dataType:"json",
+                success:function(data){
+                    var rank="";
+                    for (var i = 0; i < data.length; i++) {
+                        rank+="<option value='"+data[i].id+"'>"+data[i].name+"</option>";
                     }
+                    $("#storerankId").html(rank);
                 },
-                messages: {
-                    name: {
-                        remote: "已存在"
-                    },
-                    mobile: {
-                        pattern: "格式错误"
-                    }
-                },
-                submitHandler: function(form) {
-                    if ($businessId.val() == "") {
-                        $.message("warn", "请选择商家");
-                        return false;
-                    }
-                    $(form).find("input:submit").prop("disabled", true);
-                    form.submit();
+                error:function(){
+                    alert("错误");
                 }
             });
-
-        });
+        }
 
         //修改方法
         function editStore() {
@@ -162,20 +130,13 @@
 </head>
 <body>
 <div class="breadcrumb">
-    <a href="../../admin/common/index">首页</a> &raquo; 添加店铺
+    <a href="../../admin/common/index">首页</a> &raquo; 修改店铺
 </div>
 <form id="inputForm"  method="post">
     <input type="hidden" id="businessId" name="businessId" value="2" v-model="businessId"/>
     <input type="hidden" id="id" name="id" v-model="id">
+    <input type="hidden" id="status" name="status" v-model="status">
     <table class="input">
-        <tr>
-            <th>
-                <span class="requiredField">*</span>商家选择:
-            </th>
-            <td>
-                <input type="text" id="businessSelect" name="businessSelect" class="text" maxlength="200" title="请输入用户名查找商家" />
-            </td>
-        </tr>
         <tr class="hidden">
             <th>
                 用户名:
@@ -197,7 +158,7 @@
             <td>
                 <select id="type" name="type" v-model="type">
                     <option value="1">普通</option>
-                    <option value="2">自营</option>
+                    <option value="0">自营</option>
                 </select>
             </td>
         </tr>
@@ -246,7 +207,7 @@
                 简介:
             </th>
             <td>
-                <textarea name="introduction" class="text" v-model="introduction"></textarea>
+                <textarea name="introduction" class="text" v-model="introduction">{{introduction}}</textarea>
             </td>
         </tr>
         <tr>
@@ -254,7 +215,7 @@
                 店铺等级:
             </th>
             <td>
-                <select name="storerankId" v-model="storerankId">
+                <select  v-model="storerankId" id="storerankId">
                     <option value="1">普通店铺</option>
                 </select>
             </td>
@@ -275,7 +236,7 @@
                 经营分类:
             </th>
             <td>
-                <select id="productcategoryIds" name="productcategoryIds" multiple="multiple" v-model="productcategoryIds">
+                <select  multiple="multiple" >
                     <option value="1">
                         手机数码
                     </option>
@@ -1434,19 +1395,6 @@
                         积分商城
                     </option>
                 </select>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                设置:
-            </th>
-            <td>
-                <label>
-                    <input type="checkbox" name="isEnabled" value="true"  />是否启用
-                </label>
-                <label>
-                    <input type="checkbox" name="isEnabled" value="false" />
-                </label>
             </td>
         </tr>
         <tr>

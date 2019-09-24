@@ -2,8 +2,9 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Producttag;
 import com.walmart.pojo.ProducttagExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProducttagMapper {
     int countByExample(ProducttagExample example);

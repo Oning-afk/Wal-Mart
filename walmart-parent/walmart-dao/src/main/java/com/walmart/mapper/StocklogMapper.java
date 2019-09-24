@@ -2,9 +2,8 @@ package com.walmart.mapper;
 
 import com.walmart.pojo.Stocklog;
 import com.walmart.pojo.StocklogExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface StocklogMapper {
     int countByExample(StocklogExample example);
