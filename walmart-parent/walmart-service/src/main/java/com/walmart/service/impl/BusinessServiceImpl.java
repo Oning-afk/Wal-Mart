@@ -1,6 +1,9 @@
 package com.walmart.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.walmart.entity.PageResult;
 import com.walmart.mapper.BusinessMapper;
 import com.walmart.pojo.Business;
 import com.walmart.pojo.BusinessExample;
@@ -22,9 +25,36 @@ public class BusinessServiceImpl implements BusinessService {
     private BusinessMapper businessMapper;
 
     @Override
-    public List<Business> queryBusiness( ) {
+    public PageResult findPageBusiness(Business business, Integer pageSize, Integer pageNum) {
+        PageHelper.startPage(pageSize,pageNum);
         BusinessExample businessExample = new BusinessExample();
-        List<Business> businesses = businessMapper.selectByExample(businessExample);
+        BusinessExample.Criteria criteria = businessExample.createCriteria();
+        if (business != null){
+            if (business.getUsername() != null && business.getUsername().length()>0){
+                criteria.andUsernameLike("%"+business.getUsername()+"%");
+            }
+        }
+        Page<Business> businesses = (Page<Business>) businessMapper.selectByExample(businessExample);
+        return new PageResult(businesses.getTotal(),businesses.getResult());
+    }
+
+    @Override
+    public boolean delBusiness(String[] ids) {
+        int i =0;
+        for (String id: ids){
+            i = businessMapper.deleteByPrimaryKey(Long.parseLong(id));
+        }
+        if (i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public List<Business> findStockAll() {
+        List<Business> businesses = businessMapper.selectByExample(null);
+        int count = businessMapper.countByExample(null);
         return businesses;
     }
 }

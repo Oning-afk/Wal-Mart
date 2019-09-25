@@ -3,6 +3,8 @@ package com.walmart.service;
 import com.walmart.entity.PageResult;
 import com.walmart.pojo.Deliverycorp;
 
+import java.util.List;
+
 public interface DeliverycorpService {
 
     /**
@@ -20,4 +22,22 @@ public interface DeliverycorpService {
      * @return
      */
     boolean delDeliverycorp(String [] ids);
+
+    /**
+     * 物流公司新增
+     * @param deliverycorp
+     */
+    public void addDeliverycorp(Deliverycorp deliverycorp);
+
+    /**
+     * 物流公司 修改
+     */
+    boolean edDeliverycorp(Deliverycorp deliverycorp);
+
+    /**
+     * 物流公司 回显
+     */
+    Deliverycorp seachDeliveryById(Long id);
+
+    List<Deliverycorp> findStockAll();
 }

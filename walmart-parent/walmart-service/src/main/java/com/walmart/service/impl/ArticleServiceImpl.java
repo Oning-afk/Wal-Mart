@@ -1,5 +1,6 @@
 package com.walmart.service.impl;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -12,6 +13,11 @@ import com.walmart.pojo.Articlecategory;
 import com.walmart.pojogroup.ArticleandArticlecategory;
 import com.walmart.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -26,6 +32,11 @@ public class ArticleServiceImpl implements ArticleService {
         PageHelper.startPage(pageNum,pageSize);
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
+        if(article != null){
+            if(article.getTitle() !=null && article.getTitle().length() >=0){
+                criteria.andTitleLike("%"+article.getTitle()+"%");
+            }
+        }
         //查到的数据
         Page<Article> Arti = (Page<Article>) articleMapper.selectByExample(example);
         //创建两表结合bean
@@ -47,14 +58,18 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void add(Article article) {
+        article.setCreateddate(new Date());
+        article.setLastmodifieddate(new Date());
+        article.setVersion((long) 0);
+        article.setHits((long) 0);
         articleMapper.insert(article);
     }
 
     @Override
     public void delete(Long[] ids) {
-     for (long id : ids){
-         articleMapper.deleteByPrimaryKey(id);
-     }
+        for (long id : ids){
+            articleMapper.deleteByPrimaryKey(id);
+        }
     }
 
     @Override
@@ -64,8 +79,25 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void updateproducttag(Article article) {
+        article.setCreateddate(new Date());
+        article.setLastmodifieddate(new Date());
+        article.setVersion((long) 0);
+        article.setHits((long) 0);
         articleMapper.updateByPrimaryKey(article);
     }
 
-
+    @Override
+    public List<ArticleandArticlecategory> searchquert() {
+        List<Article> articles = articleMapper.selectByExample(null);
+        int count = articleMapper.countByExample(null);
+        List<ArticleandArticlecategory> list = new ArrayList<>();
+        for (Article Arti2 : articles){
+            ArticleandArticlecategory ancyo = new ArticleandArticlecategory();
+            ancyo.setArticle(Arti2);
+            Articlecategory procdu = articlecategoryMapper.selectByPrimaryKey(Arti2.getArticlecategoryId());
+            ancyo.setArticlecategory(procdu);
+            list.add(ancyo);
+        }
+        return list;
+    }
 }

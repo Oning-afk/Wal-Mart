@@ -14,4 +14,6 @@ public interface ArticlecategoryService {
     public Articlecategory findOne(Long id);
 
     public void update(Articlecategory articlecategory);
+
+    public List<Articlecategory> searchquert();
 }

@@ -10,6 +10,7 @@ import com.walmart.pojo.DeliverycorpExample;
 import com.walmart.service.DeliverycorpService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,5 +46,33 @@ public class DeliverycorpServiceImpl implements DeliverycorpService {
             return false;
         }
     }
+
+    @Override
+    public void addDeliverycorp(Deliverycorp deliverycorp) {
+        deliverycorp.setCode("baishi");
+        deliverycorp.setCreateddate(new Date());
+        deliverycorp.setLastmodifieddate(new Date());
+        deliverycorp.setVersion((long) 0);
+        deliverycorpMapper.insert(deliverycorp);
     }
 
+    @Override
+    public boolean edDeliverycorp(Deliverycorp deliverycorp) {
+
+        return deliverycorpMapper.updateByPrimaryKeySelective(deliverycorp) > 0;
+    }
+
+    @Override
+    public Deliverycorp seachDeliveryById(Long id) {
+
+        return deliverycorpMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Deliverycorp> findStockAll() {
+        List<Deliverycorp> deliverycorps = deliverycorpMapper.selectByExample(null);
+        int count = deliverycorpMapper.countByExample(null);
+
+        return deliverycorps;
+    }
+}

@@ -50,4 +50,10 @@ public class ArticlecategoryServiceImpl implements ArticlecategoryService {
         articlecategoryMapper.updateByPrimaryKey(articlecategory);
     }
 
+    @Override
+    public List<Articlecategory> searchquert() {
+
+        return articlecategoryMapper.selectByExample(null);
+    }
+
 }

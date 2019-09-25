@@ -15,7 +15,7 @@ import java.util.List;
  **/
 public interface ProductService {
 
-    PageResult findProductList(Integer rows, Integer page,String name);
+    PageResult findProductList(Integer rows, Integer page, String name);
 
     boolean updateToUp(Long id);
 

@@ -4,6 +4,7 @@ import com.walmart.entity.PageResult;
 import com.walmart.pojo.Parameter;
 import com.walmart.pojo.Productcategory;
 import com.walmart.pojo.Producttag;
+import com.walmart.pojogroup.Parameterandproductcat;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface ParameterService {
     public Parameter findOne(Long id);
 
     public void updateproducttag(Parameter parameter);
+
+    public List<Parameterandproductcat> searchquert();
 }

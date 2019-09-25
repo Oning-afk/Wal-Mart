@@ -15,10 +15,10 @@ public class ProductcategoryServiceImpl implements ProductcategoryService {
   @Autowired
   private ProductcategoryMapper productcategoryMapper;
 
-    @Override
-    public List<Productcategory> Productcategoryquery() {
-        return productcategoryMapper.selectByExample(null);
-    }
+  @Override
+  public List<Productcategory> Productcategoryquery() {
+    return productcategoryMapper.selectByExample(null);
+  }
 
   @Override
   public void add(Productcategory productcategory) {

@@ -15,6 +15,7 @@ import java.util.List;
 
 @Service
 public class ManageServiceImpl implements ManageService {
+
 @Autowired
 private PointlogMapper pointlogMapper;
 

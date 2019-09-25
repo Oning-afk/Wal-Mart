@@ -11,6 +11,7 @@ import com.walmart.service.ArticletagService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ArticletagServiceImpl implements ArticletagService {
@@ -22,8 +23,13 @@ public class ArticletagServiceImpl implements ArticletagService {
         PageHelper.startPage(pageNum,pageSize);
         ArticletagExample example = new ArticletagExample();
         ArticletagExample.Criteria criteria = example.createCriteria();
+        if(articletag != null){
+            if(articletag.getName() != null && articletag.getName().length() >=0){
+                criteria.andNameLike("%"+articletag.getName()+"%");
+            }
+        }
         Page<Articletag> articletags = (Page<Articletag>) articletagMapper.selectByExample(example);
-       long totalpage = (int) Math.ceil(articletags.getTotal()/pageSize) +1;
+        long totalpage = (int) Math.ceil(articletags.getTotal()/pageSize) +1;
         return new PageResult(articletags.getTotal(),articletags.getResult(),pageNum,pageSize,totalpage);
     }
 
@@ -32,6 +38,7 @@ public class ArticletagServiceImpl implements ArticletagService {
         articletag.setCreateddate(new Date());
         articletag.setLastmodifieddate(new Date());
         articletag.setVersion((long) 0);
+        articletag.setIcon(null);
         articletagMapper.insert(articletag);
     }
 
@@ -54,6 +61,13 @@ public class ArticletagServiceImpl implements ArticletagService {
         articletag.setCreateddate(new Date());
         articletag.setLastmodifieddate(new Date());
         articletag.setVersion((long) 0);
+        articletag.setIcon(null);
         articletagMapper.updateByPrimaryKey(articletag);
+    }
+
+    @Override
+    public List<Articletag> searchquert() {
+
+        return articletagMapper.selectByExample(null);
     }
 }

@@ -416,30 +416,7 @@
                         data: {skuId: skuId, quantity: quantity},
                         dataType: "json",
                         success: function() {
-                            if ($headerCart.size() > 0 && window.XMLHttpRequest) {
-                                var $image = $zoom.find("img");
-                                var cartOffset = $headerCart.offset();
-                                var imageOffset = $image.offset();
-                                $image.clone().css({
-                                    width: 300,
-                                    height: 300,
-                                    position: "absolute",
-                                    "z-index": 20,
-                                    top: imageOffset.top,
-                                    left: imageOffset.left,
-                                    opacity: 0.8,
-                                    border: "1px solid #dddddd",
-                                    "background-color": "#eeeeee"
-                                }).appendTo("body").animate({
-                                    width: 30,
-                                    height: 30,
-                                    top: cartOffset.top,
-                                    left: cartOffset.left,
-                                    opacity: 0.2
-                                }, 1000, function() {
-                                    $(this).remove();
-                                });
-                            }
+
                         }
                     });
                 } else {
@@ -652,7 +629,7 @@
                         <a href="product_category">所有商品分类</a>
                     </dt>
                     <dd>
-                        <a href="">首页</a>
+                        <a href="http://localhost:8083/">首页</a>
                     </dd>
                     <dd>
                         <a href="product/list/1">手机数码</a>

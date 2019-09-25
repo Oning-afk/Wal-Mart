@@ -3,6 +3,8 @@ package com.walmart.service;
 import com.walmart.entity.PageResult;
 import com.walmart.pojo.Brand;
 
+import java.util.List;
+
 public interface BrandService {
 
     /**
@@ -24,4 +26,5 @@ public interface BrandService {
      * @param ids
      */
     boolean deleteBrand(String[] ids);
+    List<Brand> findPage();
 }

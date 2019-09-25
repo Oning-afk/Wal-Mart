@@ -14,6 +14,7 @@ import com.walmart.pojogroup.Parameterandproductcat;
 import com.walmart.service.ParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class ParameterServiceImpl implements ParameterService {
         PageHelper.startPage(pageNum,pageSize);
         ParameterExample example = new ParameterExample();
         ParameterExample.Criteria criteria = example.createCriteria();
+        if(parameter != null){
+            if(parameter.getParametergroup() != null && parameter.getParametergroup().length() >=0){
+                criteria.andParametergroupLike("%"+parameter.getParametergroup()+"%");
+            }
+        }
         //查到的数据
         Page<Parameter> param = (Page<Parameter>) parameterMapper.selectByExampleWithBLOBs(example);
         //创建两表结合bean
@@ -74,9 +80,9 @@ public class ParameterServiceImpl implements ParameterService {
 
     @Override
     public void delete(Long[] ids) {
-     for (Long id : ids){
-         parameterMapper.deleteByPrimaryKey(id);
-     }
+        for (Long id : ids){
+            parameterMapper.deleteByPrimaryKey(id);
+        }
     }
 
     @Override
@@ -91,5 +97,29 @@ public class ParameterServiceImpl implements ParameterService {
         parameter.setLastmodifieddate(new Date());
         parameter.setVersion((long) 0);
         parameterMapper.updateByPrimaryKey(parameter);
+    }
+
+    @Override
+    public List<Parameterandproductcat> searchquert() {
+        List<Parameter> parameters = parameterMapper.selectByExample(null);
+        int count = parameterMapper.countByExample(null);
+        List<Parameterandproductcat> list = new ArrayList<>();
+        for (Parameter pram : parameters){
+            String names = pram.getNames();
+            String named = "";
+            if(names != null){
+                List<String> parse = (List<String>) JSONUtils.parse(names);
+                for (String s : parse) {
+                    named += s +" ";
+                }
+            }
+            pram.setNames(named);
+            Parameterandproductcat pant = new Parameterandproductcat();
+            pant.setParameter(pram);
+            Productcategory procdu = productcategoryMapper.selectByPrimaryKey(pram.getProductcategoryId());
+            pant.setProductcategory(procdu);
+            list.add(pant);
+        }
+        return list;
     }
 }

@@ -3,6 +3,8 @@ package com.walmart.service;
 import com.walmart.entity.PageResult;
 import com.walmart.pojo.Articletag;
 
+import java.util.List;
+
 public interface ArticletagService {
     public PageResult search(Articletag articletag, int pageSize, int pageNum);
 
@@ -13,4 +15,6 @@ public interface ArticletagService {
     public Articletag findOne(Long id);
 
     public void updateproducttag(Articletag articletag);
+
+    public List<Articletag> searchquert();
 }
