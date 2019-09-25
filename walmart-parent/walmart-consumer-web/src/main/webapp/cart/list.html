@@ -14,7 +14,28 @@
         $(function () {
             searchProductEnums()
             searchCartList();
+            getHeaderCart()
         })
+
+        function getHeaderCart(){
+            $.ajax({
+                type: "post",
+                url: "../cart/queryCartQuantity.do",
+                data: {
+
+                },
+                dataType: "json",
+                success: function (result) {
+                    var count = 0;
+                    for(var i=0;i<result.length;i++){
+                        count +=result[i].quantity;
+                    }
+                    var html ='<span>'+count+'</span>'
+
+                    $("#cartCount").html(html);
+                }
+            })
+        }
 
 
         function toDetail(id) {
@@ -143,7 +164,7 @@
                 </div>
             </div>
             <div id="headerCart" class="headerCart">
-                <a class="cartButton" href="../cart/list.html"><span>购物车(<em></em>)</span></a>
+                <a class="cartButton" href="list.html"><span>购物车(<em id="cartCount"></em>)</span></a>
                 <div class="detail">
                     <div class="title">购物车商品</div>
                     <div class="items"></div>

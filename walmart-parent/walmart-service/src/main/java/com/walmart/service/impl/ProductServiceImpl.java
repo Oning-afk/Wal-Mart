@@ -167,8 +167,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductWithBLOBs queryProductById(Long id) {
+    public ProductStoreGroupBean queryProductById(Long id) {
+        ProductStoreGroupBean productStoreGroupBean = new ProductStoreGroupBean();
         ProductWithBLOBs productWithBLOBs = productMapper.selectByPrimaryKey(id);
-        return productWithBLOBs;
+        Store store = storeMapper.selectByPrimaryKey(productWithBLOBs.getStoreId());
+        productStoreGroupBean.setStore(store);
+        productStoreGroupBean.setProduct(productWithBLOBs);
+        return productStoreGroupBean;
     }
 }

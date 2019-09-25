@@ -15,6 +15,141 @@
     <script type="text/javascript" src="../resources/shop/js/jquery.jqzoom.js"></script>
     <script type="text/javascript" src="../resources/shop/js/jquery.validate.js"></script>
     <script type="text/javascript">
+        var $window = $(window);
+        var $headerCartQuantity = $("#headerCart a.cartButton em");
+        $(function () {
+            getDetail();
+            getHeaderCart();
+        })
+
+        function getHeaderCart(){
+            $.ajax({
+                type: "post",
+                url: "../cart/queryCartQuantity.do",
+                data: {
+
+                },
+                dataType: "json",
+                success: function (result) {
+                    var count = 0;
+                    for(var i=0;i<result.length;i++){
+                        count +=result[i].quantity;
+                    }
+                    var html ='<span>'+count+'</span>'
+
+                    $("#cartCount").html(html);
+                }
+            })
+        }
+
+        // 购物车信息
+        $window.on("cartInfoLoad", function(event, cartInfo) {
+            if ($headerCartQuantity.text() != count && "opacity" in document.documentElement.style) {
+                $headerCartQuantity.fadeOut(function() {
+                    $headerCartQuantity.text(count).fadeIn();
+                });
+            } else {
+                $headerCartQuantity.text(count);
+            }
+            if(count == 0){
+                $headerCartItems.html(
+                    '<table> <tr> <td>购物车是空的，请去挑选您的商品！<\/td> <\/tr> <\/table>'			);
+            } else {
+
+            }
+            $headerCartSummary.html(message('共<em>'+count+'<\/em>件商品', skuQuantity) + '&nbsp;&nbsp;&nbsp;&nbsp;共计: <em>' + currency(effectivePrice, true, true) + '<\/em><a href="../cart/list">商品结算<\/a>');
+        });
+
+        function getDetail() {
+            var id = window.location.href.split("?")[1].split("=")[1];
+            $.ajax({
+                type: "post",
+                url: "../productShop/queryProductById.do",
+                data: {
+                    "id":id
+                },
+                dataType: "json",
+                success: function (result) {
+                    var html = '<h1>'+result.product.name+'<em>'+result.product.caption+'</em></h1>'+
+                        '<dl>' +
+                        '<dt>编号:</dt>' +
+                        '<dd>'+result.product.sn+'</dd>'+
+                        '</dl>'+
+                        '<dl>' +
+                        '<dt>销售价:</dt>' +
+                        '<dd>' +
+                        '<strong id="price">￥'+result.product.price+'</strong>'+
+                        '</dd>'+
+                        '<dd>' +
+                        '<span>' +
+                        '(<em>市场价:</em><del id="marketPrice">￥'+result.product.marketprice+'</del>)'+
+                        '</span>'+
+                        '</dd>'+
+                        '</dl>'+
+                        '<dl>' +
+                        '<dt>赠送积分:</dt>'+
+                        '<dd id="rewardPoint">'+result.product.price+'</dd>'+
+                        '</dl>'
+                    ;
+                    $("#divForProduct").html(html);
+                    var html2 = result.product.introduction+"";
+                    $("#divForImage").html(html2);
+                    var json = eval('(' + result.product.parametervalues + ')');
+                    var html3 = '<div class="title"><strong>商品参数</strong></div>'+
+                        '<table>' ;
+                    for(var i =0;i<json.length;i++){
+                        html3 += '<tr><th class="group" colspan="2">'+json[i].group+'</th></tr>';
+                        for(var j=0;j<json[i].entries.length;j++){
+                            html3 += '<tr><th>'+json[i].entries[j].name+'</th><td>'+json[i].entries[j].value+'</td></tr>';
+                        }
+                    }
+                    html3 += '</table>';
+                    $('#parameter').html(html3);
+                    var html4 ='<img src="'+result.store.logo+'" alt="'+result.store.name+'" />'+
+                        '<strong><a href="../store/1">'+result.store.name+'</a></strong>'+
+                        '<p class="clearfix"><a href="../store/1">进店逛逛</a><a href="javascript:;" id="addStoreFavorite">收藏本店</a></p><div class="divider"></div>'+
+                        '<span>公司地址：'+result.store.address+'</span>' +
+                        '<span>联系方式：'+result.store.phone+'</span>'
+
+                    ;
+                    $("#storeInfo").html(html4);
+                    var jsons = eval('(' + result.product.productimages + ')');
+                    var html5 = '<a href="javascript:;" class="close">&nbsp;</a><a href="javascript:;" class="prev">&nbsp;</a>' +
+                        '<div id="previewScrollable" class="scrollable">' +
+                        '<div class="items">';
+                    var html6 = '<a href="'+jsons[0].large+'" id="zoom" rel="gallery">' +
+                        '<img class="medium" src="'+jsons[0].medium+'" />' +
+                        '</a>'+
+                        '<a href="javascript:;" class="prev">&nbsp;</a>' +
+                        '<div id="thumbnailScrollable" class="scrollable">' +
+                        '<div class="items">'
+                    ;
+                    for(var i = 0;i<jsons.length;i++){
+                        html5+='<img src="../upload/image/blank.gif" data-original="'+jsons[i].large+'" title="" />';
+                        if(i == 0){
+                            html6+='<a class="current" href="javascript:;" rel="{gallery: \'gallery\', smallimage: \''+jsons[i].medium+'\', largeimage: \''+json[i].large+'\'}">' +
+                                '<img src="'+jsons[i].thumbnail+'" title="" />' +
+                                '</a>';
+                        }else{
+                            html6+='<a href="javascript:;" rel="{gallery: \'gallery\', smallimage: \''+jsons[i].medium+'\', largeimage: \''+json[i].large+'\'}">' +
+                                '<img src="'+jsons[i].thumbnail+'" title="" />' +
+                                '</a>';
+                        }
+
+                    }
+                    html5 += '</div>' +
+                        '</div>' +
+                        '<a href="javascript:;" class="next">&nbsp;</a>';
+                    $("#preview").html(html5);
+                    html6+='</div>' +
+                        '</div>' +
+                        '<a href="javascript:;" class="next">&nbsp;</a>';
+                    $("#productImage").html(html6);
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
         $().ready(function() {
             var $shoppingCar = $("#shoppingCar");
             var $headerCart = $("#headerCart");
@@ -82,6 +217,7 @@
 
                 $thumbnail.removeClass("current");
                 $this.addClass("current").click();
+                console.info(sss)
             });
 
             var previewScrollable = $previewScrollable.scrollable({
@@ -387,100 +523,6 @@
         }
     </script>
 </head>
-<script type="text/javascript">
-    var $window = $(window);
-    var $headerCartQuantity = $("#headerCart a.cartButton em");
-    var count;
-    $(function () {
-        getDetail();
-        getHeaderCart();
-    })
-
-    function getHeaderCart(){
-        $.ajax({
-            type: "post",
-            url: "../cart/queryCartQuantity.do",
-            data: {
-
-            },
-            dataType: "json",
-            success: function (result) {
-                for(var i=0;i<result.lengtg;i++){
-                    count +=result[i].quantity;
-                }
-             }
-        })
-    }
-
-    // 购物车信息
-    $window.on("cartInfoLoad", function(event, cartInfo) {
-        if ($headerCartQuantity.text() != count && "opacity" in document.documentElement.style) {
-            $headerCartQuantity.fadeOut(function() {
-                $headerCartQuantity.text(count).fadeIn();
-            });
-        } else {
-            $headerCartQuantity.text(count);
-        }
-        if(count == 0){
-            $headerCartItems.html(
-                '<table> <tr> <td>购物车是空的，请去挑选您的商品！<\/td> <\/tr> <\/table>'			);
-        } else {
-
-        }
-        $headerCartSummary.html(message('共<em>'+count+'<\/em>件商品', skuQuantity) + '&nbsp;&nbsp;&nbsp;&nbsp;共计: <em>' + currency(effectivePrice, true, true) + '<\/em><a href="../cart/list">商品结算<\/a>');
-    });
-    
-    function getDetail() {
-        var id = window.location.href.split("?")[1].split("=")[1];
-        $.ajax({
-            type: "post",
-            url: "../productShop/queryProductById.do",
-            data: {
-                "id":id
-            },
-            dataType: "json",
-            success: function (result) {
-                var html = '<h1>'+result.name+'<em>'+result.caption+'</em></h1>'+
-                            '<dl>' +
-                                '<dt>编号:</dt>' +
-                                '<dd>'+result.sn+'</dd>'+
-                            '</dl>'+
-                            '<dl>' +
-                                '<dt>销售价:</dt>' +
-                                '<dd>' +
-                                    '<strong id="price">￥'+result.price+'</strong>'+
-                                '</dd>'+
-                                '<dd>' +
-                                    '<span>' +
-                                        '(<em>市场价:</em><del id="marketPrice">￥'+result.marketprice+'</del>)'+
-                                    '</span>'+
-                                '</dd>'+
-                            '</dl>'+
-                            '<dl>' +
-                                '<dt>赠送积分:</dt>'+
-                                '<dd id="rewardPoint">'+result.price+'</dd>'+
-                            '</dl>'
-                ;
-                $("#divForProduct").html(html);
-                var html2 = result.introduction+"";
-                $("#divForImage").html(html2);
-                var json = eval('(' + result.parametervalues + ')');
-                var html3 = '<div class="title"><strong>商品参数</strong></div>'+
-                        '<table>' ;
-                for(var i =0;i<json.length;i++){
-                    html3 += '<tr><th class="group" colspan="2">'+json[i].group+'</th></tr>';
-                    for(var j=0;j<json[i].entries.length;j++){
-                        html3 += '<tr><th>'+json[i].entries[j].name+'</th><td>'+json[i].entries[j].value+'</td></tr>';
-                    }
-                }
-                html3 += '</table>';
-                $('#parameter').html(html3);
-            }
-        })
-
-
-    }
-</script>
 <body>
 <div id="dialogOverlay" class="dialogOverlay"></div>
 <script type="text/javascript">
@@ -595,7 +637,7 @@
                 </div>
             </div>
             <div id="headerCart" class="headerCart">
-                <a class="cartButton" href="javaScript:toCartList()"><span>购物车(<em></em>)</span></a>
+                <a class="cartButton" href="javaScript:toCartList()"><span>购物车(<em id="cartCount"></em>)</span></a>
                 <div class="detail">
                     <div class="title">购物车商品</div>
                     <div class="items"></div>
@@ -819,33 +861,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="productImage">
-                <a href="http://image.demo.shopxx.net/b2b2c/5.0/201601/198bc691-83e8-42f5-9595-5a54367911c3-large.jpg" id="zoom" rel="gallery">
-                    <img class="medium" src="http://image.demo.shopxx.net/b2b2c/5.0/201601/198bc691-83e8-42f5-9595-5a54367911c3-medium.jpg" />
-                </a>
-                <a href="javascript:;" class="prev">&nbsp;</a>
-                <div id="thumbnailScrollable" class="scrollable">
-                    <div class="items">
-                        <a class="current" href="javascript:;" rel="{gallery: 'gallery', smallimage: 'http://image.demo.shopxx.net/b2b2c/5.0/201601/198bc691-83e8-42f5-9595-5a54367911c3-medium.jpg', largeimage: 'http://image.demo.shopxx.net/b2b2c/5.0/201601/198bc691-83e8-42f5-9595-5a54367911c3-large.jpg'}">
-                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/198bc691-83e8-42f5-9595-5a54367911c3-thumbnail.jpg" title="" />
-                        </a>
-                        <a href="javascript:;" rel="{gallery: 'gallery', smallimage: 'http://image.demo.shopxx.net/b2b2c/5.0/201601/36522eab-9938-4b55-90bf-345cdb329157-medium.jpg', largeimage: 'http://image.demo.shopxx.net/b2b2c/5.0/201601/36522eab-9938-4b55-90bf-345cdb329157-large.jpg'}">
-                            <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/36522eab-9938-4b55-90bf-345cdb329157-thumbnail.jpg" title="" />
-                        </a>
-                    </div>
-                </div>
-                <a href="javascript:;" class="next">&nbsp;</a>
+            <div class="productImage" id="productImage">
+
             </div>
             <div id="preview" class="preview">
-                <a href="javascript:;" class="close">&nbsp;</a>
-                <a href="javascript:;" class="prev">&nbsp;</a>
-                <div id="previewScrollable" class="scrollable">
-                    <div class="items">
-                        <img src="../upload/image/blank.gif" data-original="http://image.demo.shopxx.net/b2b2c/5.0/201601/198bc691-83e8-42f5-9595-5a54367911c3-large.jpg" title="" />
-                        <img src="../upload/image/blank.gif" data-original="http://image.demo.shopxx.net/b2b2c/5.0/201601/36522eab-9938-4b55-90bf-345cdb329157-large.jpg" title="" />
-                    </div>
-                </div>
-                <a href="javascript:;" class="next">&nbsp;</a>
+
             </div>
             <div class="sku">
                 <div class="info" id="divForProduct">
@@ -893,25 +913,7 @@
                 </div>
             </div>
             <div id="storeInfo" class="storeInfo">
-                <img src="http://image.demo.shopxx.net/b2b2c/5.0/201601/ab964025-bb0b-4120-a4bc-f0c3015cf9e0.jpg" alt="手机旗舰店" />
-                <strong>
-                    <a href="../store/1">手机旗舰店</a>
-                </strong>
-                <p class="clearfix">
-                    <a href="../store/1">进店逛逛</a>
-                    <a href="javascript:;" id="addStoreFavorite">收藏本店</a>
-                </p>
-                <div class="divider"></div>
-                <span>公司地址：湖南长沙经济技术开发区</span>
-                <span>联系方式：400-7769999</span>
-                <div class="instantMessage">
-                    <a href="http://amos.alicdn.com/getcid.aw?v=2&uid=99999999&site=cntaobao&s=2&groupid=0&charset=utf-8" target="_blank" title="旺旺">
-                        <img src="../resources/shop/images/instant_message_wangwang.png" alt="旺旺" />
-                    </a>
-                    <a href="http://wpa.qq.com/msgrd?v=3&uin=88888888&menu=yes" target="_blank" title="QQ">
-                        <img src="../resources/shop/images/instant_message_qq.png" alt="QQ" />
-                    </a>
-                </div>
+
             </div>
             <div id="bar" class="bar">
                 <ul>

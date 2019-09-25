@@ -3,6 +3,7 @@ package com.walmart.consumer.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walmart.pojo.Product;
 import com.walmart.pojo.ProductWithBLOBs;
+import com.walmart.pojogroup.ProductStoreGroupBean;
 import com.walmart.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,7 @@ public class ProductController {
 
     @ResponseBody
     @RequestMapping("queryProductById")
-    public ProductWithBLOBs queryProductById(Long id){
+    public ProductStoreGroupBean queryProductById(Long id){
 
         return productService.queryProductById(id);
     }

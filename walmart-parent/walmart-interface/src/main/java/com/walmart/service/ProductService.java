@@ -31,6 +31,6 @@ public interface ProductService {
 
     List<Product> queryHotTv();
 
-    ProductWithBLOBs queryProductById(Long id);
+    ProductStoreGroupBean queryProductById(Long id);
 
 }
